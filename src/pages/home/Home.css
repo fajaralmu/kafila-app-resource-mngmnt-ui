@@ -1,0 +1,14 @@
+.iconBg {
+    transition-duration: 600ms;
+    
+}
+.iconStroke {
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  animation: dash 3s linear forwards;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

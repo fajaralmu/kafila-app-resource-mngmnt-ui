@@ -1,0 +1,72 @@
+:root {
+  --orange: #ff8000;
+  --dark: #414141;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.baseView {
+  padding-top: 20px;
+}
+.bgOrange {
+  background-color: var(--orange);
+}
+.txtOrange {
+  color: var(--orange);
+}
+.txtDark {
+  color: var(--dark);
+}
+
+.bgDark {
+  background-color: var(--dark);
+}
+
+/**
+=================
+   svg styles
+
+*/
+
+.fillOrange {
+  fill: var(--orange);
+}
+.strokeOrange {
+  stroke: var(--orange);
+}
+
+.fillDark {
+  fill: var(--dark);
+}
+.strokeDark {
+  stroke: var(--dark);
+}
+
+.clickable:hover
+{
+  cursor: pointer;
+}
+
+/**
+  number input without spinner  
+*/
+
+.cleanInput::-webkit-outer-spin-button,
+.cleanInput::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.cleanInput[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+
+/* */
+.no-wrap
+{
+  white-space: nowrap;
+  white-space: pre
+}
