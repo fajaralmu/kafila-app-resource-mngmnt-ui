@@ -6,6 +6,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { removeLoginKeyCookie, setLoginKeyCookie, commonAuthorizedHeader, loginKeyCookieExist } from './../utils/restApiUtil';
 import ApplicationProfile from './../models/ApplicationProfile';
 import RestClient from './../apiClients/RestClient';
+import RoutingService from './RoutingService';
 
 
 const LOGIN_URL     = Settings.App.hosts.api + "/login";
@@ -22,20 +23,24 @@ export default class AuthService {
 
     @inject(RestClient)
     private rest:RestClient;
+    @inject(RoutingService)
+    private routing:RoutingService;
  
     get loggedIn() { return this._loggedUser != undefined; }
 
     get loggedUser() { 
         return this._loggedUser; 
     }
-    get isAdmin() { return this.loggedIn && this.loggedUser?.hasAuthorityType('ROLE_SUPERADMIN') }
+    get isAdmin() { 
+        let result = this.loggedIn && this.loggedUser?.hasAuthorityType('ROLE_SUPERADMIN') 
+        return result;
+    }
     get appProfile()
     {
         return this._appProfile;
     }
     
     private set loggedUser(value:User | undefined) { 
-        console.log("SET LOGGED USER: ", value);
         this._loggedUser = value; 
         this._onUserUpdate.forEach(action => action(value))
     }
@@ -51,11 +56,11 @@ export default class AuthService {
         
         return new Promise<ApplicationProfile>((resolve, reject)=>{
             
-            this.rest.getCommon<WebResponse<ApplicationProfile>>(LOAD_APP_URL, {})
+            this.rest.getCommon<ApplicationProfile>(LOAD_APP_URL, {})
                 .then((response)=>{
                     this.loadUser();
-                    this._appProfile = response.result;
-                    resolve(response.result);
+                    this._appProfile = response;
+                    resolve(response);
                 })
                 .catch(reject);
         })
@@ -66,7 +71,6 @@ export default class AuthService {
         {
             this.rest.getAuthorized<User>(LOAD_USER_URL)
                 .then((response:User) => {
-                    console.log("RESPONSE LOAD USER", response);
                     this.handleSuccessLogin(response)
                 })
                 .catch(console.error)
@@ -106,6 +110,10 @@ export default class AuthService {
         if (loginKey)
         {
             setLoginKeyCookie(loginKey);
+        }
+        if (this.routing.redirectedRoute)
+        {
+            this.routing.navigate(this.routing.redirectedRoute);
         }
     }
 

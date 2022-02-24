@@ -4,9 +4,9 @@ import MasterDataResult from "../models/MasterDataResult";
 import RestClient from './../apiClients/RestClient';
 import Settings from './../settings';
 
-let models : "products" | "users" | "packagings" ;
+let models : "employees" | "users" | "students" | "schools" ;
 
-const API_URL = Settings.App.hosts.api +"/api/admin/";
+const API_URL = Settings.App.hosts.api +"/api/admin/management/";
 
 @injectable()
 export default class MasterDataService
@@ -17,9 +17,19 @@ export default class MasterDataService
     list = <T extends BaseModel>(
         name: typeof models, 
         page:number, 
-        perPage:number): Promise<MasterDataResult<T>> => {
-            
-        const url = `${API_URL}${name}?page=${page}&limit=${perPage}`;
+        perPage:number,
+        order:string|undefined = 'id',
+        orderDesc?:boolean): Promise<MasterDataResult<T>> => {
+        let orderString = '';
+        if (order)
+        {
+            orderString = '&order='+order;
+            if (orderDesc == true)
+            {
+                orderString += '&orderDesc=true'
+            }
+        }
+        const url = `${API_URL}${name}?page=${page}&limit=${perPage}` + orderString;
         return this.rest.getAuthorized(url);
     }
     get = <T extends BaseModel>(name: typeof models, id:number): Promise<T> => {

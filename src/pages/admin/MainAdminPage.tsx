@@ -21,25 +21,37 @@ class MainAdminPage extends BasePage<BaseProps, State>
         this.forceUpdate();
     }
     componentDidUpdate(): void {
-        if (!this.authService.loggedIn || this.authService.isAdmin)
-        {
-            this.gotoHomePage();
-            console.log("not admin!");
-        }
+         
     }
     render(): ReactNode {
         
         return (
             <ViewTemplate title="Admin Area">
-                <AnchorButton className="btn btn-light mr-3" to="/admin/users" iconClass="fas fa-users" >
-                    User Management
-                </AnchorButton>
-                <AnchorButton className="btn btn-light mr-3" to="/admin/products" iconClass="fas fa-shopping-cart" >
-                    Product Management
-                </AnchorButton>
+                {managementPages.map(m=>
+                <AnchorButton className="btn btn-light mr-3" to={m.url} iconClass={m.iconClass} >
+                    {m.label}
+                </AnchorButton>)}
             </ViewTemplate>
         )
     }
 }
+
+const managementPages = [
+    {
+        url:'/admin/users',
+        label:'Users',
+        iconClass:'fas fa-user-circle'
+    },
+    {
+        url:'/admin/schools',
+        label:'School',
+        iconClass:'fas fa-school'
+    },
+    {
+        url:'/admin/employees',
+        label:'Employees',
+        iconClass:'fas fa-users'
+    }
+]
 
 export default commonWrapper(MainAdminPage);

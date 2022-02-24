@@ -13,6 +13,8 @@ import DialogProps from './models/DialogProps';
 import AuthService from './services/AuthService';
 import { invokeLater } from './utils/eventUtil';
 import { useNavigate } from 'react-router-dom';
+import { NavigateFunction } from 'react-router-dom';
+import RoutingService from './services/RoutingService';
 
 ChartJS.register(
   CategoryScale,
@@ -28,10 +30,11 @@ ChartJS.register(
 
 function App() {
   const loc:Location = useLocation();
+  const navigate:NavigateFunction = useNavigate();
   return (
     <Fragment>
       <HeaderView currentLocation={loc}/>
-      <Root />
+      <Root navigate={navigate}/>
     </Fragment>
   );
 }
@@ -41,14 +44,18 @@ class State
   loaded:boolean = false;
   loadingError:boolean = false;
 }
-class Root extends Component<any,State>
+class Root extends Component<{navigate:NavigateFunction},State>
 {
   @resolve(AuthService)
   private authService:AuthService;
+  @resolve(RoutingService)
+  private routingService:RoutingService;
+
   state: Readonly<State> =new State();
 
   componentDidMount()
   {
+    this.routingService.setNavigate(this.props.navigate);
     invokeLater(this.load, 100);
   }
   load = () => {

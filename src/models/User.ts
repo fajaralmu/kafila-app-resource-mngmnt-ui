@@ -2,7 +2,7 @@
 import AuthorityType from '../constants/AuthorityType';
 import BaseModel from './BaseModel';
 export default class User extends BaseModel {
-    name: string;
+    username: string;
     displayName: string;
     fullName: string;
     phoneNumber: string;
@@ -21,6 +21,9 @@ export default class User extends BaseModel {
         }
         return false;
     }
+    birthDate: string;
+    birthPlace: string;
+    gender: string;
 
 }
 

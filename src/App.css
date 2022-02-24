@@ -70,3 +70,8 @@
   white-space: nowrap;
   white-space: pre
 }
+
+.commonDataTable thead tr th 
+{
+  white-space: nowrap;
+}

@@ -7,7 +7,7 @@ import BaseMasterDataState from './../../models/BaseMasterDataState';
 import { FormEvent, Fragment } from "react";
 import AnchorButton from "../../components/buttons/AnchorButton";
 
-let models : "products" | "users" | "packagings" ;
+let models : "employees" | "users" | "students" | "schools" ;
 
 abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S extends BaseMasterDataState<M>> extends BasePage<P, S>
 {
@@ -85,6 +85,13 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
                 }
             })
     }
+    formEditSubmit = (e:FormEvent) => {
+        e.preventDefault();
+        if (this.state.item)
+        {
+            this.update(this.state.item as M);
+        }
+    }
     update = (model:M) => {
         this.dialog.showConfirm("Update Item", "Are you sure to update this item? ")
             .then(ok=>{
@@ -110,17 +117,17 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     {
         return 1 +(this.state.result.page * this.state.result.limit);
     }
-    protected actionButton = (item:M) => {
+    protected actionButton = (item:M, showDelete:boolean = true) => {
         return (
             <Fragment>
                 <AnchorButton 
                     onClick={()=>this.edit(item)}
                     iconClass="fas fa-edit"
                     className="btn btn-text clickable"/>
-                <AnchorButton 
+                {showDelete?<AnchorButton 
                     onClick={()=>this.delete(item)}
                     className="btn btn-text text-danger"
-                    iconClass="fas fa-times"/>
+                    iconClass="fas fa-times"/>:null}
             </Fragment>
         )
     }

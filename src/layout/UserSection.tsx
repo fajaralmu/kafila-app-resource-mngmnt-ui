@@ -5,7 +5,7 @@ import { resolve } from "inversify-react";
 import AuthService from './../services/AuthService';
 import DialogService from './../services/DialogService';
 import BaseProps from './../models/BaseProps';
-import { Link } from "react-router-dom";
+import RoutingService from './../services/RoutingService';
 
 interface Props  extends BaseProps
 {
@@ -23,6 +23,8 @@ class UserSection extends Component<Props, State>
     private authService:AuthService;
     @resolve(DialogService)
     private dialog:DialogService;
+    @resolve(RoutingService)
+    private routing:RoutingService;
 
     logout = () => {
         this.dialog.showConfirmDanger("Logout", "Do you want to logout?")
@@ -30,7 +32,19 @@ class UserSection extends Component<Props, State>
                 if (ok) {
                     this.authService.logout();
                 }
-            })
+            });
+        this.hideDropdown();
+    }
+    navigate = (e:React.MouseEvent<HTMLAnchorElement>) => {
+        const target = e.target as HTMLAnchorElement;
+        
+        if (target.dataset['to'])
+            this.routing.navigate(target.dataset['to']);
+        this.hideDropdown();
+    }
+
+    hideDropdown = () => {
+        this.setState({showDropdown: false});
     }
     
     toggleDropdown = () => {
@@ -49,12 +63,10 @@ class UserSection extends Component<Props, State>
                         style={{width: '200px', zIndex: 1, position: 'relative'}}
                         className="bg-light border border-gray rounded text-left pt-3 pb-3" >
                         { this.authService.isAdmin ?
-                        <Link className="btn btn-text text-success" to="/admin">
+                        <a className="btn btn-text text-success" onClick={this.navigate} data-to="/admin">
                             <i className="fas fa-tachometer-alt mr-3"/>Admin Area
-                        </Link> : null }
-                        <Link className="btn btn-text text-info" to="/myorder">
-                            <i className="fas fa-shopping-cart mr-3"/>My Orders
-                        </Link>
+                        </a> : null }
+                      
                         <a className="btn btn-text text-danger" onClick={this.logout}>
                             <i className="fas fa-sign-out-alt mr-3"/>Logout
                         </a>
