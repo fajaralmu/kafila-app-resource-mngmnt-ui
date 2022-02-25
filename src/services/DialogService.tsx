@@ -7,11 +7,8 @@ import DialogProps from "../models/DialogProps";
 import { DialogContainer } from '../App';
 import { invokeLater } from "../utils/eventUtil";
 
-const 
-    LABEL_INFO      = "Information", 
-    LABEL_WARNING   = "Warning", 
-    LABEL_ERROR     = "Error", 
-    LABEL_CONFIRM   = "Confirmation";
+// ms
+const INVOCATION_WAIT_DELAY = 500;
 
 @injectable()
 export default class DialogService
@@ -25,7 +22,7 @@ export default class DialogService
         {
             invokeLater(()=>{
                 this.showInfo(title, message)
-            }, 100);
+            }, INVOCATION_WAIT_DELAY);
             return;
         }
         this.container.show(
@@ -41,7 +38,7 @@ export default class DialogService
         {
             invokeLater(()=>{
                 this.showWarning(title, message)
-            }, 100);
+            }, INVOCATION_WAIT_DELAY);
             return;
         }
         this.container.show(
@@ -57,7 +54,7 @@ export default class DialogService
         {
             invokeLater(()=>{
                 this.showError(title, message)
-            }, 100);
+            }, INVOCATION_WAIT_DELAY);
             return;
         }
         this.container.show(
@@ -78,8 +75,26 @@ export default class DialogService
     }
 
     public showConfirm = (title:string, message:string, type:DialogType = DialogType.INFO) => {
-
+        
         return new Promise<boolean>((resolve, reject)=>{
+            if (this.container.isShown)
+            {
+                invokeLater(()=>{ 
+                    this.container.show(
+                        type,
+                        title,
+                        message,
+                        false,
+                        (e:any) => {
+                            resolve(true);
+                        },
+                        (e:any) => {
+                            resolve(false);
+                        }
+                    );
+                }, INVOCATION_WAIT_DELAY);
+                return;
+            }
             this.container.show(
                 type,
                 title,
@@ -108,7 +123,7 @@ export default class DialogService
         {
             invokeLater(()=>{
                 this.doShowPrompt(title, message,  resolve, defaultValue);
-            }, 100);
+            }, INVOCATION_WAIT_DELAY);
             return;
         }
         const onSubmit = (val:string)=>{
