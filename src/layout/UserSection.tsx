@@ -54,7 +54,7 @@ class UserSection extends Component<Props, State>
 
         return (
             <div >
-                <a className="btn btn-light" onClick={this.toggleDropdown}>
+                <a className="btn btn-light no-wrap" onClick={this.toggleDropdown}>
                     <i className="fas fa-user mr-3" /> {this.props.user.displayName}
                 </a>
                 <div style={{position: 'absolute'}}>
