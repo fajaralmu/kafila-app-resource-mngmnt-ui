@@ -7,6 +7,7 @@ import BaseMasterDataState from './../../models/BaseMasterDataState';
 import User from "../../models/User";
 import PaginationButtons from "../../components/buttons/PaginationButtons";
 import ActionButton from "../../components/buttons/ActionButton";
+import { DataTableHeaders, DataTableHeaderValue } from "../../utils/componentUtil";
 
 class State extends BaseMasterDataState<User>
 {
@@ -14,12 +15,24 @@ class State extends BaseMasterDataState<User>
 }
 class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
 {
-    state: Readonly<State> = new State();
     constructor(props: BaseProps) {
-        super(props, "users", "User Management")
+        super(props, "users", "User Management");
+        this.state = new State();
     }
     get defaultItem(): User { return new User() }
-    
+    getDataTableHeaderVals = () => {
+        return [
+            new DataTableHeaderValue("email", "Email"),
+            new DataTableHeaderValue("username", "Acct Name"),
+            new DataTableHeaderValue("fullName", "Full Name"),
+            new DataTableHeaderValue("displayName", "Display Name"),
+            new DataTableHeaderValue("birthDate", "Date of Birth"),
+            new DataTableHeaderValue("birthPlace", "Place of Birth"),
+            new DataTableHeaderValue("gender", "Gender"),
+            new DataTableHeaderValue("role", "Role", false),
+            new DataTableHeaderValue("phoneNumber", "Phone"),
+        ];
+    }
     render(): ReactNode {
         
         const result = this.state.result;
@@ -29,25 +42,12 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                 {result == undefined || items == undefined ?
                     <i>Loading...</i> :
                     <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
-                        <PaginationButtons 
-                            limit={result.limit} 
-                            totalData={result.totalData} 
-                            activePage={result.page} 
-                            onClick={this.load} />
+                        {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Email</th>
-                                    <th>Acct Name</th>
-                                    <th>Full Name</th>
-                                    <th>Display Name</th>
-                                    <th>Date of Birth</th>
-                                    <th>Place of Birth</th>
-                                    <th>Gender</th>
-                                    <th>Role</th>
-                                    <th>Phone</th>
-
+                                    {this.getDataTableHeaderComponent()}
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -60,19 +60,19 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                                             <td>{item.username}</td>
                                             <td>{item.fullName}</td>
                                             <td>{item.displayName}</td>
-                                            <td>{new Date(item.birthDate).toLocaleString()}</td>
+                                            <td>{new Date(item.birthDate).toLocaleDateString()}</td>
                                             <td>{item.birthPlace}</td>
                                             <td>{item.gender}</td>
                                             <td>
-                                                <ol>
-                                                    {item.authorities.map(a => <li>{a.name}</li>)}
-                                                </ol></td>
+                                                {item.authorities.map(a => <div className="badge badge-success  mr-1">{a.name?.toLocaleLowerCase()}</div>)}
+                                            </td>
                                             <td>{item.phoneNumber}</td>
                                             
-                                            <td>
+                                            <td className="no-wrap">
                                                 <ActionButton iconClass="fas fa-redo" className="btn btn-warning btn-sm">
                                                     password
                                                 </ActionButton>
+                                                {this.actionButton(item)}
                                             </td>
                                         </tr>
                                     )

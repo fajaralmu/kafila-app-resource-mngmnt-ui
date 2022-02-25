@@ -7,6 +7,7 @@ import BaseMasterDataState from '../../models/BaseMasterDataState';
 import School from "../../models/School";
 import PaginationButtons from "../../components/buttons/PaginationButtons";
 import ActionButton from "../../components/buttons/ActionButton";
+import { DataTableHeaderValue } from "../../utils/componentUtil";
 
 class State extends BaseMasterDataState<School>
 {
@@ -20,15 +21,22 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State>
         this.state = new State();
     }
     get defaultItem(): School { return new School() }
- 
+    getDataTableHeaderVals(): DataTableHeaderValue[] {
+        return [
+            new DataTableHeaderValue("nis", "NIS"),
+            new DataTableHeaderValue("name", "Name"),
+            new DataTableHeaderValue("level", "Level"),
+            new DataTableHeaderValue("code", "Code"),
+            new DataTableHeaderValue("address", "Address"),
+        ]
+    }
     
     render(): ReactNode {
 
-        if (this.state.showForm && this.state.item)
-        {
+        if (this.state.showForm && this.state.item)  {
             return (
                 <ViewTemplate title={this.title} back="/admin">
-                    <SchoolEdit item={this.state.item} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
+                    <FormEdit item={this.state.item} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
                 </ViewTemplate>
             );
         }
@@ -40,22 +48,12 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State>
                 {result == undefined || items == undefined ?
                     <i>Loading...</i> :
                     <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
-                        <PaginationButtons 
-                            limit={result.limit} 
-                            totalData={result.totalData} 
-                            activePage={result.page} 
-                            onClick={this.load} />
+                       {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>NIS</th>
-                                    <th>Name</th>
-                                    <th>Level</th>
-                                    <th>Code</th>
-                                    <th>Address</th>
-
-
+                                    {this.getDataTableHeaderComponent()}
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -85,7 +83,7 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State>
 
 export default commonWrapper(SchoolsPage);
 
-const SchoolEdit = (props:{
+const FormEdit = (props:{
     item:School, 
     onSubmit:(e:FormEvent) => any, 
     handleInputChange:(e:ChangeEvent)=>any

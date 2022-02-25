@@ -23,7 +23,7 @@ export default class User extends BaseModel {
     }
     birthDate: string;
     birthPlace: string;
-    gender: string;
+    gender: 'MALE' | 'FEMALE' = 'MALE';
 
 }
 

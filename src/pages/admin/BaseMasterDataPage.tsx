@@ -6,23 +6,40 @@ import MasterDataService from './../../services/MasterDataService';
 import BaseMasterDataState from './../../models/BaseMasterDataState';
 import { FormEvent, Fragment } from "react";
 import AnchorButton from "../../components/buttons/AnchorButton";
+import { DataTableHeaders, DataTableHeaderValue } from "../../utils/componentUtil";
+import PaginationButtons from "../../components/buttons/PaginationButtons";
+import ActionButton from "../../components/buttons/ActionButton";
+import { randomString } from "../../utils/stringUtil";
+import { randomUUID } from "crypto";
 
 let models : "employees" | "users" | "students" | "schools" ;
 
 abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S extends BaseMasterDataState<M>> extends BasePage<P, S>
 {
     @resolve(MasterDataService)
-    private service:MasterDataService;
+    protected service:MasterDataService;
 
     constructor(props:P, private  name:typeof models, title:string)
     {
         super(props, true, title);
     }
     abstract get defaultItem() : M;
+
     get item():M | undefined { return this.state.item as M | undefined  }
-    load = (page:number = 0, perPage:number = 10) => {
-        this.service.list<M>(this.name, page, perPage)
+    get activeOrder() { return this.state.result.order ?? "id" }
+    get isOrderDesc() { return this.state.result.orderDesc == true }
+    get startingNumber() { return 1 +(this.state.result.page * this.state.result.limit); }
+
+    abstract getDataTableHeaderVals() : DataTableHeaderValue[];
+
+    load = (page:number = 0, perPage:number = 10, order?:string, orderDesc?:boolean) => {
+        this.service.list<M>(this.name, page, perPage, order, orderDesc)
             .then(response=>{
+                const assignedItems:M[] = [];
+                response.items.forEach(item => {
+                    assignedItems.push(Object.assign(this.defaultItem, item));
+                })
+                response.items = assignedItems;
                 this.setState({result: response})
             })
             .catch(console.error);
@@ -85,11 +102,20 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
                 }
             })
     }
+    showInsertForm = () => {
+        this.setState({ showForm: true, item: this.defaultItem });
+    }
+    resetFormAndClose = () => {
+        this.setState({ showForm: false, item: this.defaultItem });
+    }
     formEditSubmit = (e:FormEvent) => {
         e.preventDefault();
-        if (this.state.item)
+        if (this.state.item && this.state.item.id > 0)
         {
             this.update(this.state.item as M);
+        } else if (this.state.item && (!this.state.item.id || this.state.item.id <= 0))
+        {
+            this.insert(this.state.item as M);
         }
     }
     update = (model:M) => {
@@ -112,11 +138,27 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     loadCurrentPage = () => {
         this.load(this.state.result.page, this.state.result.limit);
     }
-    
-    get startingNumber()
-    {
-        return 1 +(this.state.result.page * this.state.result.limit);
+    setItemsOrder = (name:string, desc:boolean) => {
+        this.load(this.state.result.page, this.state.result.limit, name, desc);
     }
+
+    protected getDataTableHeaderComponent = () => {
+        return DataTableHeaders(
+            this.getDataTableHeaderVals(), 
+            this.activeOrder, 
+            this.isOrderDesc, 
+            this.setItemsOrder
+        );
+    }
+    
+    protected get paginationButton() {
+        return <PaginationButtons 
+                    limit={this.state.result.limit} 
+                    totalData={this.state.result.totalData} 
+                    activePage={this.state.result.page} 
+                    onClick={this.load} />
+    }
+    
     protected actionButton = (item:M, showDelete:boolean = true) => {
         return (
             <Fragment>
@@ -130,6 +172,33 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
                     iconClass="fas fa-times"/>:null}
             </Fragment>
         )
+    }
+
+    protected listToggler = <T extends BaseModel>(
+        items:T[],
+        model:M,
+        label:(item:T)=>string,
+        add:(model:M)=>any, 
+        remove:(model:M, id:number)=>any) => {
+        return (
+            <>
+                {items.map((item:T) => {
+                    return (
+                        <div key={`list-toggler-item-${randomString(5)}`}>
+                            <ActionButton 
+                                onClick={(e) => remove(model, item.id)} 
+                                className="btn btn-text btn-sm text-danger mr-2" 
+                                iconClass="fas fa-minus-circle" />
+                            {label(item)}
+                        </div>
+                    );
+                })}
+                <ActionButton 
+                    onClick={(e) => add(model)}
+                    className="btn btn-sm btn-text" 
+                    iconClass="fas fa-plus-circle text-success"/>
+            </>
+        );
     }
 }
 

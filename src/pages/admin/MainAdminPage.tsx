@@ -44,7 +44,7 @@ const managementPages = [
     },
     {
         url:'/admin/schools',
-        label:'School',
+        label:'Schools',
         iconClass:'fas fa-school'
     },
     {

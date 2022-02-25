@@ -6,6 +6,6 @@ export default class MasterDataResult<T extends BaseModel>
     page: number = 0;
     limit: number = 10;
     items: T[] = [];
-    order?: string;
+    order?: string = "id";
     orderDesc?: boolean;
 }
