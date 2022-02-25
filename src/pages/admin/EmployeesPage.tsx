@@ -11,6 +11,7 @@ import Employee, { Education } from "../../models/Employee";
 import { DataTableHeaderValue } from "../../utils/componentUtil";
 import ControlledComponent from "../ControlledComponent";
 import School from "../../models/School";
+import { getInputReadableDate } from "../../utils/stringUtil";
 
 class State extends BaseMasterDataState<Employee>
 {
@@ -180,7 +181,7 @@ const FormEdit = (props:{
                     <option  >FEMALE</option>
                 </select>
                 <p>Birth Date</p>
-                <input type="date" className="form-control" id="item.user.birthDate" name="item.user.birthDate" value={item.user.birthDate} onChange={onChange} required/>
+                <input type="date" className="form-control" id="item.user.birthDate" name="item.user.birthDate" value={getInputReadableDate(new Date(item.user.birthDate))} onChange={onChange} required/>
                 <p>Birth Place</p>
                 <input className="form-control" id="item.user.birthPlace" name="item.user.birthPlace" value={item.user.birthPlace} onChange={onChange} required/>
                 
