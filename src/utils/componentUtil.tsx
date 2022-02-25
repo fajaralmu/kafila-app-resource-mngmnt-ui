@@ -60,3 +60,39 @@ export const CommonTable = (props:{className:string, content:any[][]}) => {
         </table>
     )
 }
+
+export const DataTableHeaders = (
+    items:DataTableHeaderValue[], 
+    activeOrder:string, 
+    orderDesc:boolean, 
+    onClick:(name:string, desc:boolean)=>any
+) => {
+
+    return items.map(item => {
+        let className = activeOrder == item.name ? "bg-light":"";
+        let tdOnClick = (e:any) => {
+            if (item.orderable == false || !item.name) {
+                return;
+            }
+            onClick(item.name, !orderDesc);
+        }
+        if (item.orderable)
+        {
+            className += " clickable ";
+        }
+        return (
+            <th onClick={tdOnClick} key={"th-item-"+randomString(3)} className={className}>
+                {item.label} {activeOrder == item.name? 
+                    orderDesc? 
+                    <i className="fas fa-long-arrow-alt-down ml-2" /> :
+                    <i className="fas fa-long-arrow-alt-up ml-2" /> : null}
+            </th>
+        )
+    })
+}
+
+export class DataTableHeaderValue {
+    constructor(public name:string | null, public label:string, public orderable = true){
+
+    }
+}

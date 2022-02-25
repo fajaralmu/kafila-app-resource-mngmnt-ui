@@ -18,7 +18,7 @@ export default class ActionButton extends Component<Props, any>
         return (
             <button className={this.props.className} onClick={this.props.onClick}>
                 {this.props.iconClass?
-                <i className={this.props.iconClass+ " mr-3"}/> : null }
+                <i className={this.props.iconClass+ (this.props.children? " mr-3" : "")}/> : null }
                 {this.props.children}
             </button>
         )

@@ -8,13 +8,11 @@ export default abstract class ControlledComponent<P,S > extends Component<P,S>
             const input:HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement = e.target;
             const state = this.state as any;
             const id = input.id;
-            if (!state)
-            {
+            if (!state) {
                 return;
             }
             let value:any;
-            if (input.type == "number")
-            {
+            if (input.type == "number") {
                 value = input.value;
                 // try {
                 //     value = parseInt(input.value);
@@ -23,12 +21,10 @@ export default abstract class ControlledComponent<P,S > extends Component<P,S>
                 //     return;
                 // }
             }
-            else if (input.type == "checkbox" && input instanceof HTMLInputElement)
-            {
+            else if (input.type == "checkbox" && input instanceof HTMLInputElement) {
                 value = input.checked;
             }
-            else
-            {
+            else {
                 value = input.value;
             }
 
@@ -39,28 +35,23 @@ export default abstract class ControlledComponent<P,S > extends Component<P,S>
             let obj         = state;
             
             rawName.forEach((key, index) => {
-                if (obj && index < rawName.length - 1)
-                {
+                if (obj && index < rawName.length - 1) {
                     obj = obj[key];
                 }
-                if ( index == rawName.length - 1 )
-                {
+                if ( index == rawName.length - 1 ) {
                     obj[key] = value;
                 }
             });
             
             // state[input.name] = value;
             this.setState(state, () => {
-                if (id)
-                {
+                if (id) {
                     const el = document.getElementById(id);
-                    if (el)
-                    {
+                    if (el) {
                         el.focus();
                     }
                 }
-                if (callback)
-                {
+                if (callback) {
                     callback(value);
                 }
             });
