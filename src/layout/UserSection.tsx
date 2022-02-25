@@ -62,6 +62,13 @@ class UserSection extends Component<Props, State>
                     <div
                         style={{width: '200px', zIndex: 1, position: 'relative'}}
                         className="bg-light border border-gray rounded text-left pt-3 pb-3" >
+                        
+                        <a className="btn btn-text" onClick={this.navigate} data-to="/dashboard">
+                            <i className="fas fa-home mr-3"/>Dashboard
+                        </a>
+                        <a className="btn btn-text" onClick={this.navigate} data-to="/profile">
+                            <i className="fas fa-user-cog mr-3"/>Edit Profile
+                        </a>
                         { this.authService.isAdmin ?
                         <a className="btn btn-text text-success" onClick={this.navigate} data-to="/admin">
                             <i className="fas fa-tachometer-alt mr-3"/>Admin Area
