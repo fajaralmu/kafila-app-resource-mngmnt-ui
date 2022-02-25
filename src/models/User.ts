@@ -7,6 +7,7 @@ export default class User extends BaseModel {
     fullName: string;
     phoneNumber: string;
     email: string;
+    editPassword: string;
     authorities: Authority[];
 
     hasAuthorityType = (type:AuthorityType) => {

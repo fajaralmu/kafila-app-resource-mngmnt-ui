@@ -10,6 +10,7 @@ import LoginPage from '../pages/auth/LoginPage';
 import { ErrorView } from '../pages/error/ErrorView';
 import Home from '../pages/home/Home';
 import Dashboard from '../pages/user/Dashboard';
+import EditProfile from '../pages/user/EditProfile';
 import AuthService from './../services/AuthService';
 import RoutingService from './../services/RoutingService';
 
@@ -36,6 +37,11 @@ export class Routing extends Component<BaseProps, any>
                         this.authService.loggedIn ? 
                         <Dashboard /> 
                         : <CustomNavigate origin='/dashboard' routing={this.routingService} to="/" />
+                    } />
+                    <Route path="/profile" element={
+                        this.authService.loggedIn ? 
+                        <EditProfile /> 
+                        : <CustomNavigate origin='/profile' routing={this.routingService} to="/" />
                     } />
 
                     <Route path="/admin" element={

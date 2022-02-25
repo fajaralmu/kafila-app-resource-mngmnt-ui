@@ -13,6 +13,7 @@ const LOGIN_URL     = Settings.App.hosts.api + "/login";
 const LOGOUT_URL    = Settings.App.hosts.api + "/api/user/logout";
 const LOAD_USER_URL = Settings.App.hosts.api + "/api/user";
 const LOAD_APP_URL  = Settings.App.hosts.api + "/api/public/index";
+const UPDATE_PROFILE_URL  = Settings.App.hosts.api + "/api/user/update";
 
 @injectable()
 export default class AuthService {
@@ -75,6 +76,18 @@ export default class AuthService {
                 })
                 .catch(console.error)
         }
+    }
+
+    updateProfile = (user:User) : Promise<User> => {
+        return new Promise<User>((res, rej) => {
+            this.rest.putAuthorized<User>(UPDATE_PROFILE_URL, user)
+                .then(user => {
+                    this.handleSuccessLogin(user);
+                    res(user);
+                })
+                .catch(rej);
+        })
+             
     }
 
     login = (username: string, password: string): Promise<User> => {
