@@ -170,10 +170,12 @@ export class DialogContainer extends Component<any,DialogState>
   }
   get isShown() { return this.state.show }
   
-  public showNoButtons = ( title:string, content:any,  onClose:(e:any) => any ) => {
+  public showNoButtons = ( title:string, content:any,  onClose:(e:any) => any, closeObj?:{close:()=>any} ) => {
     this.dialogType     = DialogType.INFO_NO_BUTTONS;
     this.dialogTitle    = title;
     this.dialogContent  = content; 
+    if (closeObj)
+      closeObj.close      = this.dismissAlert;
 
     this.display();
   }

@@ -146,8 +146,13 @@ export default class DialogService
 
     public showContent = ( title:string, content: ReactElement<any, typeof Component> ) => {
         return new Promise<boolean>((resolve, reject) => {
-            let el = createElement(content.type, content.props);
-            this.container.showNoButtons(  title, el, (e:any) => { resolve(false) }  );
+            let closeObserver = {
+                close : () => {
+
+                }
+            };
+            let el = createElement(content.type, {...content.props, closeObserver});
+            this.container.showNoButtons(  title, el, (e:any) => { resolve(false) }, closeObserver  );
         });
     }
 } 
