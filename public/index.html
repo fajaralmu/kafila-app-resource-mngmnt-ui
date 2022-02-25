@@ -33,10 +33,11 @@
     <script src="generalSettings.js"></script>
     <script src="/assets/js/jquery-3.2.1.slim.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
-    <title>Kado.in</title>
+    <title>App</title>
     <script>
       // capture imported setting so that it can be accessed through the app
-      window.appSetting      = generalSetting;
+      window.appSetting = generalSetting;
+      document.title    = generalSetting.uiSetting.defaultTitle; 
     </script>
   </head>
   <body>
