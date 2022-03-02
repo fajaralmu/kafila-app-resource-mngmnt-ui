@@ -19,7 +19,9 @@ export default class MasterDataService
         page:number, 
         perPage:number,
         order:string|undefined = 'id',
-        orderDesc?:boolean): Promise<MasterDataResult<T>> => {
+        orderDesc?:boolean,
+        filter?:string
+    ): Promise<MasterDataResult<T>> => {
         let orderString = '';
         if (order)
         {
@@ -29,7 +31,7 @@ export default class MasterDataService
                 orderString += '&orderDesc=true'
             }
         }
-        const url = `${API_URL}${name}?page=${page}&limit=${perPage}` + orderString;
+        const url = `${API_URL}${name}?page=${page}&limit=${perPage}` + orderString + ( filter? `&filter=${filter}` : '' );
         return this.rest.getAuthorized(url);
     }
     get = <T extends BaseModel>(name: ModelNames, id:number): Promise<T> => {

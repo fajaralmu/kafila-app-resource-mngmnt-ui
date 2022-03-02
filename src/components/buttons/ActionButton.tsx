@@ -7,6 +7,7 @@ interface Props
     children?:any;
     className?:string;
     onClick?:(e:any)=>any;
+    disabled?:boolean;
 }
 export default class ActionButton extends Component<Props, any>
 {
@@ -15,8 +16,9 @@ export default class ActionButton extends Component<Props, any>
         {
             return null;
         }
+        const disabledProps:any = this.props.disabled === true ? {disabled:'disabled'} : {};
         return (
-            <button className={this.props.className} onClick={this.props.onClick}>
+            <button className={this.props.className} onClick={this.props.onClick} {...disabledProps}>
                 {this.props.iconClass?
                 <i className={this.props.iconClass+ (this.props.children? " mr-3" : "")}/> : null }
                 {this.props.children}

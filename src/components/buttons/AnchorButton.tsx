@@ -22,7 +22,7 @@ export default class AnchorButton extends Component<Props, any>
             return (
                 <a className={this.props.className} onClick={this.props.onClick}>
                     {this.props.iconClass?
-                    <i className={this.props.iconClass+ " mr-3"}/> : null }
+                    <i className={this.props.iconClass+ (this.props.children? " mr-3" : "")}/> : null }
                     {this.props.children}
                 </a>
             )
@@ -30,7 +30,7 @@ export default class AnchorButton extends Component<Props, any>
         return (
             <Link to={this.props.to} className={this.props.className} onClick={this.props.onClick}>
                 {this.props.iconClass?
-                <i className={this.props.iconClass+ " mr-3"}/> : null }
+                <i className={this.props.iconClass+ (this.props.children? " mr-3" : "")}/> : null }
                 {this.props.children}
             </Link>
         )

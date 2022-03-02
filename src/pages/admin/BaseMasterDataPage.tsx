@@ -178,16 +178,21 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     
     protected actionButton = (item:M, showDelete:boolean = true) => {
         return (
-            <Fragment>
-                <AnchorButton 
-                    onClick={()=>this.edit(item)}
-                    iconClass="fas fa-edit"
-                    className="btn btn-text clickable"/>
-                {showDelete?<AnchorButton 
-                    onClick={()=>this.delete(item)}
-                    className="btn btn-text text-danger"
-                    iconClass="fas fa-times"/>:null}
-            </Fragment>
+            <div className="row">
+                <div className="col-md-6 px-1">
+                    <AnchorButton 
+                        onClick={()=>this.edit(item)}
+                        iconClass="fas fa-edit"
+                        className="btn btn-text clickable"/>
+                </div>
+                {showDelete?
+                <div className="col-md-6 px-1">
+                    <AnchorButton 
+                        onClick={()=>this.delete(item)}
+                        className="btn btn-text text-danger"
+                        iconClass="fas fa-times"/>
+                </div> : null }
+            </div>
         )
     }
 

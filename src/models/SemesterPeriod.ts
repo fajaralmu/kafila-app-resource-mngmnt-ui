@@ -56,4 +56,9 @@ export default class SemesterPeriod extends BaseModel {
     pjDKM: Employee;
     pjKesiswaan: Employee;
     pjKurikulum: Employee;
+
+    public static EmployeeFields = [
+        'direktur', 'bendahara', 'pengawasSekolah', 'headHRD', 'hearMR', 'headRnD', 'headLogistic', 'headPublicRelation', 'headLanguage', 'headMAKafila', 'headMAKafilaFullday', 'headMtsKafila', 'headMtsAlKahfi', 'headMtsKafilaIbnuMasud', 'headPesantren', 'wakabidTahfiz', 'wakabidAsrama', 
+        'adminKiis', 'adminMAKafila', 'adminMAKafilaFullday', 'adminMtsAlKahfi', 'adminMtsKafilaIbnuMasud', 'adminTahfiz', 'adminAsrama',
+        'pjQurban', 'pjRamadhan', 'pjPromosiPSB', 'pjWebMedia', 'pjTamuFO', 'pjAlumni', 'pjUtsUas', 'pjEvaluasiPengembanganKurikulum', 'pjLabKomputer', 'pjLabIPA', 'pjLabBahasa', 'pjBinaPrestasi', 'pjPerpustakaan', 'pjBK', 'pjBahasaArab', 'pjBahasaInggris', 'pjUKS', 'pjOpkiis', 'pjDKM', 'pjKesiswaan', 'pjKurikulum'   ];
 }
