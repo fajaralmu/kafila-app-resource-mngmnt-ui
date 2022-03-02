@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
+import ModelNames from "../constants/ModelNames";
 import BaseModel from "../models/BaseModel";
 import MasterDataResult from "../models/MasterDataResult";
 import RestClient from './../apiClients/RestClient';
 import Settings from './../settings';
 
-let models : "employees" | "users" | "students" | "schools" ;
 
 const API_URL = Settings.App.hosts.api +"/api/admin/management/";
 
@@ -15,7 +15,7 @@ export default class MasterDataService
     private rest:RestClient;
 
     list = <T extends BaseModel>(
-        name: typeof models, 
+        name: ModelNames, 
         page:number, 
         perPage:number,
         order:string|undefined = 'id',
@@ -32,22 +32,27 @@ export default class MasterDataService
         const url = `${API_URL}${name}?page=${page}&limit=${perPage}` + orderString;
         return this.rest.getAuthorized(url);
     }
-    get = <T extends BaseModel>(name: typeof models, id:number): Promise<T> => {
+    get = <T extends BaseModel>(name: ModelNames, id:number): Promise<T> => {
         
         const url = `${API_URL}${name}/${id}`;
         return this.rest.getAuthorized(url);
     }
-    post = <T extends BaseModel>(name: typeof models, model:T): Promise<T> => {
+    post = <T extends BaseModel>(name: ModelNames, model:T): Promise<T> => {
 
         const url = `${API_URL}${name}`;
         return this.rest.postAuthorized(url, model);
     }
-    put = <T extends BaseModel>(name: typeof models, id:number, model:T): Promise<T> => {
+    put = <T extends BaseModel>(name: ModelNames, id:number, model:T): Promise<T> => {
 
         const url = `${API_URL}${name}/${id}`;
         return this.rest.putAuthorized(url, model);
     }
-    delete = <T extends BaseModel>(name: typeof models, id:number): Promise<T> => {
+    patchAction = <T extends BaseModel>(name: ModelNames, id:number, action:string): Promise<T> => {
+
+        const url = `${API_URL}${name}/${id}?action=${action}`;
+        return this.rest.patchAuthorized(url, {});
+    }
+    delete = <T extends BaseModel>(name: ModelNames, id:number): Promise<T> => {
 
         const url = `${API_URL}${name}/${id}`;
         return this.rest.deleteAuthorized(url);

@@ -51,6 +51,11 @@ const managementPages = [
         url:'/admin/employees',
         label:'Employees',
         iconClass:'fas fa-users'
+    },
+    {
+        url:'/admin/semesterperiods',
+        label:'Semester',
+        iconClass:'fas fa-calendar-alt'
     }
 ]
 

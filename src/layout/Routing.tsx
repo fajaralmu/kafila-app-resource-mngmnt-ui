@@ -13,6 +13,8 @@ import Dashboard from '../pages/user/Dashboard';
 import EditProfile from '../pages/user/EditProfile';
 import AuthService from './../services/AuthService';
 import RoutingService from './../services/RoutingService';
+import AuthorityType from './../constants/AuthorityType';
+import SemesterPeriodsPage from '../pages/admin/SemesterPeriodsPage';
 
 export class Routing extends Component<BaseProps, any>
 {
@@ -30,39 +32,30 @@ export class Routing extends Component<BaseProps, any>
                     <Route path="/home" element={<Home />} />
 
                     <Route path="/login" element={
-                        this.authService.loggedIn == false ? <LoginPage /> : <Navigate to="/" />
+                        <RestrictedRouteElement disabledWhenLoggedIn={true} to="/login" element={<LoginPage/>} />
                     } />
 
                     <Route path="/dashboard" element={
-                        this.authService.loggedIn ? 
-                        <Dashboard /> 
-                        : <CustomNavigate origin='/dashboard' routing={this.routingService} to="/" />
+                       <RestrictedRouteElement to="/dashboard" element={<Dashboard /> } /> 
                     } />
                     <Route path="/profile" element={
-                        this.authService.loggedIn ? 
-                        <EditProfile /> 
-                        : <CustomNavigate origin='/profile' routing={this.routingService} to="/" />
+                        <RestrictedRouteElement to='/profile' element={<EditProfile />} />
                     } />
 
                     <Route path="/admin" element={
-                        this.authService.isAdmin ? 
-                        <MainAdminPage /> 
-                        : <CustomNavigate origin='/admin' routing={this.routingService} to="/" />
+                        <RestrictedRouteElement to="/admin" element={<MainAdminPage/>} requiredRole={'ROLE_SUPERADMIN'} />
                     } />
                     <Route path="/admin/users" element={
-                        this.authService.isAdmin ? 
-                        <UsersPage /> 
-                        : <CustomNavigate origin="/admin/users" routing={this.routingService} to="/" />
+                        <RestrictedRouteElement to="/admin/users" element={<UsersPage/>} requiredRole={'ROLE_SUPERADMIN'} />
                     } />
                     <Route path="/admin/schools" element={
-                        this.authService.isAdmin ? 
-                        <SchoolsPage /> 
-                        : <CustomNavigate origin="/admin/schools" routing={this.routingService} to="/" />
+                        <RestrictedRouteElement to="/admin/schools" element={<SchoolsPage/>} requiredRole={'ROLE_SUPERADMIN'} />
                     } />
                     <Route path="/admin/employees" element={
-                        this.authService.isAdmin ? 
-                        <EmployeesPage /> 
-                        : <CustomNavigate origin="/admin/employees" routing={this.routingService} to="/" />
+                        <RestrictedRouteElement to="/admin/employees" element={<EmployeesPage/>} requiredRole={'ROLE_SUPERADMIN'} />
+                    } />
+                    <Route path="/admin/semesterperiods" element={
+                        <RestrictedRouteElement to="/admin/semesterperiods" element={<SemesterPeriodsPage/>} requiredRole={'ROLE_SUPERADMIN'} />
                     } />
 
                     <Route path="*" element={<ErrorView message="The requested page is not found." />} />
@@ -71,6 +64,48 @@ export class Routing extends Component<BaseProps, any>
         )
     }
 }
+
+class RestrictedRouteElement extends Component<{
+    to:string, 
+    element: JSX.Element, 
+    disabledWhenLoggedIn?:boolean,
+    requiredRole?: AuthorityType
+}, any> {
+
+    @resolve(AuthService)
+    private authService: AuthService;
+    @resolve(RoutingService)
+    private routingService: RoutingService;
+
+    render(): React.ReactNode {
+        const loggedIn = this.authService.loggedIn;
+
+        if (this.props.disabledWhenLoggedIn === true) {
+            if (!loggedIn) {
+                return this.props.element;
+            }
+            return (
+                <Navigate to="/dashboard" />
+            )
+        }
+        
+        if (loggedIn) {
+            if (this.props.requiredRole) {
+                if (this.authService.loggedUser?.hasAuthorityType(this.props.requiredRole))  {
+                    return this.props.element;
+                } else {
+                    return <Navigate to="/" />
+                }
+            } else {
+                return this.props.element;
+            }
+        }
+        return (
+            <CustomNavigate origin={this.props.to} routing={this.routingService} to="/" />
+        )
+    }
+}
+
 interface NavigateProps {
     origin: string,
     to: string,

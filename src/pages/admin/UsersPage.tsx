@@ -5,9 +5,10 @@ import BaseProps from './../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
 import BaseMasterDataState from './../../models/BaseMasterDataState';
 import User from "../../models/User";
-import PaginationButtons from "../../components/buttons/PaginationButtons";
 import ActionButton from "../../components/buttons/ActionButton";
 import { DataTableHeaders, DataTableHeaderValue } from "../../utils/componentUtil";
+
+const ACTION_RESET_PASSWORD = 'resetPassword';
 
 class State extends BaseMasterDataState<User>
 {
@@ -32,6 +33,9 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
             new DataTableHeaderValue("role", "Role", false),
             new DataTableHeaderValue("phoneNumber", "Phone"),
         ];
+    }
+    resetPassword = (item:User) => {
+        this.patchAction(item, ACTION_RESET_PASSWORD);
     }
     render(): ReactNode {
         
@@ -69,8 +73,11 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                                             <td>{item.phoneNumber}</td>
                                             
                                             <td className="no-wrap">
-                                                <ActionButton iconClass="fas fa-redo" className="btn btn-warning btn-sm">
-                                                    password
+                                                <ActionButton 
+                                                    iconClass="fas fa-lock-open" 
+                                                    className="btn btn-warning btn-sm"
+                                                    onClick={() => this.resetPassword(item)}
+                                                >
                                                 </ActionButton>
                                                 {this.actionButton(item)}
                                             </td>

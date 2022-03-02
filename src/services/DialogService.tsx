@@ -57,12 +57,30 @@ export default class DialogService
             }, INVOCATION_WAIT_DELAY);
             return;
         }
+        let messageContent;
+        if (message instanceof Error) {
+            messageContent = message.message;
+        } else {
+            if (message.trim().toLowerCase().startsWith("<!doctype html")) {
+                messageContent = (
+                    <div dangerouslySetInnerHTML={{
+                        __html: message
+                    }}>
+
+                    </div>
+                )
+            } else {
+                messageContent = message;
+            }
+        }
         this.container.show(
             DialogType.ERROR,
             title,
-            message instanceof Error ? message.message : message.toString(),
+            messageContent,
             true,
-            console.error
+            ()=>{},
+            ()=>{},
+            "Ok"
         );
         
     }

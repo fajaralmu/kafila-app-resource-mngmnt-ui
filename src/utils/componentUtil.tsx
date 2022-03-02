@@ -69,7 +69,7 @@ export const DataTableHeaders = (
 ) => {
 
     return items.map(item => {
-        let className = activeOrder == item.name ? "bg-light":"";
+        let className = activeOrder == item.name ? "bg-light border border-dark":"";
         let tdOnClick = (e:any) => {
             if (item.orderable == false || !item.name) {
                 return;
@@ -85,7 +85,8 @@ export const DataTableHeaders = (
                 {item.label} {activeOrder == item.name? 
                     orderDesc? 
                     <i className="fas fa-long-arrow-alt-down ml-2" /> :
-                    <i className="fas fa-long-arrow-alt-up ml-2" /> : null}
+                    <i className="fas fa-long-arrow-alt-up ml-2" /> : 
+                    <i className="fas fa-sort ml-2" />}
             </th>
         )
     })

@@ -71,7 +71,8 @@ class HeaderView extends ControlledComponent<Props, State>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
                     <div className="row w-100 mt-2">
-                        <div className="col-md-2 mb-2 text-center">
+                        <div className="col-md-2 mb-2 text-center d-flex">
+                            <img src="/kiis-stroke.png" width={50} className="mr-2" />
                             <Link className="navbar-brand" to="/">{this.state.title}</Link>
                         </div>
                         <div className="col-md-8 mb-2">

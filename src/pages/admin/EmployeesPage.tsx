@@ -4,8 +4,6 @@ import { commonWrapper } from "../../utils/commonWrapper";
 import BaseProps from '../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
 import BaseMasterDataState from '../../models/BaseMasterDataState';
-import User from "../../models/User";
-import PaginationButtons from "../../components/buttons/PaginationButtons";
 import ActionButton from "../../components/buttons/ActionButton";
 import Employee, { Education } from "../../models/Employee";
 import { DataTableHeaderValue } from "../../utils/componentUtil";

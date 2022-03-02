@@ -16,6 +16,9 @@ export default class RestClient
     putAuthorized = <T>(url:string, body:any, contentType='application/json') : Promise<T> => {
         return this.putCommon(url, body, commonAuthorizedHeader(contentType), true);
     }
+    patchAuthorized = <T>(url:string, body:any, contentType='application/json') : Promise<T> => {
+        return this.patchCommon(url, body, commonAuthorizedHeader(contentType), true);
+    }
     postCommon = <T>(url:string, body:any, headers:any, expectRefreshToken = false) : Promise<T> => {
         return new Promise<T>((resolve, reject) => {
             
@@ -53,6 +56,31 @@ export default class RestClient
         return new Promise<T>((resolve, reject) => {
            
             axios.put(url, body, {
+                headers: { ...headers }
+            }).then((response: AxiosResponse) => {
+                if (!response.data)
+                {
+                    reject(new Error("Invalid response data"));
+                    return;
+                }
+                if (response.data.code != SUCCESS_CODE) {
+                    reject(response.data);
+                    return;
+                }
+                if (expectRefreshToken)
+                {
+                    this.updateLoginKeyCookie(response);
+                }
+                resolve(response.data.result);
+            }).catch((err:AxiosError) =>{
+                reject(err.response?.data ?? new Error(err.message))
+            });
+        });
+    }
+    patchCommon = <T>(url:string, body:any, headers:any, expectRefreshToken = false) : Promise<T> => {
+        return new Promise<T>((resolve, reject) => {
+           
+            axios.patch(url, body, {
                 headers: { ...headers }
             }).then((response: AxiosResponse) => {
                 if (!response.data)

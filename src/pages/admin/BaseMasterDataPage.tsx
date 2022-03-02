@@ -11,15 +11,15 @@ import PaginationButtons from "../../components/buttons/PaginationButtons";
 import ActionButton from "../../components/buttons/ActionButton";
 import { randomString } from "../../utils/stringUtil";
 import { randomUUID } from "crypto";
+import ModelNames from "../../constants/ModelNames";
 
-let models : "employees" | "users" | "students" | "schools" ;
 
 abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S extends BaseMasterDataState<M>> extends BasePage<P, S>
 {
     @resolve(MasterDataService)
     protected service:MasterDataService;
 
-    constructor(props:P, private  name:typeof models, title:string)
+    constructor(props:P, private  name: ModelNames, title:string)
     {
         super(props, true, title);
     }
@@ -125,6 +125,23 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
                     this.service.put(this.name, model.id, model)
                         .then(resp => {
                             this.dialog.showInfo("Update Success", "Item has been updated");
+                            this.loadCurrentPage();
+                            this.hideForm();
+                        })
+                        .catch(err=>{
+                            this.dialog.showError("Update Failed", err);
+                        })
+
+                }
+            })
+    }
+    patchAction = (model:M, action:string) => {
+        this.dialog.showConfirmWarning("Execute Action", "Are you sure to execute action: "+action+"? ")
+            .then(ok=>{
+                if (ok) {
+                    this.service.patchAction(this.name, model.id, action)
+                        .then(resp => {
+                            this.dialog.showInfo("Action Completed", "Action: "+action+" has been executed");
                             this.loadCurrentPage();
                             this.hideForm();
                         })
