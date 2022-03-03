@@ -12,6 +12,7 @@ import MasterDataService from './../../services/MasterDataService';
 import { resolve } from "inversify-react";
 import ControlledComponent from "../ControlledComponent";
 import { randomString } from './../../utils/stringUtil';
+import ToastService from './../../services/ToastService';
 
 class State extends BaseMasterDataState<SemesterPeriod>
 {
@@ -153,6 +154,8 @@ class SetEmployeeForm extends ControlledComponent<SetEmployeeFormProps, SetEmplo
     
     @resolve(MasterDataService)
     private service:MasterDataService;
+    @resolve(ToastService)
+    private toast:ToastService;
 
     constructor(props:SetEmployeeFormProps) {
         super(props);
@@ -167,9 +170,16 @@ class SetEmployeeForm extends ControlledComponent<SetEmployeeFormProps, SetEmplo
         e.preventDefault();
         this.service.list<Employee>('employees', 0, 10, 'user.fullName', false, 'user.fullName:' + this.state.searchEmployee)
             .then((result) => {
-                this.setState({ employees: result.items });
+                this.handleSearchEmployee(result.items);
             })
             .catch(console.error);
+    }
+    handleSearchEmployee = (items:Employee[]) => {
+        if (!items || items.length == 0) {
+            this.toast.showDanger("No employee contains name \"" + this.state.searchEmployee +"\" was found");
+            return;
+        }
+        this.setState({ employees: items });
     }
     closeDropdown = () => {
         this.setState({ employees: [] });
@@ -179,7 +189,7 @@ class SetEmployeeForm extends ControlledComponent<SetEmployeeFormProps, SetEmplo
     }
     submit = () => {
         if (!this.state.selectedEmployee) {
-            alert("Invalid employee");
+            this.toast.showDanger("Invalid employee");
             return;
         }
         const item:any = this.props.item;

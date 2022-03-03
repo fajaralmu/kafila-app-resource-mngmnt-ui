@@ -7,6 +7,7 @@ import Settings from './../settings';
 import DialogService from './../services/DialogService';
 import { ViewTemplate } from "../layout/ViewTemplate";
 import AuthService from './../services/AuthService';
+import ToastService from './../services/ToastService';
 
 export abstract class BasePage<P extends BaseProps,S extends BaseState> extends ControlledComponent<P, S>
 {
@@ -15,6 +16,8 @@ export abstract class BasePage<P extends BaseProps,S extends BaseState> extends 
     protected authService:AuthService;
     @resolve(DialogService)
     protected dialog:DialogService;
+    @resolve(ToastService)
+    protected toast:ToastService;
 
     constructor(props:P, private authorized:boolean = false, title?:string)
     {

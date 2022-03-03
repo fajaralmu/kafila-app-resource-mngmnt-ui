@@ -15,4 +15,14 @@
   to {
     stroke-dashoffset: 20;
   }
-} 
+}
+
+.toast-custom {
+  padding: 0;
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  margin: auto;
+  transform-origin: 3000;
+  z-index: 1100;
+}

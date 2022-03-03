@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { NavigateFunction } from 'react-router-dom';
 import RoutingService from './services/RoutingService';
 import Loading from './Loading';
+import ToastContainer from './ToastContainer';
 
 ChartJS.register(
   CategoryScale,
@@ -96,6 +97,7 @@ class Root extends Component<{navigate:NavigateFunction},State>
         <DialogContainer/>
         <Routing />
         <Loading />
+        <ToastContainer />
       </Fragment>
     )
   }

@@ -11,12 +11,13 @@ class Dashboard extends BasePage<BaseProps, BaseState>
     {
         super(props, true, "Dashboard");
     }
-
     render(): ReactNode {
         
-        return <ViewTemplate title="Dashboard">
-            <div className="alert alert-success">Hello, {this.authService.loggedUser?.displayName}</div>
-        </ViewTemplate>
+        return (
+            <ViewTemplate title="Dashboard">
+                <div className="alert alert-success">Hello, {this.authService.loggedUser?.displayName}</div>
+            </ViewTemplate>
+        );
     }
 }
 
