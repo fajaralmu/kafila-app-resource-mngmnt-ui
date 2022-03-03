@@ -15,6 +15,7 @@ import { invokeLater } from './utils/eventUtil';
 import { useNavigate } from 'react-router-dom';
 import { NavigateFunction } from 'react-router-dom';
 import RoutingService from './services/RoutingService';
+import Loading from './Loading';
 
 ChartJS.register(
   CategoryScale,
@@ -94,6 +95,7 @@ class Root extends Component<{navigate:NavigateFunction},State>
       <Fragment>
         <DialogContainer/>
         <Routing />
+        <Loading />
       </Fragment>
     )
   }

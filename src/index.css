@@ -1,1 +1,18 @@
+.loading {
+    position: fixed;
+    right: 2px;
+    bottom: 2px;
+    z-index: 1100;
+}
 
+.loading-bar {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 200;
+    animation: draw 2s linear infinite; 
+}
+
+ @keyframes draw {
+  to {
+    stroke-dashoffset: 20;
+  }
+} 

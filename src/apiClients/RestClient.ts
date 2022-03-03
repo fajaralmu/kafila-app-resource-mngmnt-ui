@@ -1,12 +1,16 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { commonAuthorizedHeader, setLoginKeyCookie } from "../utils/restApiUtil";
+import LoadingService from './../services/LoadingService';
 
 const SUCCESS_CODE = "00";
 
 @injectable()
 export default class RestClient
 {
+    @inject(LoadingService)
+    private loading: LoadingService;
+
     postAuthorized = <T>(url:string, body:any, contentType='application/json') : Promise<T> => {
         return this.postCommon(url, body, commonAuthorizedHeader(contentType), true);
     }
@@ -19,9 +23,13 @@ export default class RestClient
     patchAuthorized = <T>(url:string, body:any, contentType='application/json') : Promise<T> => {
         return this.patchCommon(url, body, commonAuthorizedHeader(contentType), true);
     }
+    
+    startLoading = () => this.loading.startLoading();
+    stopLoading = () => this.loading.stopLoading();
+
     postCommon = <T>(url:string, body:any, headers:any, expectRefreshToken = false) : Promise<T> => {
         return new Promise<T>((resolve, reject) => {
-            
+            this.startLoading();
            
             axios.post(url, body, {
                 headers: { ...headers }
@@ -42,7 +50,7 @@ export default class RestClient
                 resolve(response.data.result);
             }).catch((err:AxiosError) =>{
                 reject(err.response?.data ?? new Error(err.message))
-            });
+            }).finally(this.stopLoading)
         });
     }
 
@@ -54,7 +62,7 @@ export default class RestClient
     }
     putCommon = <T>(url:string, body:any, headers:any, expectRefreshToken = false) : Promise<T> => {
         return new Promise<T>((resolve, reject) => {
-           
+            this.startLoading();
             axios.put(url, body, {
                 headers: { ...headers }
             }).then((response: AxiosResponse) => {
@@ -74,12 +82,12 @@ export default class RestClient
                 resolve(response.data.result);
             }).catch((err:AxiosError) =>{
                 reject(err.response?.data ?? new Error(err.message))
-            });
+            }).finally(this.stopLoading);
         });
     }
     patchCommon = <T>(url:string, body:any, headers:any, expectRefreshToken = false) : Promise<T> => {
         return new Promise<T>((resolve, reject) => {
-           
+            this.startLoading();
             axios.patch(url, body, {
                 headers: { ...headers }
             }).then((response: AxiosResponse) => {
@@ -99,13 +107,14 @@ export default class RestClient
                 resolve(response.data.result);
             }).catch((err:AxiosError) =>{
                 reject(err.response?.data ?? new Error(err.message))
-            });
+            })
+            .finally(this.stopLoading);
         });
     }
     private deleteCommon = <T>(url:string, headers:any, expectRefreshToken = false) : Promise<T> => {
         return new Promise<T>((resolve, reject) => {
             
-           
+            this.startLoading();
             axios.delete(url,{
                 headers: { ...headers }
             }).then((response: AxiosResponse) => {
@@ -125,7 +134,8 @@ export default class RestClient
                 resolve(response.data.result);
             }).catch((err:AxiosError) =>{
                 reject(err.response?.data ?? new Error(err.message))
-            });
+            })
+            .finally(this.stopLoading);
         });
     }
 
@@ -134,7 +144,7 @@ export default class RestClient
     }
     getCommon = <T>(url:string, headers:any, expectRefreshToken = false) : Promise<T> => {
         return new Promise<T>((resolve, reject)=>{
-            
+            this.startLoading();
             axios.get(url, { headers: {
                 ...headers
             } })
@@ -155,7 +165,8 @@ export default class RestClient
                 })
                 .catch((err:AxiosError)=>{
                     reject(err.response?.data ?? new Error(err.message))
-                });
+                })
+                .finally(this.stopLoading);
         })
     }
 }
