@@ -56,6 +56,11 @@ const managementPages = [
         url:'/admin/semesterperiods',
         label:'Semester',
         iconClass:'fas fa-calendar-alt'
+    },
+    {
+        url:'/admin/classlevels',
+        label:'Class Level',
+        iconClass:'fas fa-chalkboard-teacher'
     }
 ]
 

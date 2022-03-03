@@ -15,6 +15,7 @@ import AuthService from './../services/AuthService';
 import RoutingService from './../services/RoutingService';
 import AuthorityType from './../constants/AuthorityType';
 import SemesterPeriodsPage from '../pages/admin/SemesterPeriodsPage';
+import ClassLevelsPage from '../pages/admin/ClassLevelsPage';
 
 export class Routing extends Component<BaseProps, any>
 {
@@ -56,6 +57,9 @@ export class Routing extends Component<BaseProps, any>
                     } />
                     <Route path="/admin/semesterperiods" element={
                         <RestrictedRouteElement to="/admin/semesterperiods" element={<SemesterPeriodsPage/>} requiredRole={'ROLE_SUPERADMIN'} />
+                    } />
+                    <Route path="/admin/classlevels" element={
+                        <RestrictedRouteElement to="/admin/classlevels" element={<ClassLevelsPage/>} requiredRole={'ROLE_SUPERADMIN'} />
                     } />
 
                     <Route path="*" element={<ErrorView message="The requested page is not found." />} />

@@ -61,7 +61,7 @@ export default class DialogService
         if (message instanceof Error) {
             messageContent = message.message;
         } else {
-            if (message.trim().toLowerCase().startsWith("<!doctype html")) {
+            if (typeof message === 'string' && message.trim().toLowerCase().startsWith("<!doctype html")) {
                 messageContent = (
                     <div dangerouslySetInnerHTML={{
                         __html: message
@@ -69,6 +69,8 @@ export default class DialogService
 
                     </div>
                 )
+            } if (typeof message === 'object') {
+                messageContent = message['result'];
             } else {
                 messageContent = message;
             }
