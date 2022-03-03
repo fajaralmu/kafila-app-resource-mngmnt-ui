@@ -21,6 +21,8 @@ export default class AuthService {
     private _loggedUser:User | undefined;
     private _appProfile:ApplicationProfile | undefined;
     private _onUserUpdate:Map<string, (user:User | undefined) =>any> = new Map();
+    private _onAppProfileUpdate:Map<string, (val:ApplicationProfile | undefined) =>any> = new Map();
+
 
     @inject(RestClient)
     private rest:RestClient;
@@ -45,12 +47,22 @@ export default class AuthService {
         this._loggedUser = value; 
         this._onUserUpdate.forEach(action => action(value))
     }
+    private set appProfile(value: ApplicationProfile | undefined) {
+        this._appProfile = value;
+        this._onAppProfileUpdate.forEach(action => action(value))
+    }
 
     addOnUserUpdated = (key:string, action:(user:User|undefined) => any) => {
         this._onUserUpdate.set(key, action);
     }
     removeOnUserUpdated = (key:string) => {
         this._onUserUpdate.delete(key);
+    }
+    addOnAppProfileUpdated = (key:string, action:(val:ApplicationProfile|undefined) => any) => {
+        this._onAppProfileUpdate.set(key, action);
+    }
+    removeOnAppProfileUpdated = (key:string) => {
+        this._onAppProfileUpdate.delete(key);
     }
 
     loadApplication = () : Promise<ApplicationProfile> => {

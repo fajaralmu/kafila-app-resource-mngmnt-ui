@@ -11,7 +11,6 @@ import Employee from './../../models/Employee';
 import MasterDataService from './../../services/MasterDataService';
 import { resolve } from "inversify-react";
 import ControlledComponent from "../ControlledComponent";
-import DialogService from './../../services/DialogService';
 import { randomString } from './../../utils/stringUtil';
 
 class State extends BaseMasterDataState<SemesterPeriod>
@@ -97,9 +96,9 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
                                                 <div className="mx-2" style={{display: 'flex', flexWrap: 'nowrap'}}>
                                                     <ActionButton 
                                                         onClick={() => this.setActive(item)} 
-                                                        className="no-wrap btn btn-sm btn-info mr-2" 
-                                                        disabled={item.active === true} 
-                                                        children="Set Active" />
+                                                        iconClass="fas fa-calendar-check"
+                                                        className="btn-text btn btn-sm text-primary mr-1" 
+                                                        disabled={item.active === true} />
                                                     {this.actionButton(item)}
                                                 </div>
                                             </td>

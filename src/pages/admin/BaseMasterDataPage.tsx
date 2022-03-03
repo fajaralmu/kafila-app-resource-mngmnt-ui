@@ -70,7 +70,7 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
         this.setState({item: model}, this.showForm);
     }
     delete = (model:M) => {
-        this.dialog.showConfirmDanger("Delete Item", "Are you sure to delete this item? ")
+        this.dialog.showConfirmDanger("Delete Item", "Are you sure to delete this item?")
             .then(ok=>{
                 if (ok) {
                     this.service.delete(this.name, model.id)

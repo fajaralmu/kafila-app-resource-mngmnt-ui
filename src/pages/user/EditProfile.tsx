@@ -47,7 +47,7 @@ class EditProfile extends BasePage<BaseProps, State>
                     <p>Display Name</p>
                     <input className="form-control" name="user.displayName" value={user.displayName} onChange={this.handleInputChange}/>
                     <p>Password <i>Leave it empty if you don't want to change it</i></p>
-                    <input className="form-control" type="password" name="user.editPassword" value={user.editPassword} onChange={this.handleInputChange} />
+                    <input autoComplete="off" className="form-control" type="password" name="user.editPassword" value={user.editPassword} onChange={this.handleInputChange} />
                     <p/>
                     <input className="btn btn-success" type="submit" value="Save" />
                 </form>

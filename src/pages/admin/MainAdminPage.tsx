@@ -59,18 +59,23 @@ const managementPages = [
     },
     {
         url:'/admin/semesterperiods',
-        label:'Semester',
+        label:'Semesters',
         iconClass:'fas fa-calendar-alt'
     },
     {
         url:'/admin/classlevels',
-        label:'Class Level',
+        label:'Classes',
         iconClass:'fas fa-chalkboard-teacher'
     },
     {
         url:'/admin/students',
         label:'Students',
         iconClass:'fas fa-user-graduate'
+    },
+    {
+        url:'/admin/classmembers',
+        label:'Class Members',
+        iconClass:'fas fa-user-friends'
     }
 ]
 

@@ -10,6 +10,7 @@ import ControlledComponent from "../pages/ControlledComponent";
 import UserSection from "./UserSection";
 import User from './../models/User';
 import EventService from './../services/EventService';
+import ApplicationProfile from "../models/ApplicationProfile";
 
 class State {
     activeMenu:string | undefined;
@@ -34,10 +35,12 @@ class HeaderView extends ControlledComponent<Props, State>
     {
         this.routingService.registerCallback("header", console.log);
         this.authService.addOnUserUpdated("header", this.onUserUpdated);
+        this.authService.addOnAppProfileUpdated("header", this.onAppProfileUpdated);
     }
     componentWillUnmount()
     {
         this.authService.removeOnUserUpdated("header");
+        this.authService.removeOnAppProfileUpdated("header");
     }
     gotoLoginPage = () => {
         if (this.props.navigate)
@@ -53,6 +56,9 @@ class HeaderView extends ControlledComponent<Props, State>
         this._user = user;
         this.forceUpdate();
     }
+    onAppProfileUpdated = (val: ApplicationProfile | undefined) => {
+        this.forceUpdate();
+    }
 
     private navigate = (url:string) => {
         if (this.props.navigate == undefined)
@@ -66,17 +72,27 @@ class HeaderView extends ControlledComponent<Props, State>
     brandOnClick = () => {
        this.navigate("/");
     }
+    get semesterInfo() {
+        const appProfile = this.authService.appProfile;
+        if (appProfile && appProfile.semester && appProfile.semester) {
+            return "Semester " + appProfile.semester + " | " + appProfile.year;
+        }
+        return undefined;
+    }
     render() {
+        const title = this.authService.appProfile ? this.authService.appProfile.name : this.state.title;
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
                     <div className="row w-100 mt-2">
-                        <div className="col-md-2 mb-2 text-center d-flex">
+                        <div className="col-md-2 mb-2 text-center d-flex" style={{alignItems: 'center'}}>
                             <img src="/kiis-stroke.png" width={50} className="mr-2" />
-                            <Link className="navbar-brand" to="/">{this.state.title}</Link>
+                            <div className={"text-left"}>
+                                <Link className="navbar-brand" to="/">{title}</Link>
+                            </div>
                         </div>
-                        <div className="col-md-8 mb-2">
-                            
+                        <div className="col-md-7 mb-2 d-flex text-center text-secondary" style={{alignItems: 'center'}}>
+                            <p style={{margin: 'auto'}}>{this.semesterInfo}</p>
                         </div>
                         <div className="col-md-2 mb-2 text-center">
                             { !this.authService.loggedIn?
