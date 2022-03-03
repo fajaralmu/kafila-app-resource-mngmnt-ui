@@ -1,4 +1,3 @@
-import { Component, ReactNode } from "react";
 
 interface Props 
 {
@@ -9,20 +8,19 @@ interface Props
     onClick?:(e:any)=>any;
     disabled?:boolean;
 }
-export default class ActionButton extends Component<Props, any>
-{
-    render(): ReactNode {
-        if (this.props.show != undefined && this.props.show === false)
-        {
-            return null;
-        }
-        const disabledProps:any = this.props.disabled === true ? {disabled:'disabled'} : {};
-        return (
-            <button className={this.props.className} onClick={this.props.onClick} {...disabledProps}>
-                {this.props.iconClass?
-                <i className={this.props.iconClass+ (this.props.children? " mr-3" : "")}/> : null }
-                {this.props.children}
-            </button>
-        )
+const ActionButton = (props:Props) => {
+    if (props.show != undefined && props.show === false)
+    {
+        return null;
     }
+    const disabledProps:any = props.disabled === true ? {disabled:'disabled'} : {};
+    return (
+        <button className={props.className} onClick={props.onClick} {...disabledProps}>
+            {props.iconClass?
+            <i className={props.iconClass+ (props.children? " mr-3" : "")}/> : null }
+            {props.children}
+        </button>
+    )
 }
+
+export default ActionButton;

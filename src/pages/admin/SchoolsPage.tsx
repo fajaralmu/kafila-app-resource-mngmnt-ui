@@ -36,6 +36,7 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State>
         if (this.state.showForm && this.state.item)  {
             return (
                 <ViewTemplate title={this.title} back="/admin">
+                    {this.closeFormButton}
                     <FormEdit item={this.state.item} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
                 </ViewTemplate>
             );

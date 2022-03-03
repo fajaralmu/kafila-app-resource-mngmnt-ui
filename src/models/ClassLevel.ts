@@ -7,7 +7,8 @@ export default class ClassLevel extends BaseModel {
     letter: string = "A";
     description: string = "";
     school: School;
-    
+
     semester: number = 1;
     year: string = "";
+    semesterActive: boolean;
 }

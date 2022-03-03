@@ -86,9 +86,7 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State>
         {
             return (
                 <ViewTemplate title={this.title} back="/admin">
-                    <ActionButton onClick={this.resetFormAndClose} iconClass="fas fa-times" className="btn btn-secondary btn-sm mx-2">
-                        Close form
-                    </ActionButton>
+                    {this.closeFormButton}
                     <FormEdit item={this.state.item} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
                 </ViewTemplate>
             );
@@ -98,9 +96,7 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State>
         const items = result?.items;
         return (
             <ViewTemplate title={this.title} back="/admin">
-                <ActionButton onClick={this.showInsertForm} iconClass="fas fa-plus" className="btn btn-primary btn-sm mx-2">
-                    Insert new data
-                </ActionButton>
+                {this.showFormButton}
                 {result == undefined || items == undefined ?
                     <i>Loading...</i> :
                     <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>

@@ -27,13 +27,14 @@ class LoginPage extends BasePage<BaseProps, State>
         super(props, false, "Login");
     }
     onSubmit = (e:FormEvent) => {
+        console.log("ON submit login");
         e.preventDefault();
         this.setState({ loading: true });
 
         this.authService.login(this.state.username, this.state.password)
             .then((user) => {
                 this.setState({ error: undefined, loginSuccess: true }, 
-                    () => invokeLater(this.gotoHomePage, 500) );
+                    () => invokeLater(this.handleSuccessLogin, 500) );
             })
             .catch((err) => {
                 this.setState({ error: new Error(err?.message) });
@@ -41,6 +42,14 @@ class LoginPage extends BasePage<BaseProps, State>
             .finally(() => {
                 this.setState({ loading: false });
             })
+    }
+
+    handleSuccessLogin = () => {
+        if (this.authService.isAdmin) {
+            this.navigate("/admin");
+            return;
+        }
+        this.gotoHomePage();
     }
 
     componentDidMount(): void {

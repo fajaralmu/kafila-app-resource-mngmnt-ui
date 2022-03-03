@@ -46,12 +46,15 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
     employeeCellFields = (item:any) => SemesterPeriod.EmployeeFields.map(field => {
         return (
             <td key={"emp-field-" + randomString(10)}>
-                <ActionButton 
-                    iconClass="fas fa-user-edit" 
-                    className="btn btn-sm btn-text text-dark cickable" 
-                    onClick={() => this.setEmployeeInCharge(item, field)} />
-                
-                <div className="no-wrap">{item[field]?.user.fullName.trim()}</div>
+                <div className="row" style={{flexWrap: 'nowrap'}}>
+                    <div className="col-3">
+                        <ActionButton 
+                            iconClass="fas fa-user-edit" 
+                            className="btn btn-sm btn-success mr-3" 
+                            onClick={() => this.setEmployeeInCharge(item, field)} />
+                    </div>
+                    <div className="col-8 no-wrap">{item[field]?.user.fullName.trim()}</div>
+                </div>
             </td>
         )
     })
@@ -61,9 +64,7 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
         if (this.state.showForm && this.state.item) {
             return (
                 <ViewTemplate title={this.title} back="/admin">
-                    <ActionButton onClick={this.resetFormAndClose} iconClass="fas fa-times" className="btn btn-secondary btn-sm mx-2">
-                        Close form
-                    </ActionButton>
+                    {this.closeFormButton}
                     <FormEdit item={this.state.item} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
                 </ViewTemplate>
             );
@@ -74,9 +75,7 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
         
         return (
             <ViewTemplate title={this.title} back="/admin">
-                <ActionButton onClick={this.showInsertForm} iconClass="fas fa-plus" className="btn btn-primary btn-sm mx-2">
-                    Insert new data
-                </ActionButton>
+                {this.showFormButton}
                 {result == undefined || items == undefined ?
                     <i>Loading...</i> :
                     <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
@@ -95,15 +94,19 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
                                         <tr key={"smt-period-" + item.id}>
                                             <td>{this.startingNumber + i}</td>
                                             <td>
-                                                <ActionButton disabled={item.active === true} onClick={() => this.setActive(item)} className="no-wrap btn btn-sm btn-info">
-                                                    Set Active
-                                                </ActionButton>
-                                                {this.actionButton(item)}
+                                                <div className="mx-2" style={{display: 'flex', flexWrap: 'nowrap'}}>
+                                                    <ActionButton 
+                                                        onClick={() => this.setActive(item)} 
+                                                        className="no-wrap btn btn-sm btn-info mr-2" 
+                                                        disabled={item.active === true} 
+                                                        children="Set Active" />
+                                                    {this.actionButton(item)}
+                                                </div>
                                             </td>
-                                            <td>{item.semester}</td>
+                                            <td className="text-center">{item.semester}</td>
                                             <td>{item.year}</td>
                                             <td>
-                                                {item.active ? <span className="badge badge-primary">Active</span> : null}
+                                                {item.active ? <b className="text-success">active</b> : <i>not active</i> }
                                             </td>
                                             {this.employeeCellFields(item)}
                                             

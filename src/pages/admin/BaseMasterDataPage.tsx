@@ -222,6 +222,21 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
             </>
         );
     }
+
+    protected get closeFormButton() {
+        return (
+            <ActionButton onClick={this.resetFormAndClose} iconClass="fas fa-times" className="btn btn-secondary btn-sm mx-2">
+                Close form
+            </ActionButton>
+        )
+    }
+    protected get showFormButton() {
+        return (
+            <ActionButton onClick={this.showInsertForm} iconClass="fas fa-plus" className="btn btn-primary btn-sm mx-2">
+                Insert new data
+            </ActionButton>
+        )
+    }
 }
 
 export default BaseMasterDataPage;

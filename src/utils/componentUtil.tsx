@@ -93,7 +93,12 @@ export const DataTableHeaders = (
 }
 
 export class DataTableHeaderValue {
-    constructor(public name:string | null, public label:string, public orderable = true){
-
+    label:string | null;
+    constructor(public name:string | null, label?:string | null , public orderable = true){
+        if (label == null) {
+            this.label = name;
+        } else {
+            this.label = label;
+        }
     }
 }

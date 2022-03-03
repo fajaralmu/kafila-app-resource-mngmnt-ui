@@ -30,6 +30,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
             new DataTableHeaderValue("description", "Description"),
             new DataTableHeaderValue("semesterPeriod.semester", "Semester"),
             new DataTableHeaderValue("semesterPeriod.year", "Year"),
+            new DataTableHeaderValue(null, "Semeser Active", false),
         ]
     }
 
@@ -56,9 +57,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
         if (this.state.showForm && this.state.item && this.schools.length > 0)  {
             return (
                 <ViewTemplate title={this.title} back="/admin">
-                    <ActionButton onClick={this.resetFormAndClose} iconClass="fas fa-times" className="btn btn-secondary btn-sm mx-2">
-                        Close form
-                    </ActionButton>
+                    {this.closeFormButton}
                     <FormEdit item={this.state.item} schools={this.schools} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
                 </ViewTemplate>
             );
@@ -68,9 +67,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
         const items = result?.items;
         return (
             <ViewTemplate title={this.title} back="/admin">
-                <ActionButton onClick={this.showInsertForm} iconClass="fas fa-plus" className="btn btn-primary btn-sm mx-2">
-                    Insert new data
-                </ActionButton>
+                {this.showFormButton}
                 {result == undefined || items == undefined ?
                     <i>Loading...</i> :
                     <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
@@ -94,6 +91,9 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
                                             <td>{item.description}</td>
                                             <td>{item.semester}</td>
                                             <td>{item.year}</td>
+                                            <td>{item.semesterActive ? 
+                                                <b className="text-success">active</b> : <i>not active</i>}
+                                            </td>
                                             <td>
                                                 {this.actionButton(item, false)}
                                             </td>

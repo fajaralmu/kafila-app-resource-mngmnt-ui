@@ -16,6 +16,7 @@ import RoutingService from './../services/RoutingService';
 import AuthorityType from './../constants/AuthorityType';
 import SemesterPeriodsPage from '../pages/admin/SemesterPeriodsPage';
 import ClassLevelsPage from '../pages/admin/ClassLevelsPage';
+import StudentsPage from '../pages/admin/StudentsPage';
 
 export class Routing extends Component<BaseProps, any>
 {
@@ -61,6 +62,9 @@ export class Routing extends Component<BaseProps, any>
                     <Route path="/admin/classlevels" element={
                         <RestrictedRouteElement to="/admin/classlevels" element={<ClassLevelsPage/>} requiredRole={'ROLE_SUPERADMIN'} />
                     } />
+                    <Route path="/admin/students" element={
+                        <RestrictedRouteElement to="/admin/students" element={<StudentsPage/>} requiredRole={'ROLE_SUPERADMIN'} />
+                    } />
 
                     <Route path="*" element={<ErrorView message="The requested page is not found." />} />
                 </Routes>
@@ -73,7 +77,7 @@ class RestrictedRouteElement extends Component<{
     to:string, 
     element: JSX.Element, 
     disabledWhenLoggedIn?:boolean,
-    requiredRole?: AuthorityType
+    requiredRole?: AuthorityType | AuthorityType[]
 }, any> {
 
     @resolve(AuthService)

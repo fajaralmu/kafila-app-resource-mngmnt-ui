@@ -27,10 +27,15 @@ class MainAdminPage extends BasePage<BaseProps, State>
         
         return (
             <ViewTemplate title="Admin Area">
-                {managementPages.map(m=>
-                <AnchorButton className="btn btn-light mr-3" to={m.url} iconClass={m.iconClass} >
-                    {m.label}
-                </AnchorButton>)}
+                <div className="row">
+                    {managementPages.map(m=>
+                        <div key={"mngmnt-menu-"+m.url} className="col-md-3 mb-2">
+                            <AnchorButton className="btn btn-light px-5 py-5 w-100" to={m.url} iconClass={m.iconClass} >
+                                {m.label}
+                            </AnchorButton>
+                        </div>
+                    )}
+                </div>
             </ViewTemplate>
         )
     }
@@ -61,6 +66,11 @@ const managementPages = [
         url:'/admin/classlevels',
         label:'Class Level',
         iconClass:'fas fa-chalkboard-teacher'
+    },
+    {
+        url:'/admin/students',
+        label:'Students',
+        iconClass:'fas fa-user-graduate'
     }
 ]
 

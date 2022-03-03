@@ -1,4 +1,3 @@
-import { Component, ReactNode } from "react";
 import { Link } from 'react-router-dom';
 
 interface Props 
@@ -10,29 +9,29 @@ interface Props
     onClick?:(e:any)=>any;
     to?:string;
 }
-export default class AnchorButton extends Component<Props, any>
-{
-    render(): ReactNode {
-        if (this.props.show != undefined && this.props.show === false)
-        {
-            return null;
-        }
-        if (!this.props.to)
-        {
-            return (
-                <a className={this.props.className} onClick={this.props.onClick}>
-                    {this.props.iconClass?
-                    <i className={this.props.iconClass+ (this.props.children? " mr-3" : "")}/> : null }
-                    {this.props.children}
-                </a>
-            )
-        }
+const AnchorButton = (props:Props) => {
+    if (props.show != undefined && props.show === false)
+    {
+        return null;
+    }
+    if (!props.to)
+    {
         return (
-            <Link to={this.props.to} className={this.props.className} onClick={this.props.onClick}>
-                {this.props.iconClass?
-                <i className={this.props.iconClass+ (this.props.children? " mr-3" : "")}/> : null }
-                {this.props.children}
-            </Link>
+            <a className={props.className} onClick={props.onClick}>
+                {props.iconClass?
+                <i className={props.iconClass+ (props.children? " mr-3" : "")}/> : null }
+                {props.children}
+            </a>
         )
     }
+    return (
+        <Link to={props.to} className={props.className} onClick={props.onClick}>
+            {props.iconClass?
+            <i className={props.iconClass+ (props.children? " mr-3" : "")}/> : null }
+            {props.children}
+        </Link>
+    )
+
 }
+
+export default AnchorButton;

@@ -72,14 +72,18 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                                             </td>
                                             <td>{item.phoneNumber}</td>
                                             
-                                            <td className="no-wrap">
-                                                <ActionButton 
-                                                    iconClass="fas fa-lock-open" 
-                                                    className="btn btn-warning btn-sm"
-                                                    onClick={() => this.resetPassword(item)}
-                                                >
-                                                </ActionButton>
-                                                {this.actionButton(item)}
+                                            <td>
+                                                <div 
+                                                    className="d-flex" 
+                                                    style={{flexWrap: 'nowrap', width: '150px'}}>
+                                                    <ActionButton 
+                                                        iconClass="fas fa-lock-open" 
+                                                        className="btn btn-warning btn-sm mr-2"
+                                                        onClick={() => this.resetPassword(item)}
+                                                    >
+                                                    </ActionButton>
+                                                    {this.actionButton(item)}
+                                                </div>
                                             </td>
                                         </tr>
                                     )

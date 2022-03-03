@@ -10,13 +10,22 @@ export default class User extends BaseModel {
     editPassword: string;
     authorities: Authority[];
 
-    hasAuthorityType = (type:AuthorityType) => {
+    hasAuthorityType = (type:AuthorityType | AuthorityType[]) => {
         if (this.authorities)
         {
             for (let i = 0; i < this.authorities.length; i++) {
-                const element = this.authorities[i];
-                if (element.name == type) {
-                    return true;
+                const userAuthType = this.authorities[i];
+                if (typeof type === 'string') {
+                    if (userAuthType.name == type) {
+                        return true;
+                    }
+                } else {
+                    for (let t = 0; t < type.length; t++) {
+                        const item = type[t];
+                        if (item == userAuthType.name) {
+                            return true;
+                        }
+                    }
                 }
             }
         }
