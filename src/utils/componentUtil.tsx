@@ -82,7 +82,8 @@ export const DataTableHeaders = (
         }
         return (
             <th onClick={tdOnClick} key={"th-item-"+randomString(3)} className={className}>
-                {item.label} {activeOrder == item.name? 
+                {item.label} {item.orderable == false ? null : 
+                    activeOrder == item.name? 
                     orderDesc? 
                     <i className="fas fa-long-arrow-alt-down ml-2" /> :
                     <i className="fas fa-long-arrow-alt-up ml-2" /> : 
@@ -98,7 +99,25 @@ export class DataTableHeaderValue {
         if (label == null) {
             this.label = name;
         } else {
+            
             this.label = label;
         }
+
+        this.adjustLabel();
     }
+
+    adjustLabel = () => {
+        if (!this.label) return;
+
+        if (this.label.includes(".")) {
+            const splitByDot = this.label.split(".");
+            this.label = splitByDot[splitByDot.length-1];
+        }
+
+        this.label = capitalize(this.label);
+    }
+}
+
+const capitalize = (val:string) => {
+    return val[0].toUpperCase() + val.substring(1, val.length);
 }

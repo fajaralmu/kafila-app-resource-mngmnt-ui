@@ -24,7 +24,9 @@ class StudentsPage extends BaseMasterDataPage<Student, BaseProps, State>
         return [
             new DataTableHeaderValue("nisKiis"),
             new DataTableHeaderValue("nisn"),
-            new DataTableHeaderValue("user.fullName"),
+            new DataTableHeaderValue("user.fullName",),
+            new DataTableHeaderValue("user.birthDate"),
+            new DataTableHeaderValue("user.birthPlace"),
             new DataTableHeaderValue("address"),
             new DataTableHeaderValue("city"),
             new DataTableHeaderValue("province"),
@@ -105,6 +107,8 @@ class StudentsPage extends BaseMasterDataPage<Student, BaseProps, State>
                                             <td>{item.nisKiis}</td>
                                             <td>{item.nisn}</td>
                                             <td>{item.user.fullName}</td>
+                                            <td>{new Date(item.user.birthDate).toLocaleDateString()}</td>
+                                            <td>{item.user.birthPlace}</td>
                                             <td>{item.address}</td>
                                             <td>{item.city}</td>
                                             <td>{item.province}</td>
