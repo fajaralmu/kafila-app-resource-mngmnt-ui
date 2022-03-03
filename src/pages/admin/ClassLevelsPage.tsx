@@ -1,14 +1,12 @@
-import { ChangeEvent, Component, FormEvent, ReactNode } from "react";
+import { ChangeEvent, FormEvent, ReactNode } from "react";
 import { ViewTemplate } from "../../layout/ViewTemplate";
-import { commonWrapper } from "../../utils/commonWrapper";
-import BaseProps from '../../models/BaseProps';
-import BaseMasterDataPage from "./BaseMasterDataPage";
 import BaseMasterDataState from '../../models/BaseMasterDataState';
+import BaseProps from '../../models/BaseProps';
 import ClassLevel from "../../models/ClassLevel";
-import PaginationButtons from "../../components/buttons/PaginationButtons";
-import ActionButton from "../../components/buttons/ActionButton";
+import { commonWrapper } from "../../utils/commonWrapper";
 import { DataTableHeaderValue } from "../../utils/componentUtil";
 import School from './../../models/School';
+import BaseMasterDataPage from "./BaseMasterDataPage";
 
 class State extends BaseMasterDataState<ClassLevel>
 {
@@ -18,7 +16,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
 {
     schools:School[] = [];
     constructor(props: BaseProps) {
-        super(props, "classlevels", "ClassLevel Management");
+        super(props, "classlevels", "Class Level Management");
         this.state = new State();
     }
     get defaultItem(): ClassLevel { return new ClassLevel() }
@@ -95,7 +93,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
                                                 <b className="text-success">active</b> : <i>not active</i>}
                                             </td>
                                             <td>
-                                                {this.actionButton(item, false)}
+                                                {item.semesterActive ? this.actionButton(item) : null}
                                             </td>
                                         </tr>
                                     )
@@ -140,7 +138,7 @@ const FormEdit = (props:{
                 <p>Semester</p>
                 <input className="form-control" name="item.semester" id="item.semester" value={item.semester} type="number" required onChange={props.handleInputChange} />
                 <p>Year</p>
-                <input className="form-control" name="item.year" id="item.year" value={item.year} onChange={props.handleInputChange} />
+                <input className="form-control" name="item.year" id="item.year" value={item.year} onChange={props.handleInputChange} required />
 
                 <p></p>
                 <input className="btn btn-primary" value="Save" type="submit" />

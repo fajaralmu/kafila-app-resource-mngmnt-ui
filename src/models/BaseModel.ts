@@ -1,4 +1,4 @@
 export default class BaseModel
 {
-    public id:number;
+    public id:number = -1;
 }

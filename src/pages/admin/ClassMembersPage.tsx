@@ -1,20 +1,20 @@
-import { ChangeEvent, Component, FormEvent, ReactNode } from "react";
+import { resolve } from "inversify-react";
+import { ChangeEvent, FormEvent, ReactNode } from "react";
+import RestClient from "../../apiClients/RestClient";
+import ActionButton from "../../components/buttons/ActionButton";
 import { ViewTemplate } from "../../layout/ViewTemplate";
 import BaseMasterDataState from '../../models/BaseMasterDataState';
 import BaseProps from '../../models/BaseProps';
 import ClassMember from "../../models/ClassMember";
+import Settings from "../../settings";
 import { commonWrapper } from "../../utils/commonWrapper";
 import { DataTableHeaderValue } from "../../utils/componentUtil";
-import BaseMasterDataPage from "./BaseMasterDataPage";
-import Student from './../../models/Student';
-import ClassLevel from './../../models/ClassLevel';
-import { resolve } from "inversify-react";
-import MasterDataService from './../../services/MasterDataService';
-import RestClient from "../../apiClients/RestClient";
 import ControlledComponent from "../ControlledComponent";
-import DialogService from './../../services/DialogService';
-import ActionButton from "../../components/buttons/ActionButton";
-import Settings from "../../settings";
+import ClassLevel from './../../models/ClassLevel';
+import Student from './../../models/Student';
+import MasterDataService from './../../services/MasterDataService';
+import ToastService from './../../services/ToastService';
+import BaseMasterDataPage from "./BaseMasterDataPage";
 
 class State extends BaseMasterDataState<ClassMember>
 {
@@ -113,8 +113,8 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
     private masterDataService: MasterDataService;
     @resolve(RestClient)
     private rest: RestClient;
-    @resolve(DialogService)
-    private dialog: DialogService;
+    @resolve(ToastService)
+    private toast: ToastService;
 
     constructor(props:FormEditProps) {
         super(props);
@@ -131,11 +131,12 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
         const URL_GET_ACTIVE_CLASSES = Settings.App.hosts.api +"/api/admin/management/classlevels/active";
         this.rest.getAuthorized<ClassLevel[]>(URL_GET_ACTIVE_CLASSES)
             .then(this.handleClassLoaded)
-            .catch(err => this.dialog.showError("Failed to Load Classes", err));
+            .catch(err => this.toast.showDanger("Failed to load classes"));
     }
 
     handleClassLoaded = (classes: ClassLevel[]) => {
         if (!classes || classes.length == 0) {
+            this.toast.showDanger("No class found this semester");
             return;
         }
         this.props.item.classLevel = classes[0];
@@ -149,9 +150,16 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
         }
         this.masterDataService.list<Student>('students', 0, 10, 'user.fullName', false, 'user.fullName:' + search)
             .then(response => {
-                this.setState({ students: response.items })
+                this.handleStudentLoaded(response.items);
             })
-            .catch((e) => this.dialog.showError("Failed to Load Students", e));
+            .catch((e) => this.toast.showDanger("Failed to load students"));
+    }
+    handleStudentLoaded = (items:Student[]) => {
+        if (!items || items.length == 0) {
+            this.toast.showDanger("No student containing name \"" + this.state.searchStudent + "\" was found");
+            return;
+        }
+        this.setState({ students: items });
     }
     
     closeStudentDropdown = () => this.setState({ students: [] });
@@ -164,9 +172,17 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
         this.props.item.classLevel = item;
     }
 
+    submitForm = (e:FormEvent) => {
+        e.preventDefault();
+        const { item } = this.props;
+        if (!item.student || item.student.id < 1 || !item.classLevel || item.classLevel.id < 1) {
+            this.toast.showDanger("Please select student and class correctly");
+            return;
+        }
+        this.props.onSubmit(e);
+    }
+
     render() {
-        const props = this.props;
-        const item = props.item;
         const students = this.state.students;
         return (
             <div className="mx-2 py-2">
@@ -214,7 +230,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
                     </div>
                 
                 </form>
-                <form onSubmit={props.onSubmit}>
+                <form onSubmit={this.submitForm}>
                     <p>Active Class Level</p>
                     <select className="form-control" >
                         {this.state.classes.map(item => {

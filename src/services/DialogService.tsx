@@ -72,7 +72,7 @@ export default class DialogService
             } if (typeof message === 'object') {
                 messageContent = message['result'];
             } else {
-                messageContent = message;
+                messageContent = !message || message.trim() == "" ? "Unexpected error" : message.trim();
             }
         }
         this.container.show(
