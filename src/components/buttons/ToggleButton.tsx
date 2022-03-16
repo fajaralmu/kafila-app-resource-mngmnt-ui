@@ -10,7 +10,7 @@ interface Props {
 export default class ToggleButton extends Component<Props, any>{
     
     onClick = () => {
-        if (this.props.disabled == true)
+        if (this.props.disabled === true)
         {
             return;
         }

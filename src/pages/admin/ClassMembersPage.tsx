@@ -8,7 +8,7 @@ import BaseProps from '../../models/BaseProps';
 import ClassMember from "../../models/ClassMember";
 import Settings from "../../settings";
 import { commonWrapper } from "../../utils/commonWrapper";
-import { DataTableHeaderValue } from "../../utils/componentUtil";
+import DataTableHeaderValue from "../../models/DataTableHeaderValue";
 import ControlledComponent from "../ControlledComponent";
 import ClassLevel from './../../models/ClassLevel';
 import Student from './../../models/Student';
@@ -51,14 +51,14 @@ class ClassMembersPage extends BaseMasterDataPage<ClassMember, BaseProps, State>
             );
         }
         
-        const result = this.state.result;
+        const { result } = this.state;
         const items = result?.items;
         return (
             <ViewTemplate title={this.title} back="/admin">
                 {this.showFormButton}
-                {result == undefined || items == undefined ?
+                {result === undefined || items === undefined ?
                     <i>Loading...</i> :
-                    <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
+                    <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
                        {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
@@ -70,27 +70,29 @@ class ClassMembersPage extends BaseMasterDataPage<ClassMember, BaseProps, State>
                             </thead>
                             <tbody>
                                 {items.map((item, i) => {
+                                    const { classLevel, student } = item;
                                     return (
                                         <tr key={"ClassMember-" + item.id}>
                                             <td>{this.startingNumber + i}</td>
-                                            <td>{item.student.user.fullName}</td>
-                                            <td>{item.classLevel.level}</td>
-                                            <td>{item.classLevel.letter}</td>
-                                            <td>{item.classLevel.school.name}</td>
-                                            <td>{item.classLevel.semester}</td>
-                                            <td>{item.classLevel.year}</td>
+                                            <td>{student.user.fullName}</td>
+                                            <td>{classLevel.level}</td>
+                                            <td>{classLevel.letter}</td>
+                                            <td>{classLevel.school.name}</td>
+                                            <td>{classLevel.semester}</td>
+                                            <td>{classLevel.year}</td>
                                             <td>
-                                                {item.classLevel.semesterActive ? <b className="text-success">active</b> : <i>not active</i>}
+                                                {classLevel.semesterActive ? <b className="text-success">active</b> : <i>not active</i>}
                                             </td>
                                             <td>
-                                                {item.classLevel.semesterActive ? this.actionButton(item) : null}
+                                                {classLevel.semesterActive ? this.actionButton(item) : null}
                                             </td>
                                         </tr>
                                     )
                                 })}
                             </tbody>
+                            {this.tableFooter}
                         </table>
-                    </div>}
+                    </form>}
             </ViewTemplate>
         )
     }
@@ -135,7 +137,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
     }
 
     handleClassLoaded = (classes: ClassLevel[]) => {
-        if (!classes || classes.length == 0) {
+        if (!classes || classes.length === 0) {
             this.toast.showDanger("No class found this semester");
             return;
         }
@@ -155,7 +157,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
             .catch((e) => this.toast.showDanger("Failed to load students"));
     }
     handleStudentLoaded = (items:Student[]) => {
-        if (!items || items.length == 0) {
+        if (!items || items.length === 0) {
             this.toast.showDanger("No student containing name \"" + this.state.searchStudent + "\" was found");
             return;
         }
@@ -183,7 +185,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
     }
 
     render() {
-        const students = this.state.students;
+        const { students, classes, searchStudent } = this.state;
         return (
             <div className="mx-2 py-2">
                 <form onSubmit={(e) => {
@@ -196,10 +198,11 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
                             type="search"
                             className="form-control" 
                             name="searchStudent" 
-                            value={this.state.searchStudent}
+                            value={searchStudent}
                             placeholder="Full Name"
                             onChange={this.handleInputChange} 
-                            required />
+                            required 
+                        />
                         <div className="input-group-append">
                             <input type="submit" className="btn btn-primary" value={"Search"}/>
                         </div>
@@ -233,7 +236,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
                 <form onSubmit={this.submitForm}>
                     <p>Active Class Level</p>
                     <select className="form-control" >
-                        {this.state.classes.map(item => {
+                        {classes.map(item => {
                             return (
                                 <option key={"select-class-"+item.id} onClick={(e) => this.setSelectedClass(item)}>
                                     {item.level}{item.letter} - {item.school.name}

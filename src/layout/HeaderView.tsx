@@ -49,7 +49,7 @@ class HeaderView extends ControlledComponent<Props, State>
         }
     }
     onUserUpdated = (user: User | undefined) => {
-        if (this._user != undefined && user == undefined)
+        if (this._user !== undefined && user === undefined)
         {
             this.gotoLoginPage();
         }
@@ -61,7 +61,7 @@ class HeaderView extends ControlledComponent<Props, State>
     }
 
     private navigate = (url:string) => {
-        if (this.props.navigate == undefined)
+        if (this.props.navigate === undefined)
         {
             console.warn("no props: navigate");
             return;
@@ -86,7 +86,7 @@ class HeaderView extends ControlledComponent<Props, State>
                 <div className="container-fluid">
                     <div className="row w-100 mt-2">
                         <div className="col-md-2 mb-2 text-center d-flex" style={{alignItems: 'center'}}>
-                            <img src="/kiis-stroke.png" width={50} className="mr-2" />
+                            <img src="/kiis-stroke.png" width={50} className="me-2" />
                             <div className={"text-left"}>
                                 <Link className="navbar-brand" to="/">{title}</Link>
                             </div>
@@ -97,7 +97,7 @@ class HeaderView extends ControlledComponent<Props, State>
                         <div className="col-md-2 mb-2 text-center">
                             { !this.authService.loggedIn?
                             <Link to="/login" className="btn btn-primary">
-                               <i className="fas fa-sign-in-alt mr-2"/> Login
+                               <i className="fas fa-sign-in-alt me-2"/> Login
                             </Link>
                             : 
                             <UserSection user={this.authService.loggedUser}/> }

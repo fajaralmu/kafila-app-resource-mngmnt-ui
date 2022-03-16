@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
+import ActionButton from "../../components/buttons/ActionButton";
 import { ViewTemplate } from "../../layout/ViewTemplate";
+import DataTableHeaderValue from "../../models/DataTableHeaderValue";
+import User from "../../models/User";
 import { commonWrapper } from "../../utils/commonWrapper";
+import BaseMasterDataState from './../../models/BaseMasterDataState';
 import BaseProps from './../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
-import BaseMasterDataState from './../../models/BaseMasterDataState';
-import User from "../../models/User";
-import ActionButton from "../../components/buttons/ActionButton";
-import { DataTableHeaders, DataTableHeaderValue } from "../../utils/componentUtil";
+
 
 const ACTION_RESET_PASSWORD = 'resetPassword';
 
@@ -43,9 +44,9 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
         const items = result?.items;
         return (
             <ViewTemplate title={this.title} back="/admin">
-                {result == undefined || items == undefined ?
+                {result === undefined || items === undefined ?
                     <i>Loading...</i> :
-                    <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
+                    <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
                         {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
@@ -68,7 +69,7 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                                             <td>{item.birthPlace}</td>
                                             <td>{item.gender}</td>
                                             <td>
-                                                {item.authorities.map(a => <div className="badge badge-success  mr-1">{a.name?.toLocaleLowerCase()}</div>)}
+                                                {item.authorities.map(a => <div className="badge bg-success  me-1">{a.name?.toLocaleLowerCase()}</div>)}
                                             </td>
                                             <td>{item.phoneNumber}</td>
                                             
@@ -78,7 +79,7 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                                                     style={{flexWrap: 'nowrap', width: '150px'}}>
                                                     <ActionButton 
                                                         iconClass="fas fa-lock-open" 
-                                                        className="btn btn-warning btn-sm mr-2"
+                                                        className="btn btn-warning btn-sm me-2"
                                                         onClick={() => this.resetPassword(item)}
                                                     >
                                                     </ActionButton>
@@ -89,8 +90,9 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
                                     )
                                 })}
                             </tbody>
+                            {this.tableFooter}
                         </table>
-                    </div>}
+                    </form>}
             </ViewTemplate>
         )
     }

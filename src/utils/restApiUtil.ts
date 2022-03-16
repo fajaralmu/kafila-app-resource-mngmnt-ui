@@ -23,7 +23,7 @@ export const setLoginKeyCookie =  (token:string) => {
 }
 export const loginKeyCookieExist = () => {
     const val:string = getLoginKeyCookie();
-    return val != undefined && val != null && val.trim() != "";
+    return val !== undefined && val !== null && val.trim() !== "";
 }
 export const getLoginKeyCookie = () => {
     return getCookie(LOGIN_KEY_NAME);

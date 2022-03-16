@@ -5,7 +5,7 @@ import BaseProps from '../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
 import BaseMasterDataState from '../../models/BaseMasterDataState';
 import ActionButton from "../../components/buttons/ActionButton";
-import { DataTableHeaderValue } from "../../utils/componentUtil";
+import DataTableHeaderValue from "../../models/DataTableHeaderValue";
 import SemesterPeriod from './../../models/SemesterPeriod';
 import Employee from './../../models/Employee';
 import MasterDataService from './../../services/MasterDataService';
@@ -50,7 +50,7 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
                     <div className="col-3">
                         <ActionButton 
                             iconClass="fas fa-user-edit" 
-                            className="btn btn-sm btn-success mr-3" 
+                            className="btn btn-sm btn-success me-3" 
                             onClick={() => this.setEmployeeInCharge(item, field)} />
                     </div>
                     <div className="col-8 no-wrap">{item[field]?.user.fullName.trim()}</div>
@@ -76,9 +76,9 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
         return (
             <ViewTemplate title={this.title} back="/admin">
                 {this.showFormButton}
-                {result == undefined || items == undefined ?
+                {result === undefined || items === undefined ?
                     <i>Loading...</i> :
-                    <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
+                    <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
                        {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
@@ -98,7 +98,7 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
                                                     <ActionButton 
                                                         onClick={() => this.setActive(item)} 
                                                         iconClass="fas fa-calendar-check"
-                                                        className="btn-text btn btn-sm text-primary mr-1" 
+                                                        className="btn-text btn btn-sm text-primary me-1" 
                                                         disabled={item.active === true} />
                                                     {this.actionButton(item)}
                                                 </div>
@@ -109,13 +109,13 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
                                                 {item.active ? <b className="text-success">active</b> : <i>not active</i> }
                                             </td>
                                             {this.employeeCellFields(item)}
-                                            
                                         </tr>
                                     )
                                 })}
                             </tbody>
+                            {this.tableFooter}
                         </table>
-                    </div>}
+                    </form>}
             </ViewTemplate>
         )
     }
@@ -132,7 +132,7 @@ const FormEdit = (props:{
     const item = props.item;
     return (
         <div className="mx-2 py-2">
-            <form onSubmit={props.onSubmit}>
+            <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>Semester</p>
                 <select className="form-control" name="item.semester" id="item.semester" value={item.semester} onChange={props.handleInputChange} required>
                     <option>1</option>
@@ -175,7 +175,7 @@ class SetEmployeeForm extends ControlledComponent<SetEmployeeFormProps, SetEmplo
             .catch(console.error);
     }
     handleSearchEmployee = (items:Employee[]) => {
-        if (!items || items.length == 0) {
+        if (!items || items.length === 0) {
             this.toast.showDanger("No employee contains name \"" + this.state.searchEmployee +"\" was found");
             return;
         }

@@ -1,13 +1,11 @@
-import { ChangeEvent, Component, FormEvent, ReactNode } from "react";
+import { ChangeEvent, FormEvent, ReactNode } from "react";
 import { ViewTemplate } from "../../layout/ViewTemplate";
-import { commonWrapper } from "../../utils/commonWrapper";
-import BaseProps from '../../models/BaseProps';
-import BaseMasterDataPage from "./BaseMasterDataPage";
 import BaseMasterDataState from '../../models/BaseMasterDataState';
+import BaseProps from '../../models/BaseProps';
+import DataTableHeaderValue from "../../models/DataTableHeaderValue";
 import School from "../../models/School";
-import PaginationButtons from "../../components/buttons/PaginationButtons";
-import ActionButton from "../../components/buttons/ActionButton";
-import { DataTableHeaderValue } from "../../utils/componentUtil";
+import { commonWrapper } from "../../utils/commonWrapper";
+import BaseMasterDataPage from "./BaseMasterDataPage";
 
 class State extends BaseMasterDataState<School>
 {
@@ -46,9 +44,9 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State>
         const items = result?.items;
         return (
             <ViewTemplate title={this.title} back="/admin">
-                {result == undefined || items == undefined ?
+                {result === undefined || items === undefined ?
                     <i>Loading...</i> :
-                    <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
+                    <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
                        {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
@@ -68,15 +66,14 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State>
                                             <td>{item.level}</td>
                                             <td>{item.code}</td>
                                             <td>{item.address}</td>
-                                            <td>
-                                                {this.actionButton(item, false)}
-                                            </td>
+                                            <td>{this.actionButton(item, false)}</td>
                                         </tr>
                                     )
                                 })}
                             </tbody>
+                            {this.tableFooter}
                         </table>
-                    </div>}
+                    </form>}
             </ViewTemplate>
         )
     }
@@ -92,7 +89,7 @@ const FormEdit = (props:{
     const item = props.item;
     return (
         <div className="mx-2 py-2">
-            <form onSubmit={props.onSubmit}>
+            <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>Nis</p>
                 <input className="form-control" name="item.nis" id="item.nis" value={item.nis} onChange={props.handleInputChange} />
                 <p>Name</p>

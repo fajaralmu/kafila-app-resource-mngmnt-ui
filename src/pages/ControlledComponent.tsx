@@ -12,7 +12,7 @@ export default abstract class ControlledComponent<P,S > extends Component<P,S>
                 return;
             }
             let value:any;
-            if (input.type == "number") {
+            if (input.type === "number") {
                 value = input.value;
                 // try {
                 //     value = parseInt(input.value);
@@ -21,7 +21,7 @@ export default abstract class ControlledComponent<P,S > extends Component<P,S>
                 //     return;
                 // }
             }
-            else if (input.type == "checkbox" && input instanceof HTMLInputElement) {
+            else if (input.type === "checkbox" && input instanceof HTMLInputElement) {
                 value = input.checked;
             }
             else {
@@ -38,7 +38,7 @@ export default abstract class ControlledComponent<P,S > extends Component<P,S>
                 if (obj && index < rawName.length - 1) {
                     obj = obj[key];
                 }
-                if ( index == rawName.length - 1 ) {
+                if ( index === rawName.length - 1 ) {
                     obj[key] = value;
                 }
             });

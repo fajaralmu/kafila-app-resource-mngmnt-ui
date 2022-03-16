@@ -1,3 +1,5 @@
+/* Loading */
+
 .loading {
     position: fixed;
     right: 2px;
@@ -16,6 +18,8 @@
     stroke-dashoffset: 20;
   }
 }
+
+/* Toast */
 
 .toast-custom {
   padding: 0;

@@ -39,7 +39,7 @@ export default class RestClient
                     reject(new Error("Invalid response data"));
                     return;
                 }
-                if (response.data.code != SUCCESS_CODE) {
+                if (response.data.code !== SUCCESS_CODE) {
                     reject(response.data);
                     return;
                 }
@@ -55,7 +55,7 @@ export default class RestClient
     }
 
     updateLoginKeyCookie = (response:AxiosResponse) => {
-        if (response.headers["access-token"] && response.headers["access-token"] != "")
+        if (response.headers["access-token"] && response.headers["access-token"] !== "")
         {
             setLoginKeyCookie(response.headers['access-token']);
         }
@@ -71,7 +71,7 @@ export default class RestClient
                     reject(new Error("Invalid response data"));
                     return;
                 }
-                if (response.data.code != SUCCESS_CODE) {
+                if (response.data.code !== SUCCESS_CODE) {
                     reject(response.data);
                     return;
                 }
@@ -96,7 +96,7 @@ export default class RestClient
                     reject(new Error("Invalid response data"));
                     return;
                 }
-                if (response.data.code != SUCCESS_CODE) {
+                if (response.data.code !== SUCCESS_CODE) {
                     reject(response.data);
                     return;
                 }
@@ -123,7 +123,7 @@ export default class RestClient
                     reject(new Error("Invalid response data"));
                     return;
                 }
-                if (response.data.code != SUCCESS_CODE) {
+                if (response.data.code !== SUCCESS_CODE) {
                     reject(response.data);
                     return;
                 }
@@ -153,7 +153,7 @@ export default class RestClient
                         reject(new Error("Invalid response data"));
                         return;
                     }
-                    if (response.data.code != SUCCESS_CODE) {
+                    if (response.data.code !== SUCCESS_CODE) {
                         reject(response.data);
                         return;
                     }

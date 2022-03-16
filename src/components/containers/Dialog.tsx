@@ -60,7 +60,7 @@ class Dialog extends Component<Props, State> {
     }
 
     componentDidMount() {
-        const focusCancelBtn = this.props.type == DialogType.ERROR || this.props.type == DialogType.WARNING ;
+        const focusCancelBtn = this.props.type === DialogType.ERROR || this.props.type === DialogType.WARNING ;
         if (!focusCancelBtn && this.yesButton.current) 
         {
             this.yesButton.current.focus();
@@ -80,7 +80,7 @@ class Dialog extends Component<Props, State> {
         }, 100);
     }
 
-    get stringContent() { return typeof this.props.children == "string"; }
+    get stringContent() { return typeof this.props.children === "string"; }
 
     get headerClassName() : string
     {
@@ -97,7 +97,7 @@ class Dialog extends Component<Props, State> {
 
     render() {
         const title     = this.props.title ? this.props.title:  "Info";
-        const yesOnly   = this.props.yesOnly == true;
+        const yesOnly   = this.props.yesOnly === true;
         const maxWidth  = this.stringContent? '500px': '85vw';
 
         const dialogStyle = {
@@ -123,7 +123,7 @@ class Dialog extends Component<Props, State> {
                                 title={title} 
                                 onClose={this.onClose} />
                             <div className="modal-body" style={{maxHeight: '70vh', overflow: 'auto'}} >{this.props.children}</div>
-                            { this.props.type == DialogType.INFO_NO_BUTTONS? 
+                            { this.props.type === DialogType.INFO_NO_BUTTONS? 
                             <div className={"modal-footer "} >
                                 <h6 className='w-100 text-center'>{Settings.App.uiSetting.defaultTitle}</h6>
                             </div> :
@@ -176,7 +176,7 @@ function Header(props:{ title:string, className:string, onClose:(e:any)=>any }) 
     return (
         <div className={"modal-header " + props.className} >
             <h5 className="modal-title" id="exampleModalCenterTitle" >{props.title}</h5>
-            <button onClick={props.onClose} type="button" className="close" >
+            <button onClick={props.onClose} type="button" className="close btn btn-text text-light" >
                 <span><i className="fas fa-times" /></span>
             </button>
         </div>

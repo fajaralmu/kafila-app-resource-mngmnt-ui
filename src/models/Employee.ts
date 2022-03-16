@@ -34,7 +34,7 @@ export default class Employee extends BaseModel
     removeEducation = (id:number) => { 
         for (let i = 0; i < this.educations.length; i++) {
             const element = this.educations[i];
-            if (element.id == id)
+            if (element.id === id)
             {
                 this.educations.splice(i, 1);
                 break;
@@ -44,7 +44,7 @@ export default class Employee extends BaseModel
     addSchool = (school:School) => {
         for (let i = 0; i < this.schools.length; i++) {
             const element = this.schools[i];
-            if (element.id == school.id)
+            if (element.id === school.id)
             {
                 console.warn("duplicate school id: " + school.id);
                 return false;
@@ -57,7 +57,7 @@ export default class Employee extends BaseModel
     removeSchool = (id:number) => { 
         for (let i = 0; i < this.schools.length; i++) {
             const element = this.schools[i];
-            if (element.id == id)
+            if (element.id === id)
             {
                 this.schools.splice(i, 1);
                 break;

@@ -75,19 +75,19 @@ class Root extends Component<{navigate:NavigateFunction},State>
 
   render(): React.ReactNode {
 
-    if (this.state.loadingError == true)
+    if (this.state.loadingError === true)
     {
       return (
         <div className='w-100 text-center'>
           <h3 className="mt-5 text-danger">Error while loading content</h3>
           <a className='btn btn-outline-dark btn-sm' onClick={this.load}>
-            <i className='fas fa-redo mr-3'></i>
+            <i className='fas fa-redo me-3'></i>
             Reload
           </a>
         </div>
       )
     }
-    if (this.state.loaded == false)
+    if (this.state.loaded === false)
     {
       return (<h3 className='mt-5 text-center text-secondary'>Loading content</h3>)
     }

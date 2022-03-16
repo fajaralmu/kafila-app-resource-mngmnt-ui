@@ -4,12 +4,11 @@ import { commonWrapper } from "../../utils/commonWrapper";
 import BaseProps from '../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
 import BaseMasterDataState from '../../models/BaseMasterDataState';
-import ActionButton from "../../components/buttons/ActionButton";
 import Employee, { Education } from "../../models/Employee";
-import { DataTableHeaderValue } from "../../utils/componentUtil";
 import ControlledComponent from "../ControlledComponent";
 import School from "../../models/School";
 import { getInputReadableDate } from "../../utils/stringUtil";
+import DataTableHeaderValue from "../../models/DataTableHeaderValue";
 
 class State extends BaseMasterDataState<Employee>
 {
@@ -97,54 +96,53 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State>
         return (
             <ViewTemplate title={this.title} back="/admin">
                 {this.showFormButton}
-                {result == undefined || items == undefined ?
+                {result === undefined || items === undefined ?
                     <i>Loading...</i> :
-                    <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
+                    <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
                         {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     {this.getDataTableHeaderComponent()}
-
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {items.map((item, i) => {
+                                    const { user, schools, educations } = item;
                                     return (
                                         <tr key={"user-" + item.id}>
                                             <td>{this.startingNumber + i}</td>
                                             <td>{item.nisdm}</td>
-                                            <td>{item.user.fullName}</td>
-                                            <td>{item.user.email}</td>
-                                            <td>{new Date(item.user.birthDate).toLocaleDateString()}</td>
-                                            <td>{item.user.gender}</td>
+                                            <td>{user.fullName}</td>
+                                            <td>{user.email}</td>
+                                            <td>{new Date(user.birthDate).toLocaleDateString()}</td>
+                                            <td>{user.gender}</td>
                                             <td>{this.listToggler(
-                                                    item.schools, 
+                                                    schools, 
                                                     item, 
-                                                    (i) => `${i.name}`, 
+                                                    (school) => `${school.name}`, 
                                                     this.addSchool, 
                                                     this.removeSchool)}
                                             </td>
                                             <td>
                                                 {this.listToggler(
-                                                    item.educations, 
+                                                    educations, 
                                                     item, 
-                                                    (i) => `${i.type}: ${i.name}`, 
+                                                    (ed) => `${ed.type}: ${ed.name}`, 
                                                     this.addEducation, 
                                                     this.removeEducation)}
                                             </td>
                                             
-                                            <td>
-                                                {this.actionButton(item)}
-                                            </td>
+                                            <td>{this.actionButton(item)}</td>
                                         </tr>
                                     )
                                 })}
                             </tbody>
+                            {this.tableFooter}
                         </table>
-                    </div>}
+                    </form>}
             </ViewTemplate>
         )
     }
@@ -162,7 +160,7 @@ const FormEdit = (props:{
     const onChange = props.handleInputChange;
     return (
         <div className="mx-2 py-2">
-            <form onSubmit={props.onSubmit}>
+            <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>NiSDM</p>
                 <input className="form-control" id="item.nisdm" name="item.nisdm" value={item.nisdm} onChange={onChange} required/>
                 <p>Full Name</p>

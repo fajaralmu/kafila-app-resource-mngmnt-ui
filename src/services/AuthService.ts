@@ -29,7 +29,7 @@ export default class AuthService {
     @inject(RoutingService)
     private routing:RoutingService;
  
-    get loggedIn() { return this._loggedUser != undefined; }
+    get loggedIn() { return this._loggedUser !== undefined; }
 
     get loggedUser() { 
         return this._loggedUser; 

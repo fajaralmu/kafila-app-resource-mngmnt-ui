@@ -13,7 +13,7 @@ export default class PaginationButtons extends Component<IProps, any> {
     }
     render() {
         const buttonIndexes = generateButtonValues(this.props.limit, this.props.totalData, this.props.activePage);
-        if (buttonIndexes.length == 0) { return null }
+        if (buttonIndexes.length === 0) { return null }
         const lastIndex = buttonIndexes[buttonIndexes.length - 1];
         const nextPage = this.props.activePage + 1 >= lastIndex  ? 0 : this.props.activePage + 1;
         const previusPage = this.props.activePage - 1 < 0? lastIndex-1 : this.props.activePage - 1;
@@ -23,7 +23,7 @@ export default class PaginationButtons extends Component<IProps, any> {
                     <li className="page-item"><a className="page-link clickable" onClick={(e) => this.props.onClick(previusPage)}>Previous</a></li>
                     {buttonIndexes.map((page, i) => {
                         return (
-                        <li key={"NAV-"+randomString(10)} className={"page-item "+(page-1 == this.props.activePage?"active":"")}>
+                        <li key={"NAV-"+randomString(10)} className={"page-item "+(page-1 === this.props.activePage?"active":"")}>
                             <a className="page-link clickable" onClick={(e) => this.props.onClick(page - 1)} >{page}</a>
                         </li>
                         )

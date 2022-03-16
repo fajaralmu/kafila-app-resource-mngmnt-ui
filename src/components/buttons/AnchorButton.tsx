@@ -10,7 +10,7 @@ interface Props
     to?:string;
 }
 const AnchorButton = (props:Props) => {
-    if (props.show != undefined && props.show === false)
+    if (props.show !== undefined && props.show === false)
     {
         return null;
     }
@@ -19,7 +19,7 @@ const AnchorButton = (props:Props) => {
         return (
             <a className={props.className} onClick={props.onClick}>
                 {props.iconClass?
-                <i className={props.iconClass+ (props.children? " mr-3" : "")}/> : null }
+                <i className={props.iconClass+ (props.children? " me-3" : "")}/> : null }
                 {props.children}
             </a>
         )
@@ -27,7 +27,7 @@ const AnchorButton = (props:Props) => {
     return (
         <Link to={props.to} className={props.className} onClick={props.onClick}>
             {props.iconClass?
-            <i className={props.iconClass+ (props.children? " mr-3" : "")}/> : null }
+            <i className={props.iconClass+ (props.children? " me-3" : "")}/> : null }
             {props.children}
         </Link>
     )

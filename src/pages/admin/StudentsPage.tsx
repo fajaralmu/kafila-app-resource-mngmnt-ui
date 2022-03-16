@@ -5,7 +5,7 @@ import BaseProps from '../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
 import BaseMasterDataState from '../../models/BaseMasterDataState';
 import Student from "../../models/Student";
-import { DataTableHeaderValue } from "../../utils/componentUtil";
+import DataTableHeaderValue from "../../models/DataTableHeaderValue";
 import { getInputReadableDate } from "../../utils/stringUtil";
 
 class State extends BaseMasterDataState<Student>
@@ -87,9 +87,9 @@ class StudentsPage extends BaseMasterDataPage<Student, BaseProps, State>
         return (
             <ViewTemplate title={this.title} back="/admin">
                 {this.showFormButton}
-                {result == undefined || items == undefined ?
+                {result === undefined || items === undefined ?
                     <i>Loading...</i> :
-                    <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
+                    <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
                        {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
@@ -158,8 +158,9 @@ class StudentsPage extends BaseMasterDataPage<Student, BaseProps, State>
                                     )
                                 })}
                             </tbody>
+                            {this.tableFooter}
                         </table>
-                    </div>}
+                    </form>}
             </ViewTemplate>
         )
     }
@@ -176,7 +177,7 @@ const FormEdit = (props:{
     const onChange  = props.handleInputChange;
     return (
         <div className="mx-2 py-2">
-            <form onSubmit={props.onSubmit}>
+            <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>Full Name</p>
                 <input className="form-control" id="item.user.fullName" name="item.user.fullName" value={item.user.fullName}  onChange={onChange} required/>
                 <p>Email</p>

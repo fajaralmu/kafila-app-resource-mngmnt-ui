@@ -26,7 +26,7 @@ export default class MasterDataService
         if (order)
         {
             orderString = '&order='+order;
-            if (orderDesc == true)
+            if (orderDesc === true)
             {
                 orderString += '&orderDesc=true'
             }

@@ -20,6 +20,9 @@ class Home extends BasePage<BaseProps, State>
 {
     state: State = new State();
     welcomingWord: string;
+    private _mounted = false;
+    get isMounted() { return this._mounted; }
+    private set isMounted(val: boolean) { this._mounted = val; }
 
     constructor(props: any) {
         super(props);
@@ -28,10 +31,17 @@ class Home extends BasePage<BaseProps, State>
     }
     componentDidMount() {
         this.startDisplayWelcomingWord();
+        this.isMounted = true;
+    }
+    componentWillUnmount() {
+        this.isMounted = false;
     }
     startDisplayWelcomingWord = () => {
-        if (this.state.welcomingWords.join("") != this.welcomingWord) {
+        if (this.state.welcomingWords.join("") !== this.welcomingWord) {
             invokeLater(() => {
+                if (!this.isMounted) {
+                    return;
+                }
                 const words = this.state.welcomingWords;
                 words.push(this.welcomingWord[this.welcomingWord.length - (this.welcomingWord.length - words.length)]);
                 this.setState({ welcomingWords: words }, this.startDisplayWelcomingWord);

@@ -54,7 +54,7 @@ export default class ToastContainer extends Component<any, State> implements Toa
         const { items } = this.state;
         for (let i = 0; i < items.length; i++) {
             const element = items[i];
-            if (element.id == id) {
+            if (element.id === id) {
                 items.splice(i, 1);
                 this.setState({ items: items });
                 break;
@@ -82,7 +82,7 @@ const Toast = (props: {item: ToastItem, onClose:(id:number) => any}) => {
                 <p style={{ margin: 'auto' }}>{props.item.message}</p>
                 <AnchorButton 
                     iconClass='fas fa-times' 
-                    className='btn btn-text btn-sm ml-3' 
+                    className='btn btn-text btn-sm ms-3' 
                     onClick={(e) => props.onClose(props.item.id)}
                 />
             </div>

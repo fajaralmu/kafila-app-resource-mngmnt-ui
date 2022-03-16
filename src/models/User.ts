@@ -16,13 +16,13 @@ export default class User extends BaseModel {
             for (let i = 0; i < this.authorities.length; i++) {
                 const userAuthType = this.authorities[i];
                 if (typeof type === 'string') {
-                    if (userAuthType.name == type) {
+                    if (userAuthType.name === type) {
                         return true;
                     }
                 } else {
                     for (let t = 0; t < type.length; t++) {
                         const item = type[t];
-                        if (item == userAuthType.name) {
+                        if (item === userAuthType.name) {
                             return true;
                         }
                     }

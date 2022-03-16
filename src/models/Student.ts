@@ -13,9 +13,9 @@ export default class Student extends BaseModel {
     province: string;
 
     /**
-     * ========================
+     * ===========================
      * Family
-     * ========================
+     * ===========================
      */
 
     siblingNum: number;
@@ -41,9 +41,9 @@ export default class Student extends BaseModel {
     motherIncome: number;
 
     /**
-     * ========================
+     * ===========================
      * Academic
-     * ========================
+     * ===========================
      */
     originSchool: string;
     sttbNumber: string;
@@ -65,9 +65,9 @@ export default class Student extends BaseModel {
     certificateNumberMa: string;
 
     /**
-     * ======================
+     * =========================
      * Alumni
-     * ======================
+     * =========================
      */
     graduationCeremonyDate: Date;
     highEducationUniv: string;

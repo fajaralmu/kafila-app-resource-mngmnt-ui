@@ -55,7 +55,7 @@ class UserSection extends Component<Props, State>
         return (
             <div >
                 <a className="btn btn-light no-wrap" onClick={this.toggleDropdown}>
-                    <i className="fas fa-user mr-3" /> {this.props.user.displayName}
+                    <i className="fas fa-user me-3" /> {this.props.user.displayName}
                 </a>
                 <div style={{position: 'absolute'}}>
                     { this.state.showDropdown? 
@@ -64,18 +64,18 @@ class UserSection extends Component<Props, State>
                         className="bg-light border border-gray rounded text-left pt-3 pb-3" >
                         
                         <a className="btn btn-text" onClick={this.navigate} data-to="/dashboard">
-                            <i className="fas fa-home mr-3"/>Dashboard
+                            <i className="fas fa-home me-3"/>Dashboard
                         </a>
                         <a className="btn btn-text" onClick={this.navigate} data-to="/profile">
-                            <i className="fas fa-user-cog mr-3"/>Edit Profile
+                            <i className="fas fa-user-cog me-3"/>Edit Profile
                         </a>
                         { this.authService.isAdmin ?
                         <a className="btn btn-text text-success" onClick={this.navigate} data-to="/admin">
-                            <i className="fas fa-tachometer-alt mr-3"/>Admin Area
+                            <i className="fas fa-tachometer-alt me-3"/>Admin Area
                         </a> : null }
                       
                         <a className="btn btn-text text-danger" onClick={this.logout}>
-                            <i className="fas fa-sign-out-alt mr-3"/>Logout
+                            <i className="fas fa-sign-out-alt me-3"/>Logout
                         </a>
                     </div> : null }
                 </div>

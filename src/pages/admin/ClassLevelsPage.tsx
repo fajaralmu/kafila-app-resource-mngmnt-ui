@@ -3,8 +3,8 @@ import { ViewTemplate } from "../../layout/ViewTemplate";
 import BaseMasterDataState from '../../models/BaseMasterDataState';
 import BaseProps from '../../models/BaseProps';
 import ClassLevel from "../../models/ClassLevel";
+import DataTableHeaderValue from "../../models/DataTableHeaderValue";
 import { commonWrapper } from "../../utils/commonWrapper";
-import { DataTableHeaderValue } from "../../utils/componentUtil";
 import School from './../../models/School';
 import BaseMasterDataPage from "./BaseMasterDataPage";
 
@@ -36,7 +36,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
         this.service.list<School>('schools', 0, -1)
             .then((response) => {
                 this.schools = response.items ?? [];
-                if (this.schools.length == 0) {
+                if (this.schools.length === 0) {
                     this.dialog.showError("No School Record", "Failed when getting school data");
                     return;
                 }
@@ -66,9 +66,9 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
         return (
             <ViewTemplate title={this.title} back="/admin">
                 {this.showFormButton}
-                {result == undefined || items == undefined ?
+                {result === undefined || items === undefined ?
                     <i>Loading...</i> :
-                    <div className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
+                    <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{overflow: 'auto'}}>
                        {this.paginationButton}
                         <table className="commonDataTable table table-striped">
                             <thead>
@@ -99,8 +99,9 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
                                     )
                                 })}
                             </tbody>
+                            {this.tableFooter}
                         </table>
-                    </div>}
+                    </form>}
             </ViewTemplate>
         )
     }
@@ -120,7 +121,7 @@ const FormEdit = (props:{
     }
     return (
         <div className="mx-2 py-2">
-            <form onSubmit={props.onSubmit}>
+            <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>Level</p>
                 <input className="form-control" name="item.level" id="item.level" value={item.level} type="number" required onChange={props.handleInputChange} />
                 <p>Letter</p>

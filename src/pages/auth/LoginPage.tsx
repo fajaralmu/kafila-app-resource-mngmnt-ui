@@ -80,7 +80,7 @@ class LoginPage extends BasePage<BaseProps, State>
                     <div className="col-md-4"/>
                     <div className="col-md-4 bg-light" style={{padding: 20}}>
                         
-                        <ErrorMessage show={this.state.error != undefined}>
+                        <ErrorMessage show={this.state.error !== undefined}>
                             {this.state.error?.message}
                         </ErrorMessage> 
                         <CommonTable
