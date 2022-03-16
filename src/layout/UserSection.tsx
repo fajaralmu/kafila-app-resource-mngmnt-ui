@@ -61,7 +61,7 @@ class UserSection extends Component<Props, State>
                     { this.state.showDropdown? 
                     <div
                         style={{width: '200px', zIndex: 1, position: 'relative'}}
-                        className="bg-light border border-gray rounded text-left pt-3 pb-3" >
+                        className="bg-light border border-gray rounded text-start pt-3 pb-3" >
                         
                         <a className="btn btn-text" onClick={this.navigate} data-to="/dashboard">
                             <i className="fas fa-home me-3"/>Dashboard

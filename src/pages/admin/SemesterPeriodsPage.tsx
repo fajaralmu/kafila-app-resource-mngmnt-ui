@@ -131,7 +131,7 @@ const FormEdit = (props:{
 }) => {
     const item = props.item;
     return (
-        <div className="mx-2 py-2">
+        <div className="formEditContainer">
             <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>Semester</p>
                 <select className="form-control" name="item.semester" id="item.semester" value={item.semester} onChange={props.handleInputChange} required>

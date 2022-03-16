@@ -120,7 +120,7 @@ const FormEdit = (props:{
         item.school = school;
     }
     return (
-        <div className="mx-2 py-2">
+        <div className="formEditContainer">
             <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>Level</p>
                 <input className="form-control" name="item.level" id="item.level" value={item.level} type="number" required onChange={props.handleInputChange} />

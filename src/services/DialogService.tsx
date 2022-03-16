@@ -1,10 +1,9 @@
-import "reflect-metadata"
 import { injectable } from "inversify";
-import React, { Component, createElement,   ReactElement } from "react"; 
-import DialogPrompt from "../components/containers/DialogPrompt";
+import { Component, createElement, ReactElement } from "react";
+import "reflect-metadata";
+import DialogContainer from "../components/dialog/DialogContainer";
+import DialogPrompt from "../components/dialog/DialogPrompt";
 import { DialogType } from "../constants/DialogType";
-import DialogProps from "../models/DialogProps";
-import { DialogContainer } from '../App';
 import { invokeLater } from "../utils/eventUtil";
 
 // ms
@@ -13,7 +12,7 @@ const INVOCATION_WAIT_DELAY = 500;
 @injectable()
 export default class DialogService
 {
-    private container:DialogContainer;
+    private container: DialogContainer;
     public setContainer = (container:DialogContainer) => {
         this.container = container;
     }

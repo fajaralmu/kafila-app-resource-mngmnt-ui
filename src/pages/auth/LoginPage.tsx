@@ -110,7 +110,7 @@ class LoginPage extends BasePage<BaseProps, State>
                             ]} />
                         { this.state.loading? 
                         <i>Please wait...</i> : 
-                        <ActionButton className="btn btn-success mt-3">
+                        <ActionButton type="submit" className="btn btn-success mt-3">
                             Login
                         </ActionButton> }
                         <p className="mt-3">

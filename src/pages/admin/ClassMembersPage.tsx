@@ -187,7 +187,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
     render() {
         const { students, classes, searchStudent } = this.state;
         return (
-            <div className="mx-2 py-2">
+            <div className="formEditContainer">
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     this.loadStudents();

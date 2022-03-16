@@ -1,0 +1,25 @@
+/* Loading */
+
+.loading {
+    position: fixed;
+    right: 2px;
+    bottom: 2px;
+    z-index: 1100;
+}
+
+.loadingBar {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 200;
+    animation: draw 2s linear infinite; 
+    stroke: var(--gray);
+}
+
+.loadingBarContainer {
+    stroke: var(--gray-dark);
+}
+
+ @keyframes draw {
+  to {
+    stroke-dashoffset: 20;
+  }
+}

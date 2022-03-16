@@ -61,16 +61,11 @@ class Dialog extends Component<Props, State> {
 
     componentDidMount() {
         const focusCancelBtn = this.props.type === DialogType.ERROR || this.props.type === DialogType.WARNING ;
-        if (!focusCancelBtn && this.yesButton.current) 
-        {
+        if (!focusCancelBtn && this.yesButton.current)  {
             this.yesButton.current.focus();
-        } 
-        else if (focusCancelBtn && this.cancelButton.current) 
-        {
+        }  else if (focusCancelBtn && this.cancelButton.current)  {
             this.cancelButton.current.focus();
-        }
-        else if (focusCancelBtn && this.yesButton.current)
-        {
+        } else if (focusCancelBtn && this.yesButton.current) {
             this.yesButton.current.focus();
         }
 
@@ -111,29 +106,31 @@ class Dialog extends Component<Props, State> {
         return (
             <Fragment>
                 <Backdrop bgColor={this.state.backColor} />
-                <div 
-                    className="modal show" 
-                    style={{ display: 'block' }}  >
+                <div className="modal show d-block">
                     <div 
                         className={modalDialogClass}
-                        style={dialogStyle}>
-                        <div className="modal-content" style={{marginTop:'5px'}} >
+                        style={dialogStyle}
+                    >
+                        <div className="modal-content mt-5">
                             <Header 
                                 className={this.headerClassName} 
                                 title={title} 
-                                onClose={this.onClose} />
-                            <div className="modal-body" style={{maxHeight: '70vh', overflow: 'auto'}} >{this.props.children}</div>
+                                onClose={this.onClose} 
+                            />
+                            <div className="modal-body" style={{ maxHeight: '70vh', overflow: 'auto' }} >{this.props.children}</div>
                             { this.props.type === DialogType.INFO_NO_BUTTONS? 
                             <div className={"modal-footer "} >
                                 <h6 className='w-100 text-center'>{Settings.App.uiSetting.defaultTitle}</h6>
-                            </div> :
+                            </div> 
+                            :
                             <Footer 
                                 cancelButton={this.cancelButton} 
                                 yesLabel={this.props.yesLabel}
                                 yesButton={this.yesButton} 
                                 yesOnly={yesOnly} 
                                 onConfirm={this.onConfirm} 
-                                onCancel={this.onCancel} /> }
+                                onCancel={this.onCancel} 
+                            /> }
                         </div>
                     </div>
                 </div>

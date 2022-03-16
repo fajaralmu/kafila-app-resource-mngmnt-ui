@@ -1,8 +1,9 @@
 import { ChangeEvent } from "react";
-import DataTableHeaderValue from "../models/DataTableHeaderValue";
-import { randomString } from "../utils/stringUtil";
+import DataTableHeaderValue from "../../models/DataTableHeaderValue";
+import { randomString } from "../../utils/stringUtil";
+import './DataTableHeader.scss';
 
-const DataTableHeaders = (
+const DataTableHeader = (
     items:DataTableHeaderValue[], 
     activeOrder:string, 
     orderDesc:boolean, 
@@ -12,7 +13,7 @@ const DataTableHeaders = (
 ) => {
 
     return items.map(item => {
-        let className = activeOrder === item.name ? "bg-light" : "";
+        let className = activeOrder === item.name ? "text-center bg-light" : "text-center";
         let textColor = activeOrder === item.name ? "text-dark":"text-secondary";
         let tdOnClick = (e:any) => {
             if (item.orderable && item.name) {
@@ -29,13 +30,13 @@ const DataTableHeaders = (
         const isActive = activeOrder === item.name;
         return (
             <th key={"th-item-"+randomString(3)} className={className}>
-                <button type="button" className={`btn btn-text w-100 ${textColor}`} onClick={tdOnClick} >
-                    <b>{item.label}</b>
-                    {item.orderable ?
-                    isActive ?
+                {item.orderable ?
+                <button type="button" className={`sortButton mb-1 btn btn-text w-100 ${textColor}`} onClick={tdOnClick} >
+                    <b className="text-start w-100">{item.label}</b>
+                    {isActive ?
                     <i className={`fas ${orderDesc ? 'fa-long-arrow-alt-down' : 'fa-long-arrow-alt-up'} ms-2`} /> :
-                    <i className="fas fa-sort ms-2" /> : null}
-                </button>
+                    <i className="fas fa-sort ms-2" />}
+                </button> : <span className="text-secondary">{item.label}</span>}
                 {item.filterable && item.name?
                 <input id={`input-filter-${item.name}`} className="form-control form-control-sm" value={filter[item.name] ?? ""} onChange={_onChange} /> : 
                 null}
@@ -44,5 +45,5 @@ const DataTableHeaders = (
     })
 }
 
-export default DataTableHeaders;
+export default DataTableHeader;
 

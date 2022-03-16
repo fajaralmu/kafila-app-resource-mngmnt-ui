@@ -39,7 +39,7 @@ class EditProfile extends BasePage<BaseProps, State>
         const user = this.state.user;
         return (
             <ViewTemplate title="Edit Profile" back="/dashboard">
-                <form onSubmit={this.onSubmit}>
+                <form className="border border-gray rounded px-3 py-3" onSubmit={this.onSubmit}>
                     <p>Email</p>
                     <input className="form-control" name="user.email" value={user.email} onChange={this.handleInputChange} />
                     <p>Username</p>

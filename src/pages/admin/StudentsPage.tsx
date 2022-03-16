@@ -176,7 +176,7 @@ const FormEdit = (props:{
     const item      = props.item;
     const onChange  = props.handleInputChange;
     return (
-        <div className="mx-2 py-2">
+        <div className="formEditContainer">
             <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>Full Name</p>
                 <input className="form-control" id="item.user.fullName" name="item.user.fullName" value={item.user.fullName}  onChange={onChange} required/>

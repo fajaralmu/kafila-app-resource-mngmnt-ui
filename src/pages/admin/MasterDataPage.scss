@@ -3,3 +3,13 @@
   white-space: nowrap;
   vertical-align: middle;
 }
+
+.formEditContainer {
+  padding-bottom: 1.5rem;
+}
+
+.listTogglerItem {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}

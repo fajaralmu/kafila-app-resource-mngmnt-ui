@@ -12,7 +12,7 @@ import { randomString } from "../../utils/stringUtil";
 import ModelNames from "../../constants/ModelNames";
 import './MasterDataPage.scss';
 import DataTableHeaderValue from "../../models/DataTableHeaderValue";
-import DataTableHeaders from "../../components/DataTableHeader";
+import DataTableHeader from "../../components/dataTableHeader/DataTableHeader";
 
 
 abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S extends BaseMasterDataState<M>> extends BasePage<P, S>
@@ -164,7 +164,7 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     }
 
     protected getDataTableHeaderComponent = () => {
-        return DataTableHeaders(
+        return DataTableHeader(
             this.getDataTableHeaderVals(),
             this.activeOrder,
             this.isOrderDesc,
@@ -228,12 +228,12 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
             <>
                 {items.map((item: T) => {
                     return (
-                        <div key={`list-toggler-item-${randomString(5)}`}>
+                        <div className="listTogglerItem" key={`list-toggler-item-${randomString(5)}`}>
                             <ActionButton
                                 onClick={(e) => remove(model, item.id)}
                                 className="btn btn-text btn-sm text-danger me-2"
                                 iconClass="fas fa-minus-circle" />
-                            {label(item)}
+                            <span className="no-wrap">{label(item)}</span>
                         </div>
                     );
                 })}

@@ -87,7 +87,7 @@ class HeaderView extends ControlledComponent<Props, State>
                     <div className="row w-100 mt-2">
                         <div className="col-md-2 mb-2 text-center d-flex" style={{alignItems: 'center'}}>
                             <img src="/kiis-stroke.png" width={50} className="me-2" />
-                            <div className={"text-left"}>
+                            <div className={"text-start"}>
                                 <Link className="navbar-brand" to="/">{title}</Link>
                             </div>
                         </div>

@@ -159,7 +159,7 @@ const FormEdit = (props:{
     const item = props.item;
     const onChange = props.handleInputChange;
     return (
-        <div className="mx-2 py-2">
+        <div className="formEditContainer">
             <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
                 <p>NiSDM</p>
                 <input className="form-control" id="item.nisdm" name="item.nisdm" value={item.nisdm} onChange={onChange} required/>
