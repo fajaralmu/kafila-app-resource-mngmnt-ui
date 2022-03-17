@@ -29,7 +29,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State> {
             new DataTableHeaderValue("semesterPeriod.semester", "Semester"),
             new DataTableHeaderValue("semesterPeriod.year", "Year"),
             new DataTableHeaderValue(null, "Member", false),
-            new DataTableHeaderValue(null, "Semeser Active", false),
+            new DataTableHeaderValue("semesterPeriod.active", "Semester Active", true, false),
         ]
     }
 

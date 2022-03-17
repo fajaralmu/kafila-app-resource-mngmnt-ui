@@ -15,6 +15,7 @@ import Student from '../../../models/Student';
 import MasterDataService from '../../../services/MasterDataService';
 import ToastService from '../../../services/ToastService';
 import BaseMasterDataPage from "./BaseMasterDataPage";
+import ClassMemberService from './../../../services/ClassMemberService';
 
 class State extends BaseMasterDataState<ClassMember> {
 
@@ -34,7 +35,7 @@ class ClassMembersPage extends BaseMasterDataPage<ClassMember, BaseProps, State>
             new DataTableHeaderValue("classLevel.school.name", "School"),
             new DataTableHeaderValue("classLevel.semesterPeriod.semester", "Semester"),
             new DataTableHeaderValue("classLevel.semesterPeriod.year", "Year"),
-            new DataTableHeaderValue("classLevel.active", "Semester Active", false),
+            new DataTableHeaderValue("classLevel.semesterPeriod.active", "Semester Active", true, false),
         ]
     }
     
@@ -112,8 +113,8 @@ type FormEditState = {
 class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
     @resolve(MasterDataService)
     private masterDataService: MasterDataService;
-    @resolve(RestClient)
-    private rest: RestClient;
+    @resolve(ClassMemberService)
+    private classMemberService: ClassMemberService;
     @resolve(ToastService)
     private toast: ToastService;
 
@@ -129,10 +130,9 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
     componentDidMount() { this.loadClasses(); }
 
     loadClasses = () => {
-        const URL_GET_ACTIVE_CLASSES = Settings.App.hosts.api +"/api/admin/management/classlevels/active";
-        this.rest.getAuthorized<ClassLevel[]>(URL_GET_ACTIVE_CLASSES)
+        this.classMemberService.getActiveClasses()
             .then(this.handleClassLoaded)
-            .catch(err => this.toast.showDanger("Failed to load classes"));
+            .catch(() => this.toast.showDanger("Failed to load classes"));
     }
 
     handleClassLoaded = (classes: ClassLevel[]) => {
