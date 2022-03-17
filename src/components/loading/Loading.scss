@@ -2,9 +2,12 @@
 
 .loading {
     position: fixed;
-    right: 2px;
-    bottom: 2px;
+    right: calc(50vw - 100px);
+    bottom: calc(50vh - 40px);
     z-index: 1100;
+    width: 200px;
+    height: 80px;
+
 }
 
 .loadingBar {

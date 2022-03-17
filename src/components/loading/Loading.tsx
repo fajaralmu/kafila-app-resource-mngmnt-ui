@@ -8,7 +8,7 @@ import './Loading.scss';
 import { invokeLater } from './../../utils/eventUtil';
 
 const TRANSITION_DURATION = 300;
-
+const ACTIVE_OPACITY = 0.7;
 type State = {
     show: boolean;
     opacity: number;
@@ -27,7 +27,7 @@ export default class Loading extends Component<any, State> implements LoadingCom
         }
     }
     startLoading() {
-        this.setState({ show: true, opacity: 1 });
+        this.setState({ show: true, opacity: ACTIVE_OPACITY });
     }
     stopLoading() {
         this.setState({ opacity: 0 }, () => {
@@ -46,7 +46,7 @@ export default class Loading extends Component<any, State> implements LoadingCom
         const transitionDuration = `${TRANSITION_DURATION}ms`;
         return (
             <div 
-                className='loading bg-info border border-info rounded px-2 py-1 text-center'
+                className='loading bg-secondary border border-secondary rounded px-2 py-1 text-center'
                 style={{ opacity: this.state.opacity, transitionDuration: transitionDuration }} 
             >
                 <h3 className='text-light'>Loading</h3>
