@@ -1,28 +1,25 @@
 import { resolve } from "inversify-react";
 import { ChangeEvent, FormEvent, ReactNode } from "react";
-import RestClient from "../../apiClients/RestClient";
-import ActionButton from "../../components/buttons/ActionButton";
-import { ViewTemplate } from "../../layout/ViewTemplate";
-import BaseMasterDataState from '../../models/BaseMasterDataState';
-import BaseProps from '../../models/BaseProps';
-import ClassMember from "../../models/ClassMember";
-import Settings from "../../settings";
-import { commonWrapper } from "../../utils/commonWrapper";
-import DataTableHeaderValue from "../../models/DataTableHeaderValue";
-import ControlledComponent from "../ControlledComponent";
-import ClassLevel from './../../models/ClassLevel';
-import Student from './../../models/Student';
-import MasterDataService from './../../services/MasterDataService';
-import ToastService from './../../services/ToastService';
+import RestClient from "../../../apiClients/RestClient";
+import ActionButton from "../../../components/buttons/ActionButton";
+import { ViewTemplate } from "../../../layout/ViewTemplate";
+import BaseMasterDataState from '../../../models/BaseMasterDataState';
+import BaseProps from '../../../models/BaseProps';
+import ClassMember from "../../../models/ClassMember";
+import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
+import Settings from "../../../settings";
+import { commonWrapper } from "../../../utils/commonWrapper";
+import ControlledComponent from "../../ControlledComponent";
+import ClassLevel from '../../../models/ClassLevel';
+import Student from '../../../models/Student';
+import MasterDataService from '../../../services/MasterDataService';
+import ToastService from '../../../services/ToastService';
 import BaseMasterDataPage from "./BaseMasterDataPage";
 
-class State extends BaseMasterDataState<ClassMember>
-{
+class State extends BaseMasterDataState<ClassMember> {
 
 }
-class ClassMembersPage extends BaseMasterDataPage<ClassMember, BaseProps, State>
-{
-    
+class ClassMembersPage extends BaseMasterDataPage<ClassMember, BaseProps, State> {    
     constructor(props: BaseProps) {
         super(props, "classmembers", "Class Member Management");
         this.state = new State();
@@ -30,6 +27,7 @@ class ClassMembersPage extends BaseMasterDataPage<ClassMember, BaseProps, State>
     get defaultItem(): ClassMember { return new ClassMember() }
     getDataTableHeaderVals(): DataTableHeaderValue[] {
         return [
+            new DataTableHeaderValue("student.nisKiis", "Nis Kiis"),
             new DataTableHeaderValue("student.user.fullName", "Name"),
             new DataTableHeaderValue("classLevel.level", "Class"),
             new DataTableHeaderValue("classLevel.letter", "Letter"),
@@ -74,6 +72,7 @@ class ClassMembersPage extends BaseMasterDataPage<ClassMember, BaseProps, State>
                                     return (
                                         <tr key={"ClassMember-" + item.id}>
                                             <td>{this.startingNumber + i}</td>
+                                            <td>{student.nisKiis}</td>
                                             <td>{student.user.fullName}</td>
                                             <td>{classLevel.level}</td>
                                             <td>{classLevel.letter}</td>
@@ -151,9 +150,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
             return;
         }
         this.masterDataService.list<Student>('students', 0, 10, 'user.fullName', false, 'user.fullName:' + search)
-            .then(response => {
-                this.handleStudentLoaded(response.items);
-            })
+            .then(response => this.handleStudentLoaded(response.items))
             .catch((e) => this.toast.showDanger("Failed to load students"));
     }
     handleStudentLoaded = (items:Student[]) => {
@@ -209,8 +206,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
                     </div>
                         
                     <div style={{position: 'absolute',width:'75%'}}>
-                        { students.length > 0 ?
-
+                        {students.length > 0 ?
                         <div className="bg-light border border-dark px-2 py-1 w-100" style={{position: 'relative'}}>
                             <ActionButton className="btn btn-text btn-sm" iconClass="fas fa-times" onClick={this.closeStudentDropdown}>
                                 close
@@ -221,7 +217,7 @@ class FormEdit extends ControlledComponent<FormEditProps, FormEditState> {
                                         return (
                                             <div key={"set-emp-"+e.id}>
                                                 <a className="btn btn-text clickable" onClick={()=>this.setSelectedStudent(e)}>
-                                                    {e.user.fullName.trim()}
+                                                   {e.nisKiis} - {e.user.fullName.trim()}
                                                 </a>
                                             </div>
                                         );

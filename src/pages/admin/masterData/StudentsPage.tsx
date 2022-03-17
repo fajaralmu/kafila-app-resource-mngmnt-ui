@@ -1,12 +1,12 @@
 import { ChangeEvent, Component, FormEvent, ReactNode } from "react";
-import { ViewTemplate } from "../../layout/ViewTemplate";
-import { commonWrapper } from "../../utils/commonWrapper";
-import BaseProps from '../../models/BaseProps';
+import { ViewTemplate } from "../../../layout/ViewTemplate";
+import { commonWrapper } from "../../../utils/commonWrapper";
+import BaseProps from '../../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
-import BaseMasterDataState from '../../models/BaseMasterDataState';
-import Student from "../../models/Student";
-import DataTableHeaderValue from "../../models/DataTableHeaderValue";
-import { getInputReadableDate } from "../../utils/stringUtil";
+import BaseMasterDataState from '../../../models/BaseMasterDataState';
+import Student from "../../../models/Student";
+import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
+import { getInputReadableDate } from "../../../utils/stringUtil";
 
 class State extends BaseMasterDataState<Student>
 {

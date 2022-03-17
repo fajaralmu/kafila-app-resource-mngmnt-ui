@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, ReactNode } from "react";
-import { ViewTemplate } from "../../layout/ViewTemplate";
-import BaseMasterDataState from '../../models/BaseMasterDataState';
-import BaseProps from '../../models/BaseProps';
-import DataTableHeaderValue from "../../models/DataTableHeaderValue";
-import School from "../../models/School";
-import { commonWrapper } from "../../utils/commonWrapper";
+import { ViewTemplate } from "../../../layout/ViewTemplate";
+import BaseMasterDataState from '../../../models/BaseMasterDataState';
+import BaseProps from '../../../models/BaseProps';
+import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
+import School from "../../../models/School";
+import { commonWrapper } from "../../../utils/commonWrapper";
 import BaseMasterDataPage from "./BaseMasterDataPage";
 
 class State extends BaseMasterDataState<School>

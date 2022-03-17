@@ -2,10 +2,10 @@ import { resolve } from 'inversify-react';
 import React, { Component, Fragment } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom';
 import BaseProps from '../models/BaseProps';
-import EmployeesPage from '../pages/admin/EmployeesPage';
+import EmployeesPage from '../pages/admin/masterData/EmployeesPage';
 import MainAdminPage from '../pages/admin/MainAdminPage';
-import SchoolsPage from '../pages/admin/SchoolsPage';
-import UsersPage from '../pages/admin/UsersPage';
+import SchoolsPage from '../pages/admin/masterData/SchoolsPage';
+import UsersPage from '../pages/admin/masterData/UsersPage';
 import LoginPage from '../pages/auth/LoginPage';
 import { ErrorView } from '../pages/error/ErrorView';
 import Home from '../pages/home/Home';
@@ -14,10 +14,10 @@ import EditProfile from '../pages/user/EditProfile';
 import AuthService from './../services/AuthService';
 import RoutingService from './../services/RoutingService';
 import AuthorityType from './../constants/AuthorityType';
-import SemesterPeriodsPage from '../pages/admin/SemesterPeriodsPage';
-import ClassLevelsPage from '../pages/admin/ClassLevelsPage';
-import StudentsPage from '../pages/admin/StudentsPage';
-import ClassMembersPage from '../pages/admin/ClassMembersPage';
+import SemesterPeriodsPage from '../pages/admin/masterData/SemesterPeriodsPage';
+import ClassLevelsPage from '../pages/admin/masterData/ClassLevelsPage';
+import StudentsPage from '../pages/admin/masterData/StudentsPage';
+import ClassMembersPage from '../pages/admin/masterData/ClassMembersPage';
 
 export class Routing extends Component<BaseProps, any>
 {

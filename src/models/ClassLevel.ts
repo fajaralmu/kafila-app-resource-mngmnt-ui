@@ -11,4 +11,5 @@ export default class ClassLevel extends BaseModel {
     semester: number = 1;
     year: string = "";
     semesterActive: boolean;
+    memberCount: number = 0;
 }

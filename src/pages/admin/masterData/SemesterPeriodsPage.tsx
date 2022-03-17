@@ -1,18 +1,18 @@
 import { ChangeEvent, Component, FormEvent, ReactNode } from "react";
-import { ViewTemplate } from "../../layout/ViewTemplate";
-import { commonWrapper } from "../../utils/commonWrapper";
-import BaseProps from '../../models/BaseProps';
+import { ViewTemplate } from "../../../layout/ViewTemplate";
+import { commonWrapper } from "../../../utils/commonWrapper";
+import BaseProps from '../../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
-import BaseMasterDataState from '../../models/BaseMasterDataState';
-import ActionButton from "../../components/buttons/ActionButton";
-import DataTableHeaderValue from "../../models/DataTableHeaderValue";
-import SemesterPeriod from './../../models/SemesterPeriod';
-import Employee from './../../models/Employee';
-import MasterDataService from './../../services/MasterDataService';
+import BaseMasterDataState from '../../../models/BaseMasterDataState';
+import ActionButton from "../../../components/buttons/ActionButton";
+import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
+import SemesterPeriod from '../../../models/SemesterPeriod';
+import Employee from '../../../models/Employee';
+import MasterDataService from '../../../services/MasterDataService';
 import { resolve } from "inversify-react";
-import ControlledComponent from "../ControlledComponent";
-import { randomString } from './../../utils/stringUtil';
-import ToastService from './../../services/ToastService';
+import ControlledComponent from "../../ControlledComponent";
+import { randomString } from '../../../utils/stringUtil';
+import ToastService from '../../../services/ToastService';
 
 class State extends BaseMasterDataState<SemesterPeriod>
 {

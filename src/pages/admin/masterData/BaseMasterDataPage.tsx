@@ -1,18 +1,18 @@
 import { resolve } from "inversify-react";
-import BaseModel from "../../models/BaseModel";
-import { BasePage } from "../BasePage";
-import BaseProps from './../../models/BaseProps';
-import MasterDataService from './../../services/MasterDataService';
-import BaseMasterDataState from './../../models/BaseMasterDataState';
+import BaseModel from "../../../models/BaseModel";
+import { BasePage } from "../../BasePage";
+import BaseProps from '../../../models/BaseProps';
+import MasterDataService from '../../../services/MasterDataService';
+import BaseMasterDataState from '../../../models/BaseMasterDataState';
 import { FormEvent, Fragment } from "react";
-import AnchorButton from "../../components/buttons/AnchorButton";
-import PaginationButtons from "../../components/buttons/PaginationButtons";
-import ActionButton from "../../components/buttons/ActionButton";
-import { randomString } from "../../utils/stringUtil";
-import ModelNames from "../../constants/ModelNames";
+import AnchorButton from "../../../components/buttons/AnchorButton";
+import PaginationButtons from "../../../components/buttons/PaginationButtons";
+import ActionButton from "../../../components/buttons/ActionButton";
+import { randomString } from "../../../utils/stringUtil";
+import ModelNames from "../../../constants/ModelNames";
 import './MasterDataPage.scss';
-import DataTableHeaderValue from "../../models/DataTableHeaderValue";
-import DataTableHeader from "../../components/dataTableHeader/DataTableHeader";
+import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
+import DataTableHeader from "../../../components/dataTableHeader/DataTableHeader";
 
 
 abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S extends BaseMasterDataState<M>> extends BasePage<P, S>

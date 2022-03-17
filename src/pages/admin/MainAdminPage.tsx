@@ -3,8 +3,8 @@ import { ViewTemplate } from "../../layout/ViewTemplate";
 import BaseState from "../../models/BaseState";
 import { commonWrapper } from "../../utils/commonWrapper";
 import { BasePage } from "../BasePage";
-import BaseProps from './../../models/BaseProps';
-import AnchorButton from './../../components/buttons/AnchorButton';
+import BaseProps from '../../models/BaseProps';
+import AnchorButton from '../../components/buttons/AnchorButton';
 
 class State extends BaseState
 {

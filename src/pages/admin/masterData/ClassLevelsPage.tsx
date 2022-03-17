@@ -1,19 +1,19 @@
 import { ChangeEvent, FormEvent, ReactNode } from "react";
-import { ViewTemplate } from "../../layout/ViewTemplate";
-import BaseMasterDataState from '../../models/BaseMasterDataState';
-import BaseProps from '../../models/BaseProps';
-import ClassLevel from "../../models/ClassLevel";
-import DataTableHeaderValue from "../../models/DataTableHeaderValue";
-import { commonWrapper } from "../../utils/commonWrapper";
-import School from './../../models/School';
+import { ViewTemplate } from "../../../layout/ViewTemplate";
+import BaseMasterDataState from '../../../models/BaseMasterDataState';
+import BaseProps from '../../../models/BaseProps';
+import ClassLevel from "../../../models/ClassLevel";
+import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
+import { commonWrapper } from "../../../utils/commonWrapper";
+import School from '../../../models/School';
 import BaseMasterDataPage from "./BaseMasterDataPage";
+import ActionButton from "../../../components/buttons/ActionButton";
+import ClassLevelMembersPage from './ClassLevelMembersPage';
 
-class State extends BaseMasterDataState<ClassLevel>
-{
-
+class State extends BaseMasterDataState<ClassLevel> {
+    showEditMember: boolean
 }
-class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
-{
+class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State> {
     schools:School[] = [];
     constructor(props: BaseProps) {
         super(props, "classlevels", "Class Level Management");
@@ -28,6 +28,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
             new DataTableHeaderValue("description", "Description"),
             new DataTableHeaderValue("semesterPeriod.semester", "Semester"),
             new DataTableHeaderValue("semesterPeriod.year", "Year"),
+            new DataTableHeaderValue(null, "Member", false),
             new DataTableHeaderValue(null, "Semeser Active", false),
         ]
     }
@@ -49,9 +50,21 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
     }
 
     showInsertForm = () => this.edit(this.defaultItem);
-    
+    showEditMemberForm = (item: ClassLevel) => this.setState({ item: item, showEditMember: true });
+    closeEditMemberForm = () => {
+        this.setState({ showEditMember: false }, this.resetFormAndClose);
+    }
     render(): ReactNode {
-
+        if (this.state.showEditMember && this.state.item) {
+            return (
+                <ViewTemplate title={this.title} back="/admin">
+                   <ActionButton onClick={this.closeEditMemberForm} iconClass="fas fa-times" className="btn btn-secondary btn-sm mx-2">
+                        Close form
+                    </ActionButton>
+                    <ClassLevelMembersPage item={this.state.item} />
+                </ViewTemplate>
+            )
+        }
         if (this.state.showForm && this.state.item && this.schools.length > 0)  {
             return (
                 <ViewTemplate title={this.title} back="/admin">
@@ -89,6 +102,14 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State>
                                             <td>{item.description}</td>
                                             <td>{item.semester}</td>
                                             <td>{item.year}</td>
+                                            <td>
+                                                {item.memberCount}
+                                                <ActionButton 
+                                                    className="btn btn-text btn-sm" 
+                                                    iconClass="fas fa-edit" 
+                                                    onClick={() => this.showEditMemberForm(item)} 
+                                                />
+                                            </td>
                                             <td>{item.semesterActive ? 
                                                 <b className="text-success">active</b> : <i>not active</i>}
                                             </td>

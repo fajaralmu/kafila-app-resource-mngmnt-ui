@@ -1,12 +1,12 @@
 import { ChangeEvent, FormEvent, ReactNode } from "react";
-import ActionButton from "../../components/buttons/ActionButton";
-import { ViewTemplate } from "../../layout/ViewTemplate";
-import DataTableHeaderValue from "../../models/DataTableHeaderValue";
-import User from "../../models/User";
-import { commonWrapper } from "../../utils/commonWrapper";
-import { getInputReadableDate } from "../../utils/stringUtil";
-import BaseMasterDataState from './../../models/BaseMasterDataState';
-import BaseProps from './../../models/BaseProps';
+import ActionButton from "../../../components/buttons/ActionButton";
+import { ViewTemplate } from "../../../layout/ViewTemplate";
+import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
+import User from "../../../models/User";
+import { commonWrapper } from "../../../utils/commonWrapper";
+import { getInputReadableDate } from "../../../utils/stringUtil";
+import BaseMasterDataState from '../../../models/BaseMasterDataState';
+import BaseProps from '../../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
 
 
