@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
+import { ChangeEvent, FormEvent, ReactNode } from "react";
 import ActionButton from "../../components/buttons/ActionButton";
 import { ViewTemplate } from "../../layout/ViewTemplate";
 import DataTableHeaderValue from "../../models/DataTableHeaderValue";
 import User from "../../models/User";
 import { commonWrapper } from "../../utils/commonWrapper";
+import { getInputReadableDate } from "../../utils/stringUtil";
 import BaseMasterDataState from './../../models/BaseMasterDataState';
 import BaseProps from './../../models/BaseProps';
 import BaseMasterDataPage from "./BaseMasterDataPage";
@@ -39,6 +40,15 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
         this.patchAction(item, ACTION_RESET_PASSWORD);
     }
     render(): ReactNode {
+
+        if (this.state.showForm && this.state.item) {
+            return (
+                <ViewTemplate title={this.title} back="/admin">
+                    {this.closeFormButton}
+                    <FormEdit item={this.state.item} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
+                </ViewTemplate>
+            );
+        }
         
         const result = this.state.result;
         const items = result?.items;
@@ -98,4 +108,40 @@ class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
     }
 }
 
-export default commonWrapper(UsersPage)
+const FormEdit = (props:{
+    item:User, 
+    onSubmit:(e:FormEvent) => any, 
+    handleInputChange:(e:ChangeEvent)=>any
+}) => {
+    const item = props.item;
+    const onChange = props.handleInputChange;
+    return (
+        <div className="formEditContainer">
+            <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
+                <p>Full Name</p>
+                <input className="form-control" id="item.fullName" name="item.fullName" value={item.fullName}  onChange={onChange} required/>
+                <p>Display Name</p>
+                <input className="form-control" id="item.displayName" name="item.displayName" value={item.displayName}  onChange={onChange} required/>
+                <p>Email</p>
+                <input className="form-control" id="item.email" name="item.email" type="email" value={item.email}  onChange={onChange} required/>
+                <p>Gender</p>
+                <select className="form-control" value={item.gender} id="item.gender" name="item.gender" onChange={onChange} required>
+                    <option>MALE</option>
+                    <option>FEMALE</option>
+                </select>
+                <p>Birth Date</p>
+                <input type="date" className="form-control" id="item.birthDate" name="item.birthDate" value={getInputReadableDate(new Date(item.birthDate))} onChange={onChange} required/>
+                <p>Birth Place</p>
+                <input className="form-control" id="item.birthPlace" name="item.birthPlace" value={item.birthPlace} onChange={onChange} required/>
+                
+                <p>Phone Number</p>
+                <input className="form-control" id="item.phoneNumber" name="item.phoneNumber" value={item.phoneNumber} onChange={onChange} required/>
+                
+                <p></p>
+                <input className="btn btn-primary" value="Save" type="submit" />
+            </form>
+        </div>
+    )
+}
+
+export default commonWrapper(UsersPage);

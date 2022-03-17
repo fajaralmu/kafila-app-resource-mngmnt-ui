@@ -81,8 +81,7 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State>
         }  
     }
     render(): ReactNode {
-        if (this.state.showForm && this.state.item)
-        {
+        if (this.state.showForm && this.state.item) {
             return (
                 <ViewTemplate title={this.title} back="/admin">
                     {this.closeFormButton}
