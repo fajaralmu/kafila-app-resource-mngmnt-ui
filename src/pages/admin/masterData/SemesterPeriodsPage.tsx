@@ -14,12 +14,10 @@ import ControlledComponent from "../../ControlledComponent";
 import { randomString } from '../../../utils/stringUtil';
 import ToastService from '../../../services/ToastService';
 
-class State extends BaseMasterDataState<SemesterPeriod>
-{
+class State extends BaseMasterDataState<SemesterPeriod> {
 
 }
-class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, State>
-{
+class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, State> {
     
     constructor(props: BaseProps) {
         super(props, "semesterperiods", "Semester Management");

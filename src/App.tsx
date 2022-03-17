@@ -42,13 +42,11 @@ function App() {
   );
 }
 
-class State 
-{
+class State  {
   loaded:boolean = false;
   loadingError:boolean = false;
 }
-class Root extends Component<{navigate:NavigateFunction},State>
-{
+class Root extends Component<{navigate:NavigateFunction},State> {
   @resolve(AuthService)
   private authService:AuthService;
   @resolve(RoutingService)

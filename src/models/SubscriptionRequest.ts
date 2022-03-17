@@ -1,5 +1,4 @@
-export default class SubscriptionRequest
-{
+export default class SubscriptionRequest {
     constructor(origin:string, topic:string, action:(arg:any)=>any)
     {
         this.origin = origin;

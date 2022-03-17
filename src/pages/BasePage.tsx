@@ -9,8 +9,7 @@ import { ViewTemplate } from "../layout/ViewTemplate";
 import AuthService from './../services/AuthService';
 import ToastService from './../services/ToastService';
 
-export abstract class BasePage<P extends BaseProps,S extends BaseState> extends ControlledComponent<P, S>
-{
+export abstract class BasePage<P extends BaseProps,S extends BaseState> extends ControlledComponent<P, S> {
     title?:string;
     @resolve(AuthService)
     protected authService:AuthService;

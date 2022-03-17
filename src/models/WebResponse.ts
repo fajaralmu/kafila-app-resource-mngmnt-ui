@@ -1,5 +1,4 @@
-export default class WebResponse<T>
-{
+export default class WebResponse<T> {
     date:any;
     code:string;
     message:string;

@@ -15,8 +15,7 @@ import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
 import DataTableHeader from "../../../components/dataTableHeader/DataTableHeader";
 
 
-abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S extends BaseMasterDataState<M>> extends BasePage<P, S>
-{
+abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S extends BaseMasterDataState<M>> extends BasePage<P, S> {
     @resolve(MasterDataService)
     protected service: MasterDataService;
 

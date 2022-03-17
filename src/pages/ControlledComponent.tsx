@@ -1,7 +1,6 @@
 import React, { ChangeEvent, Component } from "react";
 
-export default abstract class ControlledComponent<P,S > extends Component<P,S>
-{
+export default abstract class ControlledComponent<P,S > extends Component<P,S> {
     handleInputChange = (e:ChangeEvent, callback?:(val:any)=>any) => {
         if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement)
         {

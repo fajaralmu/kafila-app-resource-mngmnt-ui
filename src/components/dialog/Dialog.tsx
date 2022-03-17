@@ -12,8 +12,7 @@ class State {
     backColor: string = 'transparent';
     marginTop: string = initialMargin;
 }
-interface Props 
-{
+interface Props  {
     onConfirm:(arg:any)=>any;
     onCancel:(arg:any)=>any;
     onClose:(arg:any)=>any;

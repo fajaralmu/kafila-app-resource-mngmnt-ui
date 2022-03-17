@@ -10,12 +10,10 @@ import { getInputReadableDate } from "../../../utils/stringUtil";
 import ControlledComponent from "../../ControlledComponent";
 import BaseMasterDataPage from "./BaseMasterDataPage";
 
-class State extends BaseMasterDataState<Employee>
-{
+class State extends BaseMasterDataState<Employee> {
 
 }
-class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State>
-{
+class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
     constructor(props: BaseProps) {
         super(props, "employees", "Employees Management");
         this.state = new State();

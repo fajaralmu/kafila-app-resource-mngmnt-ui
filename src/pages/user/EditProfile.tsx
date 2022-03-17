@@ -9,8 +9,7 @@ import { BasePage } from "../BasePage";
 class State extends BaseState {
     user :User = new User()
 }
-class EditProfile extends BasePage<BaseProps, State>
-{
+class EditProfile extends BasePage<BaseProps, State> {
     state = new State();
     constructor(props:BaseProps)
     {

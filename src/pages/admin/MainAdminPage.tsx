@@ -6,12 +6,10 @@ import { BasePage } from "../BasePage";
 import BaseProps from '../../models/BaseProps';
 import AnchorButton from '../../components/buttons/AnchorButton';
 
-class State extends BaseState
-{
+class State extends BaseState {
 
 }
-class MainAdminPage extends BasePage<BaseProps, State>
-{
+class MainAdminPage extends BasePage<BaseProps, State> {
     state: Readonly<State> = new State();
     constructor(props:BaseProps)
     {

@@ -6,8 +6,7 @@ import LoadingService from './../services/LoadingService';
 const SUCCESS_CODE = "00";
 
 @injectable()
-export default class RestClient
-{
+export default class RestClient {
     @inject(LoadingService)
     private loading: LoadingService;
 

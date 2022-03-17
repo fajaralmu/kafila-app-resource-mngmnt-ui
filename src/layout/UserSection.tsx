@@ -7,16 +7,13 @@ import DialogService from './../services/DialogService';
 import BaseProps from './../models/BaseProps';
 import RoutingService from './../services/RoutingService';
 
-interface Props  extends BaseProps
-{
+interface Props  extends BaseProps {
     user:User
 }
-class State 
-{
+class State  {
     showDropdown: boolean = false;
 }
-class UserSection extends Component<Props, State>
-{
+class UserSection extends Component<Props, State> {
     state: Readonly<State> = new State();
 
     @resolve(AuthService)

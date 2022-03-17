@@ -6,8 +6,7 @@ interface Props {
     bodyClassNames?: string,
     attributes?:any
 }
-export class Card extends Component<Props, any>
-{
+export class Card extends Component<Props, any> {
     render(): React.ReactNode {
         return (
             <div {...this.props.attributes} className="card">

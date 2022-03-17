@@ -20,8 +20,7 @@ class State {
  class Props extends BaseProps {
      currentLocation?:Location;
  }
-class HeaderView extends ControlledComponent<Props, State>
-{
+class HeaderView extends ControlledComponent<Props, State> {
     @resolve(AuthService)
     private authService:AuthService;
     @resolve(RoutingService)

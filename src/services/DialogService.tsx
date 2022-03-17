@@ -10,8 +10,7 @@ import { invokeLater } from "../utils/eventUtil";
 const INVOCATION_WAIT_DELAY = 500;
 
 @injectable()
-export default class DialogService
-{
+export default class DialogService {
     private container: DialogContainer;
     public setContainer = (container:DialogContainer) => {
         this.container = container;
@@ -176,8 +175,7 @@ export default class DialogService
     }
 } 
 
-interface DialogPromptProps 
-{
+interface DialogPromptProps  {
     message:string,
     onChange:(val:string)=>any
 }

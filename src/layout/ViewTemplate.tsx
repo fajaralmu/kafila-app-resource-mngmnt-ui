@@ -4,16 +4,14 @@ import React, { Component } from "react";
 import ActionButton from "../components/buttons/ActionButton";
 import RoutingService from './../services/RoutingService';
 
-class Props
-{
+class Props {
     children:any;
     title?:string;
     attributes?:any;
     titleAlign?:undefined |'center' | 'left' | 'right';
     back?:string;
 }
-export class ViewTemplate extends Component<Props, any>
-{
+export class ViewTemplate extends Component<Props, any> {
     @resolve(RoutingService)
     private routing:RoutingService;
     goBack = () => {

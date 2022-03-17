@@ -1,18 +1,15 @@
 import React, { ChangeEvent, FormEvent, ReactNode } from "react";
 import ControlledComponent from "../../pages/ControlledComponent";
 
-class State 
-{
+class State  {
     content:string = "";
 }
-interface Props 
-{
+interface Props  {
     message:string,
     defaultValue?:string,
     onSubmit:(val:string)=>any
 }
-export default class DialogPrompt extends ControlledComponent<Props, State>
-{
+export default class DialogPrompt extends ControlledComponent<Props, State> {
     state: State = new State();
     inputRef: React.RefObject<HTMLInputElement> = React.createRef();
 

@@ -12,12 +12,10 @@ import BaseMasterDataPage from "./BaseMasterDataPage";
 
 const ACTION_RESET_PASSWORD = 'resetPassword';
 
-class State extends BaseMasterDataState<User>
-{
+class State extends BaseMasterDataState<User> {
 
 }
-class UsersPage extends BaseMasterDataPage<User, BaseProps, State>
-{
+class UsersPage extends BaseMasterDataPage<User, BaseProps, State> {
     constructor(props: BaseProps) {
         super(props, "users", "User Management");
         this.state = new State();

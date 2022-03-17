@@ -9,8 +9,7 @@ import Settings from './../settings';
 const API_URL = Settings.App.hosts.api +"/api/admin/management/";
 
 @injectable()
-export default class MasterDataService
-{
+export default class MasterDataService {
     @inject(RestClient)
     private rest:RestClient;
 

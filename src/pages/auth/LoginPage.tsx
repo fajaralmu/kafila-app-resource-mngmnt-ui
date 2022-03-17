@@ -11,15 +11,13 @@ import { invokeLater } from './../../utils/eventUtil';
 import ActionButton from './../../components/buttons/ActionButton';
 import { CommonTable } from "../../utils/componentUtil";
 
-class State  extends BaseState
-{
+class State  extends BaseState {
     username:string            = "";
     password:string         = "";
     loading:boolean         = false;
     loginSuccess:boolean    = false;
 }
-class LoginPage extends BasePage<BaseProps, State>
-{
+class LoginPage extends BasePage<BaseProps, State> {
     state: Readonly<State> = new State();
    
     constructor(props:BaseProps)

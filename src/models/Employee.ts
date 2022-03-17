@@ -2,8 +2,7 @@ import BaseModel from "./BaseModel";
 import School from "./School";
 import User from "./User";
 
-export default class Employee extends BaseModel
-{
+export default class Employee extends BaseModel {
     nisdm: string; 
     profileImage: string; 
     user: User = new User();
@@ -66,8 +65,7 @@ export default class Employee extends BaseModel
     }
 }
 
-export class Education  extends BaseModel
-{
+export class Education  extends BaseModel {
     type: string = "S1"; 
     name: string; 
     major: string;

@@ -16,8 +16,7 @@ class State extends BaseState {
     welcomingWords: string[] = [];
 
 }
-class Home extends BasePage<BaseProps, State>
-{
+class Home extends BasePage<BaseProps, State> {
     state: State = new State();
     welcomingWord: string;
     private _mounted = false;

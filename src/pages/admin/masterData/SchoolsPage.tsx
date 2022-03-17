@@ -7,12 +7,10 @@ import School from "../../../models/School";
 import { commonWrapper } from "../../../utils/commonWrapper";
 import BaseMasterDataPage from "./BaseMasterDataPage";
 
-class State extends BaseMasterDataState<School>
-{
+class State extends BaseMasterDataState<School> {
 
 }
-class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State>
-{
+class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
     
     constructor(props: BaseProps) {
         super(props, "schools", "School Management");

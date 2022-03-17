@@ -1,5 +1,4 @@
-export default class ApplicationProfile
-{
+export default class ApplicationProfile {
     name:string;
     description:string;
     semester?:number;

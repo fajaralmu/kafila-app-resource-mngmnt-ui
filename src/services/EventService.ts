@@ -1,8 +1,7 @@
 import { injectable } from "inversify";
 
 @injectable()
-export default class EventService
-{
+export default class EventService {
     // private _onProductSearchKeyUpdate:Map<string, (key:string) => any> = new Map();
 
     // triggerProductSearchUpdate = (key:string) => {

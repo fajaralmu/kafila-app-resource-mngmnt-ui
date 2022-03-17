@@ -5,8 +5,7 @@ import BaseState from "../../models/BaseState";
 import { commonWrapper } from "../../utils/commonWrapper";
 import { BasePage } from "../BasePage";
 
-class Dashboard extends BasePage<BaseProps, BaseState>
-{
+class Dashboard extends BasePage<BaseProps, BaseState> {
     constructor(props:any)
     {
         super(props, true, "Dashboard");

@@ -19,8 +19,7 @@ import ClassLevelsPage from '../pages/admin/masterData/ClassLevelsPage';
 import StudentsPage from '../pages/admin/masterData/StudentsPage';
 import ClassMembersPage from '../pages/admin/masterData/ClassMembersPage';
 
-export class Routing extends Component<BaseProps, any>
-{
+export class Routing extends Component<BaseProps, any> {
     @resolve(AuthService)
     private authService: AuthService;
     @resolve(RoutingService)

@@ -7,8 +7,7 @@ class Props extends BaseProps {
     
     message:string
 }
-export class ErrorView extends BasePage<Props, any>
-{
+export class ErrorView extends BasePage<Props, any> {
     constructor(props:Props)
     {
         super(props, false, "Error");

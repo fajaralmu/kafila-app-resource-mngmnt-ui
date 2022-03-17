@@ -8,12 +8,10 @@ import Student from "../../../models/Student";
 import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
 import { getInputReadableDate } from "../../../utils/stringUtil";
 
-class State extends BaseMasterDataState<Student>
-{
+class State extends BaseMasterDataState<Student> {
 
 }
-class StudentsPage extends BaseMasterDataPage<Student, BaseProps, State>
-{
+class StudentsPage extends BaseMasterDataPage<Student, BaseProps, State> {
     
     constructor(props: BaseProps) {
         super(props, "students", "Student Management");

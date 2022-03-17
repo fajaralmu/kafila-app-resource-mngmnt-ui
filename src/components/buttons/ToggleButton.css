@@ -1,19 +1,16 @@
-.toggleButtonContainer
-{
+.toggleButtonContainer {
     transition-duration: 300ms;
     padding: 2px;
     width: 40px;
     border-radius: 20px;
 }
-.toggleButtonPointer
-{
+.toggleButtonPointer {
     transition-duration: 300ms;
     width: 20px;
     height: 20px;
     border-radius: 10px
 }
 /* .toggleButtonPointer:hover */
-.toggleButtonContainer:hover
-{
+.toggleButtonContainer:hover {
     cursor: pointer;
 }

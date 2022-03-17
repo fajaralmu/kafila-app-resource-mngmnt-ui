@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 
-interface Props 
-{
+interface Props  {
     show?:boolean;
     iconClass?:string;
     children?:any;

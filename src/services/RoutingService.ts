@@ -3,8 +3,7 @@ import { injectable } from "inversify";
 import { NavigateFunction } from "react-router-dom";
 
 @injectable()
-export default class RoutingService
-{
+export default class RoutingService {
     private lastRedirectedRoute?:string;
     private navigateFunction:NavigateFunction | undefined;
 
