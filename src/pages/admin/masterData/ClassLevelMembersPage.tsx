@@ -95,14 +95,16 @@ export default class ClassLevelMembersPage extends ControlledComponent<Props, St
 
     render(): ReactNode {
         const { students, searchStudent, members } = this.state;
+        const { item } = this.props;
         return (
             <div>
-                <h5>Add Student to Class</h5>
+                <h5>Members of {item.level}{item.letter} {item.school?.name}</h5>
+                <p>Period: semester {item.semester}, year {item.year}</p>
                 <form className='mb-3' onSubmit={(e) => {
                     e.preventDefault();
                     this.loadStudents();
                 }}>
-                    <p>Student</p>
+                    <p>Add Student</p>
                     <div className="input-group">
                         <input 
                             type="search"

@@ -4,7 +4,7 @@ import { BasePage } from "../../BasePage";
 import BaseProps from '../../../models/BaseProps';
 import MasterDataService from '../../../services/MasterDataService';
 import BaseMasterDataState from '../../../models/BaseMasterDataState';
-import { FormEvent, Fragment } from "react";
+import { ChangeEvent, FormEvent, Fragment, useState } from "react";
 import AnchorButton from "../../../components/buttons/AnchorButton";
 import PaginationButtons from "../../../components/buttons/PaginationButtons";
 import ActionButton from "../../../components/buttons/ActionButton";
@@ -188,12 +188,23 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     }
 
     protected get paginationButton() {
+        const { result } = this.state;
         return (
-        <PaginationButtons
-            limit={this.state.result.limit}
-            totalData={this.state.result.totalData}
-            activePage={this.state.result.page}
-            onClick={this.load} />
+            <div className="row">
+                <div className="col-md-8">
+                    <PaginationButtons
+                        limit={result.limit}
+                        totalData={result.totalData}
+                        activePage={result.page}
+                        onClick={(page: number) => this.load(page, this.state.result.limit)}
+                    />
+                </div>
+                <div className="col-md-4">
+                    <FormInputLimit defaultLimit={result.limit} onSubmit={(limit) => {
+                        this.load(0, limit, result.order, result.orderDesc);
+                    }} />
+                </div>
+            </div>
         );
     }
 
@@ -275,6 +286,43 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
             </tfoot>
         )
     }
+}
+
+const FormInputLimit = (props: {
+    onSubmit: (limit: number) => any,
+    defaultLimit: number,
+}) => {
+    const [limit, setLimit] = useState(props.defaultLimit);
+    const onInputChange = (e: ChangeEvent) => {
+        const input = e.target as HTMLInputElement;
+        setLimit(parseInt(input.value));
+    }
+    return (
+        <form 
+            className="input-group"
+            onSubmit={(e) => {
+                e.preventDefault();
+                props.onSubmit(limit);
+            }}
+        >
+            <input
+                type="number"
+                value={limit}
+                min={1}
+                className="form-control form-control-sm"
+                onChange={onInputChange}
+                required
+            />
+            <div className="input-group-append">
+                <ActionButton
+                    type="submit"
+                    className="btn btn-sm btn-info text-white"
+                    iconClass="fas fa-play"
+                    children="Apply Page Size"
+                />
+            </div>
+        </form>
+    )
 }
 
 export default BaseMasterDataPage;

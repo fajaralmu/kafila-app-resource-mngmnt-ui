@@ -136,17 +136,17 @@ const FormEdit = (props:{
     onSubmit:(e:FormEvent) => any, 
     handleInputChange:(e:ChangeEvent)=>any
 }) => {
-    const item = props.item;
+    const { item, onSubmit, handleInputChange } = props;
     const setSchool = (school:School) => {
         item.school = school;
     }
     return (
         <div className="formEditContainer">
-            <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={props.onSubmit}>
+            <form className="masterDataForm px-3 py-3 border rounded border-gray"  onSubmit={onSubmit}>
                 <p>Level</p>
-                <input className="form-control" name="item.level" id="item.level" value={item.level} type="number" required onChange={props.handleInputChange} />
+                <input className="form-control" name="item.level" id="item.level" value={item.level} type="number" required onChange={handleInputChange} />
                 <p>Letter</p>
-                <input className="form-control" name="item.letter" id="item.letter" value={item.letter} onChange={props.handleInputChange} required />
+                <input className="form-control" name="item.letter" id="item.letter" value={item.letter} onChange={handleInputChange} required />
                 <p>School</p>
                 <select className="form-control" required>
                     {props.schools.map((school)=>{
