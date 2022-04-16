@@ -9,6 +9,7 @@ import EventService from './services/EventService';
 import LoadingService from './services/LoadingService';
 import ToastService from './services/ToastService';
 import ClassMemberService from './services/ClassMemberService';
+import FileUploadService from './services/FileUploadService';
 
 let container:Container = new Container();
 
@@ -18,6 +19,7 @@ container.bind(AuthService).toSelf().inSingletonScope();
 container.bind(MasterDataService).toSelf().inSingletonScope();
 container.bind(RoutingService).toSelf().inSingletonScope();
 container.bind(ClassMemberService).toSelf().inSingletonScope();
+container.bind(FileUploadService).toSelf().inSingletonScope();
 
 // dialogs
 container.bind(DialogService).toSelf().inSingletonScope();

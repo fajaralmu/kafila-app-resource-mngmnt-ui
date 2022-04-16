@@ -162,13 +162,14 @@ export default class DialogService {
         this.container.dismissAlert();
     }
 
-    public showContent = ( title:string, content: ReactElement<any, typeof Component> ) => {
+    public showContent = ( title:string, content: ReactElement<any, typeof Component>, _closeObserver?: { obs: any} ) => {
         return new Promise<boolean>((resolve, reject) => {
-            let closeObserver = {
-                close : () => {
-
-                }
+            const closeObserver: any = {
+                close : () => {}
             };
+            if (_closeObserver) {
+                _closeObserver.obs = closeObserver;
+            }
             let el = createElement(content.type, {...content.props, closeObserver});
             this.container.showNoButtons(  title, el, (e:any) => { resolve(false) }, closeObserver  );
         });

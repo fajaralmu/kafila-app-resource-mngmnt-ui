@@ -1,19 +1,26 @@
-import { ChangeEvent, Component, FormEvent, ReactNode } from "react";
+import { resolve } from "inversify-react";
+import { ChangeEvent, Component, FormEvent, ReactNode, useState } from "react";
+import ActionButton from "../../../components/buttons/ActionButton";
 import { ViewTemplate } from "../../../layout/ViewTemplate";
 import BaseMasterDataState from '../../../models/BaseMasterDataState';
 import BaseProps from '../../../models/BaseProps';
 import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
 import Employee, { Education } from "../../../models/Employee";
 import School from "../../../models/School";
+import Settings from "../../../settings";
 import { commonWrapper } from "../../../utils/commonWrapper";
 import { getInputReadableDate } from "../../../utils/stringUtil";
 import ControlledComponent from "../../ControlledComponent";
 import BaseMasterDataPage from "./BaseMasterDataPage";
+import FileUploadService from './../../../services/FileUploadService';
 
 class State extends BaseMasterDataState<Employee> {
 
 }
 class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
+    @resolve(FileUploadService)
+    private upload: FileUploadService;
+
     constructor(props: BaseProps) {
         super(props, "employees", "Employees Management");
         this.state = new State();
@@ -30,6 +37,7 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
             new DataTableHeaderValue("user.email", "Email"),
             new DataTableHeaderValue("user.birthDate", "BirthDate"),
             new DataTableHeaderValue("user.gender", "Gender"),
+            new DataTableHeaderValue(null, "Signature", false),
             new DataTableHeaderValue(null, "School", false),
             new DataTableHeaderValue(null, "Education", false),
         ]
@@ -64,11 +72,12 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
     }
     addSchool = (item:Employee) => {
         this.service.list<School>('schools', 0, -1, undefined)
-            .then(response=>{
+            .then(response => {
                 this.dialog.showContent("Add School", 
                 <AddSchoolForm 
                     schools={response.items} 
-                    update={(e) => this.submitAddSchool(item, e) }/>);
+                    update={(e) => this.submitAddSchool(item, e) }
+                />);
             })
             .catch(console.error);
         
@@ -77,6 +86,33 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
         if(item.addSchool(school)) {
             this.update(item);
         }  
+    }
+    showSignatureForm = (item: Employee) => {
+        const closeObs = {
+            obs: {
+                close: () => {}
+            }
+        };
+        const submit = (emp:Employee, file: File) => {
+            this.upload.uploadSignature(emp, file)
+                .then(() => {
+                    if (closeObs.obs.close) {
+                        closeObs.obs.close();
+                    }
+                    this.toast.showSuccess('Signature has been uploaded');
+                    // Force update to reload all signature image
+                    this.forceUpdate();
+                })
+                .catch((e) => {
+                    this.toast.showDanger('Failed to upload signature');
+                    console.error(e);
+                });
+        }
+        this.dialog.showContent(
+            'Upload Signature',
+            <FormUploadSignature employee={item} submit={submit} />,
+            closeObs
+        );
     }
     render(): ReactNode {
         if (this.state.showForm && this.state.item) {
@@ -116,6 +152,20 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
                                             <td>{user.email}</td>
                                             <td>{new Date(user.birthDate).toLocaleDateString()}</td>
                                             <td>{user.gender}</td>
+                                            <td>
+                                                <img
+                                                    width={50}
+                                                    height={50}
+                                                    src={signaturePath(item.id)}
+                                                />
+                                                <div>
+                                                    <ActionButton 
+                                                        iconClass="fas fa-edit"
+                                                        className="btn btn-dark btn-sm"
+                                                        onClick={() => this.showSignatureForm(item)}
+                                                    />
+                                                </div>
+                                            </td>
                                             <td>{this.listToggler(
                                                     schools, 
                                                     item, 
@@ -145,8 +195,33 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
     }
 }
 
-export default commonWrapper(EmployeesPage)
+const signaturePath = (id: any) => {
+    return `${Settings.App.hosts.api}/files/employeesignature/${id}?v=${new Date().getTime()}`;
+}
 
+const FormUploadSignature = (props: { employee: Employee, submit: (employee: Employee, file: File) => any }) => {
+    const [file, setFile] = useState<any>(null);
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        if (file && file instanceof File) {
+            props.submit(props.employee, file);
+        }
+    };
+    const onChange = (e: ChangeEvent) => {
+        const input = e.target as HTMLInputElement;
+        if (input.files && input.files[0]) {
+            setFile(input.files[0]);
+        }
+    }
+    return (
+        <form onSubmit={onSubmit}>
+            <p>Select file</p>
+            <input required onChange={onChange} className="form-control" type="file" accept="image/png" />
+            <p></p>
+            <ActionButton className="btn btn-success" type="submit">Upload</ActionButton>
+        </form>
+    )
+}
 
 const FormEdit = (props:{
     item:Employee, 
@@ -203,14 +278,13 @@ const FormEdit = (props:{
         </div>
     )
 }
-class AddEducationFormState {
-    item:Education = new Education()
-}
+type AddEducationFormState = { item:Education }
 class AddEducationForm extends ControlledComponent<{item:Employee, update:(item:Education) => any}, AddEducationFormState>{
-    constructor(props:any)
-    {
+    constructor(props:any) {
         super(props);
-        this.state = new AddEducationFormState();
+        this.state = {
+            item: new Education()
+        };
     }
 
     onSubmit = (e:FormEvent) => {
@@ -242,8 +316,7 @@ class AddEducationForm extends ControlledComponent<{item:Employee, update:(item:
  
 class AddSchoolForm extends Component<{schools:School[], update:(item:School) => any, closeObserver?:{close:()=>any}}, any>{
     selectedSchool:School;
-    constructor(props:any)
-    {
+    constructor(props:any) {
         super(props); 
         this.selectedSchool = this.props.schools[0];
     }
@@ -251,15 +324,12 @@ class AddSchoolForm extends Component<{schools:School[], update:(item:School) =>
     onSubmit = (e:FormEvent) => {
         e.preventDefault();
         this.props.update(this.selectedSchool);
-        console.log("this.props: ", this.props);
-        if (this.props.closeObserver)
-        {
+        if (this.props.closeObserver) {
             this.props.closeObserver.close();
         }
     }
 
-    render(): ReactNode { 
-        
+    render(): ReactNode {
         return (
             <form onSubmit={this.onSubmit}>
                 <p>Type</p>
@@ -274,3 +344,5 @@ class AddSchoolForm extends Component<{schools:School[], update:(item:School) =>
         )
     }
 }
+
+export default commonWrapper(EmployeesPage)
