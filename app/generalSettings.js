@@ -7,7 +7,7 @@ const generalSetting = {
      
     "hosts":{
         "_api": "http://127.0.0.1:8080/resourcemanagement",
-        "api": "https://kafilaresourcemanagement.herokuapp.com",
+        "api": "https://18.136.218.152:8080/kafila-app-master",
         
     },
     
