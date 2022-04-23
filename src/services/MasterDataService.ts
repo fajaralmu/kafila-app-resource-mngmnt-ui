@@ -12,27 +12,7 @@ const API_URL = Settings.App.hosts.api +"/api/admin/management/";
 export default class MasterDataService {
     @inject(RestClient)
     private rest:RestClient;
-
-    list = <T extends BaseModel>(
-        name: ModelNames, 
-        page:number, 
-        perPage:number,
-        order:string|undefined = 'id',
-        orderDesc?:boolean,
-        filter?:string[] | string
-    ): Promise<MasterDataResult<T>> => {
-        let orderString = '';
-        if (order)
-        {
-            orderString = '&order='+order;
-            if (orderDesc === true)
-            {
-                orderString += '&orderDesc=true'
-            }
-        }
-        const url = `${API_URL}${name}?page=${page}&limit=${perPage}` + orderString + (filter? filterQueryParam(filter) : '' );
-        return this.rest.getAuthorized(url);
-    }
+    
     get = <T extends BaseModel>(name: ModelNames, id:number): Promise<T> => {
         
         const url = `${API_URL}${name}/${id}`;
@@ -58,19 +38,55 @@ export default class MasterDataService {
         const url = `${API_URL}${name}/${id}`;
         return this.rest.deleteAuthorized(url);
     }
+    list = <T extends BaseModel>(
+        name: ModelNames, 
+        page:number, 
+        perPage:number,
+        order:string|undefined = 'id',
+        orderDesc?:boolean,
+        filter?:string[] | string,
+        fieldPaths?:string[] | string,
+        displayFieldAliases?:string[] | string
+    ): Promise<MasterDataResult<T>> => {
+        let orderString = '';
+        if (order)
+        {
+            orderString = '&order='+order;
+            if (orderDesc === true)
+            {
+                orderString += '&orderDesc=true'
+            }
+        }
+        const url = `${API_URL}${name}?` +
+                    `page=${page}&` +
+                    `limit=${perPage}` + 
+                    orderString +
+                    (filter? filterToQuery(filter) : '' ) +
+                    (fieldPaths? fieldPathsQuery(fieldPaths) : '') +
+                    (displayFieldAliases? displayAliasesToQuery(displayFieldAliases) : '');
+        return this.rest.getAuthorized(url);
+    }
 }
-
-const filterQueryParam = (filter?: string[] | string) => {
-    if (!filter || filter.length == 0) {
+const displayAliasesToQuery = (displayFieldAliases?: string[] | string) => {
+    return toQueryParam('displayFieldAliases', displayFieldAliases);
+}
+const fieldPathsQuery = (fieldPaths?: string[] | string) => {
+    return toQueryParam('fieldPaths', fieldPaths);
+}
+const filterToQuery = (filter?: string[] | string) => {
+    return toQueryParam('filter', filter);
+}
+const toQueryParam = (key:string, params?: string[] | string) => {
+    if (!params || params.length == 0) {
         return '';
     }
-    if (typeof filter === 'string') {
-        return `&filter=${filter}`;
+    if (typeof params === 'string') {
+        return `&${key}=${params}`;
     }
     const filters = [];
-    for (let i = 0; i < filter.length; i++) {
-        const element = filter[i];
-        filters.push(`filter=${element}`);
+    for (let i = 0; i < params.length; i++) {
+        const element = params[i];
+        filters.push(`${key}=${element}`);
     }
     return '&' + filters.join('&');
 }

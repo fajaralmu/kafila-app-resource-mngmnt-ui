@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 import RestClient from "../apiClients/RestClient";
 import Employee from "../models/Employee";
 import Settings from "../settings";
+import WebResponse from './../models/WebResponse';
 
 const API_URL = Settings.App.hosts.api +"/api/admin/management/uploads/";
 
@@ -15,6 +16,6 @@ export default class FileUploadService {
         const formData = new FormData();
         formData.append('id', employee.id.toString());
         formData.append('file', file);
-        return this.rest.postAuthorized(url, formData);
+        return this.rest.postAuthorized<WebResponse<string>>(url, formData);
     }
 }

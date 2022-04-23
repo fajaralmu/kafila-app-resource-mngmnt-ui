@@ -71,14 +71,19 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
         
     }
     addSchool = (item:Employee) => {
-        this.service.list<School>('schools', 0, -1, undefined)
-            .then(response => {
-                this.dialog.showContent("Add School", 
-                <AddSchoolForm 
-                    schools={response.items} 
-                    update={(e) => this.submitAddSchool(item, e) }
-                />);
-            })
+        this.service.get<Employee>('employees', item.id)
+            .then(employee => {
+                employee = Object.assign(new Employee(), employee);
+                this.service.list<School>('schools', 0, -1, undefined)
+                    .then(schoolsResponse => {
+                        this.dialog.showContent("Add School", 
+                        <AddSchoolForm 
+                            schools={schoolsResponse.items} 
+                            update={(e) => this.submitAddSchool(employee, e) }
+                        />);
+                    })
+                    .catch(console.error);
+                })
             .catch(console.error);
         
     }
@@ -95,11 +100,12 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
         };
         const submit = (emp:Employee, file: File) => {
             this.upload.uploadSignature(emp, file)
-                .then(() => {
+                .then((response) => {
                     if (closeObs.obs.close) {
                         closeObs.obs.close();
                     }
                     this.toast.showSuccess('Signature has been uploaded');
+
                     // Force update to reload all signature image
                     this.forceUpdate();
                 })
