@@ -30,11 +30,11 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     get startingNumber() { return 1 + (this.state.result.page * this.state.result.limit); }
     get filterParams() {
         const { filter } = this.state;
-        const array = [];
+        const array: string[] = [];
         for (const key in filter) {
             array.push(`${key}:${filter[key]}`);
         }
-        return array.join(";");
+        return array;
     }
 
     abstract getDataTableHeaderVals(): DataTableHeaderValue[];

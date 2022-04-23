@@ -6,7 +6,7 @@ const generalSetting = {
     },
      
     "hosts":{
-        "api": "http://127.0.0.1:8080/kafila-app-master",
+        "api": "http://127.0.0.1:8080/kafila-app-tahfiz",
         "_api": "https://18.136.218.152.com/kafila-app-master",
         
     },

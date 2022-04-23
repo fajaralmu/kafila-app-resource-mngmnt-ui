@@ -19,7 +19,7 @@ export default class MasterDataService {
         perPage:number,
         order:string|undefined = 'id',
         orderDesc?:boolean,
-        filter?:string
+        filter?:string[] | string
     ): Promise<MasterDataResult<T>> => {
         let orderString = '';
         if (order)
@@ -30,7 +30,7 @@ export default class MasterDataService {
                 orderString += '&orderDesc=true'
             }
         }
-        const url = `${API_URL}${name}?page=${page}&limit=${perPage}` + orderString + ( filter? `&filter=${filter}` : '' );
+        const url = `${API_URL}${name}?page=${page}&limit=${perPage}` + orderString + (filter? filterQueryParam(filter) : '' );
         return this.rest.getAuthorized(url);
     }
     get = <T extends BaseModel>(name: ModelNames, id:number): Promise<T> => {
@@ -58,4 +58,19 @@ export default class MasterDataService {
         const url = `${API_URL}${name}/${id}`;
         return this.rest.deleteAuthorized(url);
     }
+}
+
+const filterQueryParam = (filter?: string[] | string) => {
+    if (!filter || filter.length == 0) {
+        return '';
+    }
+    if (typeof filter === 'string') {
+        return `&filter=${filter}`;
+    }
+    const filters = [];
+    for (let i = 0; i < filter.length; i++) {
+        const element = filter[i];
+        filters.push(`filter=${element}`);
+    }
+    return '&' + filters.join('&');
 }
