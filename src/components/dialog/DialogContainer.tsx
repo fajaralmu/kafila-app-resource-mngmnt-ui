@@ -5,6 +5,7 @@ import { DialogType } from "../../constants/DialogType";
 import DialogProps from "../../models/DialogProps";
 import DialogService from "../../services/DialogService";
 import Dialog from "./Dialog";
+import { DialogObserver } from './DialogObserver';
 
 type DialogState = { show: boolean };
 
@@ -73,12 +74,12 @@ export default class DialogContainer extends Component<any, DialogState> {
     }
     get isShown() { return this.state.show }
 
-    public showNoButtons = (title: string, content: any, onClose: (e: any) => any, closeObj?: { close: () => any }) => {
+    public showNoButtons = (title: string, content: any, onClose: (e: any) => any, dialogObserver?: DialogObserver) => {
         this.dialogType = DialogType.INFO_NO_BUTTONS;
         this.dialogTitle = title;
         this.dialogContent = content;
-        if (closeObj)
-            closeObj.close = this.dismissAlert;
+        if (dialogObserver)
+        dialogObserver.close = this.dismissAlert;
 
         this.display();
     }

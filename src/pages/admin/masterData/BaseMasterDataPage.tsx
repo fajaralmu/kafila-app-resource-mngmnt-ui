@@ -107,8 +107,10 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     }
     showInsertForm = () => this.setState({ showForm: true, item: this.defaultItem });
     resetFilter = () => this.setState({ filter: {} }, this.load);
-    resetFormAndClose = () => this.setState({ showForm: false, item: this.defaultItem });
-
+    resetFormAndClose = () => this.setState({ showForm: false, item: this.defaultItem }, this.afterFormCloseCallback);
+    afterFormCloseCallback() {
+        //
+    }
     formEditSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (this.state.item && this.state.item.id > 0) {
