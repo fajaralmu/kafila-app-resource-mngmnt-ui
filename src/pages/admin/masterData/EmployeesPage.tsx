@@ -14,6 +14,8 @@ import ControlledComponent from "../../ControlledComponent";
 import BaseMasterDataPage from "./BaseMasterDataPage";
 import FileUploadService from './../../../services/FileUploadService';
 import { DialogObserver } from './../../../components/dialog/DialogObserver';
+import UploadFileForm from './UploadFileForm';
+import DefaultDialogObserver from "../../../components/dialog/DefaultDialogObserver";
 
 class State extends BaseMasterDataState<Employee> {
 
@@ -94,19 +96,12 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
     }
   }
   showSignatureForm = (item: Employee) => {
-    const closeObs = {
-      obs: {
-        close: () => { }
-      }
-    };
+    const dialogObs = DefaultDialogObserver.create();
     const submit = (emp: Employee, file: File) => {
       this.upload.uploadSignature(emp, file)
-        .then((response) => {
-          if (closeObs.obs.close) {
-            closeObs.obs.close();
-          }
+        .then(() => {
           this.toast.showSuccess('Signature has been uploaded');
-
+          dialogObs.close();
           // Force update to reload all signature image
           this.forceUpdate();
         })
@@ -117,20 +112,21 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
     }
     this.dialog.showContent(
       'Upload Signature',
-      <FormUploadSignature employee={item} submit={submit} />,
+      <UploadFileForm submit={(file) => submit(item, file)} />,
+      dialogObs
     );
   }
-  render(): ReactNode {
-    if (this.state.showForm && this.state.item) {
+  render() {
+    const { showForm, item, result } = this.state;
+    if (showForm && item) {
       return (
         <ViewTemplate title={this.title} back="/admin">
           {this.closeFormButton}
-          <FormEdit item={this.state.item} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
+          <FormEdit item={item} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
         </ViewTemplate>
       );
     }
 
-    const result = this.state.result;
     const items = result?.items;
     return (
       <ViewTemplate title={this.title} back="/admin">
@@ -205,30 +201,6 @@ const signaturePath = (id: any) => {
   return `${Settings.App.hosts.api}/files/employeesignature/${id}?v=${new Date().getTime()}`;
 }
 
-const FormUploadSignature = (props: { employee: Employee, submit: (employee: Employee, file: File) => any }) => {
-  const [file, setFile] = useState<any>(null);
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (file && file instanceof File) {
-      props.submit(props.employee, file);
-    }
-  };
-  const onChange = (e: ChangeEvent) => {
-    const input = e.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      setFile(input.files[0]);
-    }
-  }
-  return (
-    <form onSubmit={onSubmit}>
-      <p>Select file</p>
-      <input required onChange={onChange} className="form-control" type="file" accept="image/png" />
-      <p></p>
-      <ActionButton className="btn btn-success" type="submit">Upload</ActionButton>
-    </form>
-  )
-}
-
 const FormEdit = (props: {
   item: Employee,
   onSubmit: (e: FormEvent) => any,
@@ -247,8 +219,8 @@ const FormEdit = (props: {
         <input className="form-control" id="item.user.email" name="item.user.email" type="email" value={item.user.email} onChange={onChange} required />
         <p>Gender</p>
         <select className="form-control" value={item.user.gender} id="item.user.gender" name="item.user.gender" onChange={onChange} required>
-          <option  >MALE</option>
-          <option  >FEMALE</option>
+          <option>MALE</option>
+          <option>FEMALE</option>
         </select>
         <p>Birth Date</p>
         <input type="date" className="form-control" id="item.user.birthDate" name="item.user.birthDate" value={getInputReadableDate(new Date(item.user.birthDate))} onChange={onChange} required />
@@ -299,7 +271,7 @@ class AddEducationForm extends ControlledComponent<{ item: Employee, update: (it
   }
 
   render(): ReactNode {
-    const item = this.state.item;
+    const { item } = this.state;
     const levels = ["S1", "S2", "S3", "D1", "D2", "D3",]
     return (
       <form onSubmit={this.onSubmit}>
@@ -335,7 +307,7 @@ class AddSchoolForm extends Component<{ schools: School[], update: (item: School
     }
   }
 
-  render(): ReactNode {
+  render() {
     return (
       <form onSubmit={this.onSubmit}>
         <p>Type</p>

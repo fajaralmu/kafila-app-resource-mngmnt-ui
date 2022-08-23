@@ -11,6 +11,10 @@ import SchoolConfigService from './../../../services/SchoolConfigService';
 import ActionButton from "../../../components/buttons/ActionButton";
 import SchoolConfig from './../../../models/SchoolConfig';
 import SchoolConfigForm from "./SchoolConfigForm";
+import Settings from "../../../settings";
+import DefaultDialogObserver from "../../../components/dialog/DefaultDialogObserver";
+import FileUploadService from "../../../services/FileUploadService";
+import UploadFileForm from "./UploadFileForm";
 
 class State extends BaseMasterDataState<School> {
   showConfigForm = false;
@@ -19,6 +23,8 @@ class State extends BaseMasterDataState<School> {
 class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
   @resolve(SchoolConfigService)
   private configService: SchoolConfigService;
+  @resolve(FileUploadService)
+  private upload: FileUploadService;
 
   constructor(props: BaseProps) {
     super(props, "schools", "School Management");
@@ -32,6 +38,7 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
       new DataTableHeaderValue("level", "Level"),
       new DataTableHeaderValue("code", "Code"),
       new DataTableHeaderValue("address", "Address"),
+      new DataTableHeaderValue(null, "Stamp", false),
       new DataTableHeaderValue(null, "Config", false),
     ]
   }
@@ -42,11 +49,32 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
       })
       .catch((e) => this.dialog.showError("Load Config Failed", e));
   }
-  afterFormCloseCallback() {
+  afterFormCloseCallback = () => {
     this.setState({ showConfigForm: false });
   }
+  showStampForm = (item: School) => {
+    const dialogObs = DefaultDialogObserver.create();
+    const submit = (sch: School, file: File) => {
+      this.upload.uploadStamp(sch, file)
+        .then(() => {
+          this.toast.showSuccess('Stamp has been uploaded');
+          dialogObs.close();
+          // Force update to reload all signature image
+          this.forceUpdate();
+        })
+        .catch((e) => {
+          this.toast.showDanger('Failed to upload stamp');
+          console.error(e);
+        });
+    }
+    this.dialog.showContent(
+      'Upload School Stamp',
+      <UploadFileForm submit={(file) => submit(item, file)} />,
+      dialogObs
+    );
+  }
 
-  render(): ReactNode {
+  render() {
 
     const { showForm, config, showConfigForm, item, result } = this.state;
     if (config && showConfigForm && item) {
@@ -92,6 +120,20 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
                       <td>{item.code}</td>
                       <td>{item.address}</td>
                       <td>
+                        <img
+                          width={50}
+                          height={50}
+                          src={stampPath(item.id)}
+                        />
+                        <div>
+                          <ActionButton
+                            iconClass="fas fa-edit"
+                            className="btn btn-dark btn-sm"
+                            onClick={() => this.showStampForm(item)}
+                          />
+                        </div>
+                      </td>
+                      <td>
                         <ActionButton
                           className="btn btn-text btn-sm"
                           iconClass="fas fa-cog"
@@ -111,7 +153,9 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
   }
 }
 
-export default commonWrapper(SchoolsPage);
+const stampPath = (id: any) => {
+  return `${Settings.App.hosts.api}/files/school-stamp/${id}?v=${new Date().getTime()}`;
+};
 
 const FormEdit = (props: {
   item: School,
@@ -140,5 +184,7 @@ const FormEdit = (props: {
         <input className="btn btn-primary" value="Save" type="submit" />
       </form>
     </div>
-  )
-}
+  );
+};
+
+export default commonWrapper(SchoolsPage);
