@@ -181,9 +181,10 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     if (valueIsBlank && filter[name]) {
       delete filter[name];
     } else {
-      filter[name] = value;
+      filter[name] = encodeURIComponent(value);
     }
-    this.setState({ filter: filter }, () => {
+    
+    this.setState({ filter }, () => {
       const input = document.getElementById(`input-filter-${name}`);
       input?.focus();
     });
