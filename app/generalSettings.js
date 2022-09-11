@@ -6,7 +6,7 @@ const generalSetting = {
     },
      
     "hosts":{
-        "api": "https://tahfidz-api.kafila.app/kafila-app-tahfiz",
+        "api": "https://tahfidz-api.kafila.app/kafila-app-asrama",
     },
     
    
