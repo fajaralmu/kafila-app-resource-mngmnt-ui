@@ -55,7 +55,7 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
   showStampForm = (item: School) => {
     const dialogObs = DefaultDialogObserver.create();
     const submit = (sch: School, file: File) => {
-      this.upload.uploadStamp(sch, file)
+      this.upload.uploadSchoolStamp(sch, file)
         .then(() => {
           this.toast.showSuccess('Stamp has been uploaded');
           dialogObs.close();

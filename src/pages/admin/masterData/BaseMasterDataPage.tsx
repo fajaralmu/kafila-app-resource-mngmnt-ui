@@ -183,7 +183,7 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
     } else {
       filter[name] = encodeURIComponent(value);
     }
-    
+
     this.setState({ filter }, () => {
       const input = document.getElementById(`input-filter-${name}`);
       input?.focus();
@@ -220,13 +220,15 @@ abstract class BaseMasterDataPage<M extends BaseModel, P extends BaseProps, S ex
             iconClass="fas fa-edit"
             className="btn btn-text clickable" />
         </div>
-        {showDelete ?
+        {
+          showDelete &&
           <div className="col-md-6 px-1">
             <AnchorButton
               onClick={() => this.delete(item)}
               className="btn btn-text text-danger"
               iconClass="fas fa-times" />
-          </div> : null}
+          </div>
+        }
       </div>
     )
   }

@@ -270,7 +270,7 @@ class AddEducationForm extends ControlledComponent<{ item: Employee, update: (it
     this.props.update(this.state.item);
   }
 
-  render(): ReactNode {
+  render() {
     const { item } = this.state;
     const levels = ["S1", "S2", "S3", "D1", "D2", "D3",]
     return (
@@ -312,8 +312,8 @@ class AddSchoolForm extends Component<{ schools: School[], update: (item: School
       <form onSubmit={this.onSubmit}>
         <p>Type</p>
         <select className="form-control" >
-          {this.props.schools.map(i => {
-            return <option onClick={(e) => { this.selectedSchool = i }} key={"add-school-" + i.code}>{i.name}</option>
+          {this.props.schools.map(s => {
+            return <option onClick={(e) => { this.selectedSchool = s }} key={"add-school-" + s.code}>{s.name}</option>
           })}
         </select>
         <p />
