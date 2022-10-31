@@ -133,65 +133,67 @@ class EmployeesPage extends BaseMasterDataPage<Employee, BaseProps, State> {
         {this.showFormButton}
         {result === undefined || items === undefined ?
           <i>Loading...</i> :
-          <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{ overflow: 'auto' }}>
+          <div className="mt-5 pl-3 pr-3" style={{ overflow: 'auto' }}>
             {this.paginationButton}
-            <table className="commonDataTable table table-striped">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  {this.getDataTableHeaderComponent()}
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item, i) => {
-                  const { user, schools, educations } = item;
-                  return (
-                    <tr key={"user-" + item.id}>
-                      <td>{this.startingNumber + i}</td>
-                      <td>{item.nisdm}</td>
-                      <td>{user.fullName}</td>
-                      <td>{user.email}</td>
-                      <td>{new Date(user.birthDate).toLocaleDateString()}</td>
-                      <td>{user.gender}</td>
-                      <td>
-                        <img
-                          width={50}
-                          height={50}
-                          src={signaturePath(item.id)}
-                        />
-                        <div>
-                          <ActionButton
-                            iconClass="fas fa-edit"
-                            className="btn btn-dark btn-sm"
-                            onClick={() => this.showSignatureForm(item)}
+            <form onSubmit={this.loadFromForm}>
+              <table className="commonDataTable table table-striped">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    {this.getDataTableHeaderComponent()}
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((item, i) => {
+                    const { user, schools, educations } = item;
+                    return (
+                      <tr key={"user-" + item.id}>
+                        <td>{this.startingNumber + i}</td>
+                        <td>{item.nisdm}</td>
+                        <td>{user.fullName}</td>
+                        <td>{user.email}</td>
+                        <td>{new Date(user.birthDate).toLocaleDateString()}</td>
+                        <td>{user.gender}</td>
+                        <td>
+                          <img
+                            width={50}
+                            height={50}
+                            src={signaturePath(item.id)}
                           />
-                        </div>
-                      </td>
-                      <td>{this.listToggler(
-                        schools,
-                        item,
-                        (school) => `${school.name}`,
-                        this.addSchool,
-                        this.removeSchool)}
-                      </td>
-                      <td>
-                        {this.listToggler(
-                          educations,
+                          <div>
+                            <ActionButton
+                              iconClass="fas fa-edit"
+                              className="btn btn-dark btn-sm"
+                              onClick={() => this.showSignatureForm(item)}
+                            />
+                          </div>
+                        </td>
+                        <td>{this.listToggler(
+                          schools,
                           item,
-                          (ed) => `${ed.type}: ${ed.name}`,
-                          this.addEducation,
-                          this.removeEducation)}
-                      </td>
+                          (school) => `${school.name}`,
+                          this.addSchool,
+                          this.removeSchool)}
+                        </td>
+                        <td>
+                          {this.listToggler(
+                            educations,
+                            item,
+                            (ed) => `${ed.type}: ${ed.name}`,
+                            this.addEducation,
+                            this.removeEducation)}
+                        </td>
 
-                      <td>{this.actionButton(item)}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-              {this.tableFooter}
-            </table>
-          </form>}
+                        <td>{this.actionButton(item)}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+                {this.tableFooter}
+              </table>
+            </form>
+          </div>}
       </ViewTemplate>
     )
   }

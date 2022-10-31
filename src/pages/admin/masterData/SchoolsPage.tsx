@@ -45,7 +45,7 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
   showConfigForm = (item: School) => {
     this.configService.getConfig(item.id)
       .then((config) => {
-        this.setState({ config,  item, showConfigForm: true })
+        this.setState({ config, item, showConfigForm: true })
       })
       .catch((e) => this.dialog.showError("Load Config Failed", e));
   }
@@ -99,55 +99,57 @@ class SchoolsPage extends BaseMasterDataPage<School, BaseProps, State> {
       <ViewTemplate title={this.title} back="/admin">
         {result === undefined || items === undefined ?
           <i>Loading...</i> :
-          <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{ overflow: 'auto' }}>
+          <div className="mt-5 pl-3 pr-3" style={{ overflow: 'auto' }}>
             {this.paginationButton}
-            <table className="commonDataTable table table-striped">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  {this.getDataTableHeaderComponent()}
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item, i) => {
-                  return (
-                    <tr key={"School-" + item.id}>
-                      <td>{this.startingNumber + i}</td>
-                      <td>{item.nis}</td>
-                      <td>{item.name}</td>
-                      <td>{item.level}</td>
-                      <td>{item.code}</td>
-                      <td>{item.address}</td>
-                      <td>
-                        <img
-                          width={50}
-                          height={50}
-                          src={stampPath(item.id)}
-                        />
-                        <div>
-                          <ActionButton
-                            iconClass="fas fa-edit"
-                            className="btn btn-dark btn-sm"
-                            onClick={() => this.showStampForm(item)}
+            <form onSubmit={this.loadFromForm}>
+              <table className="commonDataTable table table-striped">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    {this.getDataTableHeaderComponent()}
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((item, i) => {
+                    return (
+                      <tr key={"School-" + item.id}>
+                        <td>{this.startingNumber + i}</td>
+                        <td>{item.nis}</td>
+                        <td>{item.name}</td>
+                        <td>{item.level}</td>
+                        <td>{item.code}</td>
+                        <td>{item.address}</td>
+                        <td>
+                          <img
+                            width={50}
+                            height={50}
+                            src={stampPath(item.id)}
                           />
-                        </div>
-                      </td>
-                      <td>
-                        <ActionButton
-                          className="btn btn-text btn-sm"
-                          iconClass="fas fa-cog"
-                          onClick={() => this.showConfigForm(item)}
-                        />
-                      </td>
-                      <td>{this.actionButton(item, false)}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-              {this.tableFooter}
-            </table>
-          </form>}
+                          <div>
+                            <ActionButton
+                              iconClass="fas fa-edit"
+                              className="btn btn-dark btn-sm"
+                              onClick={() => this.showStampForm(item)}
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <ActionButton
+                            className="btn btn-text btn-sm"
+                            iconClass="fas fa-cog"
+                            onClick={() => this.showConfigForm(item)}
+                          />
+                        </td>
+                        <td>{this.actionButton(item, false)}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+                {this.tableFooter}
+              </table>
+            </form>
+          </div>}
       </ViewTemplate>
     )
   }

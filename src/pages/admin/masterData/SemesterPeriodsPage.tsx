@@ -99,50 +99,52 @@ class SemesterPeriodsPage extends BaseMasterDataPage<SemesterPeriod, BaseProps, 
         {this.showFormButton}
         {result === undefined || items === undefined ?
           <i>Loading...</i> :
-          <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{ overflow: 'auto' }}>
+          <div className="mt-5 pl-3 pr-3" style={{ overflow: 'auto' }}>
             {this.paginationButton}
-            <table className="commonDataTable table table-striped">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Action</th>
-                  <th>Stamp</th>
-                  {this.getDataTableHeaderComponent()}
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item, i) => {
-                  return (
-                    <tr key={`smt-period-${item.id}`}>
-                      <td>{this.startingNumber + i}</td>
-                      <td>
-                        <div className="mx-2 d-flex" style={{ flexWrap: 'nowrap' }}>
-                          <ActionButton
-                            onClick={item.active ? () => { } : () => this.setActive(item)}
-                            iconClass={item.active === true ? 'fas fa-check-circle' : 'fas fa-circle'}
-                            className={`btn-text btn btn-sm ${item.active ? 'text-success' : 'text-secondary'} me-1`}
-                          />
-                          {!item.active && this.actionButton(item)}
-                          {item.active && <span>Active</span>}
-                        </div>
-                      </td>
-                      <td className="d-flex" style={{ gap: 5 }}>
-                        <StampInput item={item} division={Division.Asrama} showForm={this.showStampUploadForm} />
-                        <StampInput item={item} division={Division.Tahfiz} showForm={this.showStampUploadForm} />
-                      </td>
-                      <td className="text-center">{item.semester}</td>
-                      <td>{item.year}</td>
-                      <td>
-                        {item.active ? <b className="text-success">active</b> : <i>not active</i>}
-                      </td>
-                      {this.employeeCellFields(item)}
-                    </tr>
-                  )
-                })}
-              </tbody>
-              {this.tableFooter}
-            </table>
-          </form>}
+            <form onSubmit={this.loadFromForm}>
+              <table className="commonDataTable table table-striped">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Action</th>
+                    <th>Stamp</th>
+                    {this.getDataTableHeaderComponent()}
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((item, i) => {
+                    return (
+                      <tr key={`smt-period-${item.id}`}>
+                        <td>{this.startingNumber + i}</td>
+                        <td>
+                          <div className="mx-2 d-flex" style={{ flexWrap: 'nowrap' }}>
+                            <ActionButton
+                              onClick={item.active ? () => { } : () => this.setActive(item)}
+                              iconClass={item.active === true ? 'fas fa-check-circle' : 'fas fa-circle'}
+                              className={`btn-text btn btn-sm ${item.active ? 'text-success' : 'text-secondary'} me-1`}
+                            />
+                            {!item.active && this.actionButton(item)}
+                            {item.active && <span>Active</span>}
+                          </div>
+                        </td>
+                        <td className="d-flex" style={{ gap: 5 }}>
+                          <StampInput item={item} division={Division.Asrama} showForm={this.showStampUploadForm} />
+                          <StampInput item={item} division={Division.Tahfiz} showForm={this.showStampUploadForm} />
+                        </td>
+                        <td className="text-center">{item.semester}</td>
+                        <td>{item.year}</td>
+                        <td>
+                          {item.active ? <b className="text-success">active</b> : <i>not active</i>}
+                        </td>
+                        {this.employeeCellFields(item)}
+                      </tr>
+                    )
+                  })}
+                </tbody>
+                {this.tableFooter}
+              </table>
+            </form>
+          </div>}
       </ViewTemplate>
     )
   }

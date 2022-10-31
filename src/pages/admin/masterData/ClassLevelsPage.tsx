@@ -81,48 +81,50 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State> {
         {this.showFormButton}
         {result === undefined || items === undefined ?
           <i>Loading...</i> :
-          <form onSubmit={this.loadFromForm} className="mt-5 pl-3 pr-3" style={{ overflow: 'auto' }}>
+          <div className="mt-5 pl-3 pr-3" style={{ overflow: 'auto' }}>
             {this.paginationButton}
-            <table className="commonDataTable table table-striped">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  {this.getDataTableHeaderComponent()}
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item, i) => {
-                  return (
-                    <tr key={"ClassLevel-" + item.id}>
-                      <td>{this.startingNumber + i}</td>
-                      <td>{item.level}</td>
-                      <td>{item.letter}</td>
-                      <td>{item.school.name}</td>
-                      <td>{item.description}</td>
-                      <td>{item.semester}</td>
-                      <td>{item.year}</td>
-                      <td>
-                        {item.memberCount}
-                        <ActionButton
-                          className="btn btn-text btn-sm"
-                          iconClass="fas fa-edit"
-                          onClick={() => this.showEditMemberForm(item)}
-                        />
-                      </td>
-                      <td>{item.semesterActive ?
-                        <b className="text-success">active</b> : <i>not active</i>}
-                      </td>
-                      <td>
-                        {item.semesterActive ? this.actionButton(item) : null}
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-              {this.tableFooter}
-            </table>
-          </form>}
+            <form onSubmit={this.loadFromForm}>
+              <table className="commonDataTable table table-striped">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    {this.getDataTableHeaderComponent()}
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((item, i) => {
+                    return (
+                      <tr key={"ClassLevel-" + item.id}>
+                        <td>{this.startingNumber + i}</td>
+                        <td>{item.level}</td>
+                        <td>{item.letter}</td>
+                        <td>{item.school.name}</td>
+                        <td>{item.description}</td>
+                        <td>{item.semester}</td>
+                        <td>{item.year}</td>
+                        <td>
+                          {item.memberCount}
+                          <ActionButton
+                            className="btn btn-text btn-sm"
+                            iconClass="fas fa-edit"
+                            onClick={() => this.showEditMemberForm(item)}
+                          />
+                        </td>
+                        <td>{item.semesterActive ?
+                          <b className="text-success">active</b> : <i>not active</i>}
+                        </td>
+                        <td>
+                          {item.semesterActive ? this.actionButton(item) : null}
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+                {this.tableFooter}
+              </table>
+            </form>
+          </div>}
       </ViewTemplate>
     )
   }

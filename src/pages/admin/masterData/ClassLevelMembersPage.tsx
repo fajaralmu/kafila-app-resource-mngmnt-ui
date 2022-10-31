@@ -183,6 +183,4 @@ export default class ClassLevelMembersPage extends ControlledComponent<Props, St
       </div>
     )
   }
-
-
 }
