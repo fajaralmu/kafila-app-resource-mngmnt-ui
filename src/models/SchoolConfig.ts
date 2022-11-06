@@ -8,4 +8,5 @@ export default class SchoolConfig extends BaseModel {
     school: School;
     admin: Employee;
     headMaster: Employee;
+    headTahfiz: Employee;
 }

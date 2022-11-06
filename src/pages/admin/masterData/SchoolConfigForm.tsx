@@ -54,6 +54,9 @@ class SchoolConfigForm extends Component<Props, State> {
   selectAdmin = () => {
     this.showSelectEmployeeForm('Select School Admin', 'admin');
   }
+  selectHeadTahfiz = () => {
+    this.showSelectEmployeeForm('Select School Admin', 'headTahfiz');
+  }
 
   showSelectEmployeeForm = (title: string, field: keyof SchoolConfig) => {
     const { config } = this.state;
@@ -90,6 +93,15 @@ class SchoolConfigForm extends Component<Props, State> {
                 </div>
               </td>
               <td><span className="px-3">{config.admin?.user?.fullName ?? '-'}</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div>
+                  <ActionButton iconClass="fas fa-edit" className="btn btn-text btn-sm me-1" onClick={this.selectHeadTahfiz} />
+                  Tahfiz Head
+                </div>
+              </td>
+              <td><span className="px-3">{config.headTahfiz?.user?.fullName ?? '-'}</span></td>
             </tr>
             <tr>
               <td colSpan={2}>
