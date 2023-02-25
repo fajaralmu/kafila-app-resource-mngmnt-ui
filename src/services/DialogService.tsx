@@ -66,7 +66,7 @@ export default class DialogService {
           </div>
         )
       } if (typeof message === 'object') {
-        messageContent = message['result'];
+        messageContent = message['message'];
       } else {
         messageContent = !message || message.trim() === "" ? "Unexpected error" : message.trim();
       }
