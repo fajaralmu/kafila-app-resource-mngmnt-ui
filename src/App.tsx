@@ -62,7 +62,7 @@ class Root extends Component<{navigate:NavigateFunction},State> {
   load = () => {
     this.setState({ loadingError: false });
     
-    this.authService.loadApplication()
+    this.authService.loadProfile()
       .then(()=>{
         this.setState({ loaded: true });
       })

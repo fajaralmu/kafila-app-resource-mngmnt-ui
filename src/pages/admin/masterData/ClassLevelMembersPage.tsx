@@ -1,19 +1,19 @@
 
-import { Component, ReactNode } from 'react';
+import { resolve } from 'inversify-react';
+import { ReactNode } from 'react';
+import ActionButton from '../../../components/buttons/ActionButton';
+import ClassLevelRes from '../../../models/res/ClassLevelRes';
 import Student from '../../../models/Student';
+import MasterDataService from '../../../services/MasterDataService';
+import ControlledComponent from '../../ControlledComponent';
 import ClassLevel from './../../../models/ClassLevel';
 import ClassMember from './../../../models/ClassMember';
-import { resolve } from 'inversify-react';
-import RestClient from './../../../apiClients/RestClient';
 import ClassMemberService from './../../../services/ClassMemberService';
-import ControlledComponent from '../../ControlledComponent';
-import ToastService from './../../../services/ToastService';
-import MasterDataService from '../../../services/MasterDataService';
-import ActionButton from '../../../components/buttons/ActionButton';
 import DialogService from './../../../services/DialogService';
+import ToastService from './../../../services/ToastService';
 
 type Props = {
-  item: ClassLevel,
+  item: ClassLevelRes,
 }
 type State = {
   members: ClassMember[],
@@ -36,7 +36,7 @@ export default class ClassLevelMembersPage extends ControlledComponent<Props, St
     this.state = {
       members: [],
       students: [],
-      searchStudent: ""
+      searchStudent: '',
     }
   }
   componentDidMount() {
@@ -70,7 +70,10 @@ export default class ClassLevelMembersPage extends ControlledComponent<Props, St
     }
     const member = new ClassMember();
     member.student = student;
-    member.classLevel = this.props.item;
+    // TODO: change class member payload
+    const cls = new ClassLevel();
+    cls.id = this.props.item.id;
+    member.classLevel = cls;
 
     this.masterData.post<ClassMember>('classmembers', member)
       .then(() => {
@@ -95,11 +98,11 @@ export default class ClassLevelMembersPage extends ControlledComponent<Props, St
 
   render(): ReactNode {
     const { students, searchStudent, members } = this.state;
-    const { item } = this.props;
+    const { level, letter, schoolName, year, semester } = this.props.item;
     return (
       <div>
-        <h5>Members of {item.level}{item.letter} {item.school?.name}</h5>
-        <p>Period: semester {item.semester}, year {item.year}</p>
+        <h5>Members of {level}{letter} {schoolName}</h5>
+        <p>Period: semester {semester}, year {year}</p>
         <form className='mb-3' onSubmit={(e) => {
           e.preventDefault();
           this.loadStudents();

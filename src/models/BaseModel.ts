@@ -1,3 +1,3 @@
-export default class BaseModel {
-    public id:number = -1;
+export default abstract class BaseModel {
+  public id: number = -1;
 }

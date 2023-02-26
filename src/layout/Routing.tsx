@@ -19,6 +19,7 @@ import ClassLevelsPage from '../pages/admin/masterData/ClassLevelsPage';
 import StudentsPage from '../pages/admin/masterData/StudentsPage';
 import ClassMembersPage from '../pages/admin/masterData/ClassMembersPage';
 import BulkInsertView from './../pages/admin/bulkInsert/BulkInsertView';
+import ClassLevelsPageV2 from '../pages/admin/masterData/v2/ClassLevelsPageV2';
 
 export class Routing extends Component<BaseProps, any> {
   @resolve(AuthService)
@@ -62,6 +63,9 @@ export class Routing extends Component<BaseProps, any> {
           } />
           <Route path="/admin/classlevels" element={
             <RestrictedRouteElement to="/admin/classlevels" element={<ClassLevelsPage />} requiredRole={'ROLE_SUPERADMIN'} />
+          } />
+          <Route path="/admin/v2/classlevels" element={
+            <RestrictedRouteElement to="/admin/classlevelsv2" element={<ClassLevelsPageV2 />} requiredRole={'ROLE_SUPERADMIN'} />
           } />
           <Route path="/admin/students" element={
             <RestrictedRouteElement to="/admin/students" element={<StudentsPage />} requiredRole={'ROLE_SUPERADMIN'} />

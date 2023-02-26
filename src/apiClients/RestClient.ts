@@ -33,12 +33,12 @@ export default class RestClient {
       axios.post(url, body, {
         headers: { ...headers }
       }).then((response: AxiosResponse) => {
-        if (!response.data || !response.data.message) {
+        if (!response.data) {
           reject(new Error('Invalid response data'));
           return;
         }
-        if (response.data.code !== SUCCESS_CODE) {
-          reject(new Error(response.data.message));
+        if (response.data.code !== SUCCESS_CODE && parseInt(response.data.code) !== 200) {
+          reject(new Error(response.data.message ?? response.data.result ?? 'Request failed'));
           return;
         }
         if (expectRefreshToken) {

@@ -1,6 +1,6 @@
-export default class ApplicationProfile {
-    name:string;
-    description:string;
-    semester?:number;
-    year?:string;
+export default interface ApplicationProfile {
+  name: string;
+  description: string;
+  semester?: number;
+  year?: string;
 }

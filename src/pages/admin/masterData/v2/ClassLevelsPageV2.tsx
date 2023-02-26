@@ -1,32 +1,61 @@
-import { ChangeEvent, FormEvent, ReactNode } from "react";
-import { ViewTemplate } from "../../../layout/ViewTemplate";
-import BaseMasterDataState from '../../../models/BaseMasterDataState';
-import BaseProps from '../../../models/BaseProps';
-import ClassLevel from "../../../models/ClassLevel";
-import DataTableHeaderValue from "../../../models/DataTableHeaderValue";
-import { commonWrapper } from "../../../utils/commonWrapper";
-import School from '../../../models/School';
-import BaseMasterDataPage from "./BaseMasterDataPage";
-import ActionButton from "../../../components/buttons/ActionButton";
-import ClassLevelMembersPage from './ClassLevelMembersPage';
-import ClassLevelRes from './../../../models/res/ClassLevelRes';
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ViewTemplate } from "../../../../layout/ViewTemplate";
+import BaseMasterDataState from '../../../../models/BaseMasterDataState';
+import BaseProps from '../../../../models/BaseProps';
+import ClassLevel from "../../../../models/ClassLevel";
+import DataTableHeaderValue from "../../../../models/DataTableHeaderValue";
+import { commonWrapper } from "../../../../utils/commonWrapper";
+import School from '../../../../models/School';
+import ActionButton from "../../../../components/buttons/ActionButton";
+import ClassLevelMembersPage from '../ClassLevelMembersPage';
+import BaseMasterDataPageV2 from './BaseMasterDataPageV2';
+import BaseMasterDataStateV2 from './../../../../models/BaseMasterDataStateV2';
+import ClassLevelRes from "../../../../models/res/ClassLevelRes";
+import { resolve, useInjection } from "inversify-react";
+import MasterDataService from './../../../../services/MasterDataService';
+import AuthService from './../../../../services/AuthService';
+import ApplicationProfile from './../../../../models/ApplicationProfile';
 
-class State extends BaseMasterDataState<ClassLevel> {
-  showEditMember: boolean
+type Req = {
+  id: number | undefined;
+  letter: string;
+  level: number;
+  schoolId: number;
 }
-class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State> {
-  schools: School[] = [];
+class State extends BaseMasterDataStateV2<Req, ClassLevelRes> {
+  showEditMember = false;
+  selectedEditMemberItem: ClassLevelRes | undefined = undefined;
+}
+class ClassLevelsPageV2 extends BaseMasterDataPageV2<Req, ClassLevelRes, BaseProps, State> {
+  @resolve(MasterDataService)
+  private serviceV1: MasterDataService;
+  private schools: School[] = [];
   constructor(props: BaseProps) {
-    super(props, "classlevels", "Class Level Management");
+    super(props, 'classlevels', 'Class Level Management');
     this.state = new State();
   }
-  get defaultItem() { return new ClassLevel() }
+  get defaultItem(): Req {
+    return {
+      letter: 'A',
+      level: 1,
+      schoolId: 0,
+      id: undefined,
+    };
+  }
+  toReqModel(res: ClassLevelRes): Req {
+    return {
+      id: res.id,
+      letter: res.letter,
+      schoolId: res.schoolId,
+      level: res.level,
+    }
+  }
+
   getDataTableHeaderVals() {
     return [
       new DataTableHeaderValue("level", "Level"),
       new DataTableHeaderValue("letter", "Letter"),
       new DataTableHeaderValue("school.name", "School"),
-      new DataTableHeaderValue("description", "Description"),
       new DataTableHeaderValue("semesterPeriod.semester", "Semester"),
       new DataTableHeaderValue("semesterPeriod.year", "Year"),
       new DataTableHeaderValue(null, "Member", false),
@@ -34,48 +63,44 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State> {
     ]
   }
 
-  edit = (model: ClassLevel) => {
-    this.service.list<School>('schools', 0, -1)
+  edit = (item: Req) => {
+    this.serviceV1.list<School>('schools', 0, -1)
       .then((response) => {
         this.schools = response.items ?? [];
         if (this.schools.length === 0) {
-          this.dialog.showError("No School Record", "Failed when getting school data");
+          this.dialog.showError('No School Record', 'Failed when getting school data');
           return;
         }
-        if (!model.school) {
-          model.school = this.schools[0];
-        }
-        this.setState({ item: model }, this.showForm);
+        this.setState({ item }, this.showForm);
       })
-      .catch((e) => this.dialog.showError("Failed to Read School Data", e));
+      .catch((e) => this.dialog.showError('Failed to Read School Data', e));
   }
 
   showInsertForm = () => this.edit(this.defaultItem);
-  showEditMemberForm = (item: ClassLevel) => this.setState({ item: item, showEditMember: true });
+  showEditMemberForm = (selectedItem: ClassLevelRes) => this.setState({ selectedEditMemberItem: selectedItem, showEditMember: true });
   closeEditMemberForm = () => {
-    this.setState({ showEditMember: false }, this.resetFormAndClose);
+    this.setState({ showEditMember: false, selectedEditMemberItem: undefined }, this.resetFormAndClose);
   }
   render() {
-    if (this.state.showEditMember && this.state.item) {
+    const { selectedEditMemberItem: selectedItem, item, showForm, showEditMember, result } = this.state;
+    if (showEditMember && selectedItem) {
       return (
         <ViewTemplate title={this.title} back="/admin">
           <ActionButton onClick={this.closeEditMemberForm} iconClass="fas fa-times" className="btn btn-secondary btn-sm mx-2">
             Close form
           </ActionButton>
-          <ClassLevelMembersPage item={toClassLevelRes(this.state.item)} />
+          <ClassLevelMembersPage item={selectedItem} />
         </ViewTemplate>
       )
     }
-    if (this.state.showForm && this.state.item && this.schools.length > 0) {
+    if (showForm && item && this.schools.length > 0) {
       return (
         <ViewTemplate title={this.title} back="/admin">
           {this.closeFormButton}
-          <FormEdit item={this.state.item} schools={this.schools} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
+          <FormEdit item={item} schools={this.schools} handleInputChange={this.handleInputChange} onSubmit={this.formEditSubmit} />
         </ViewTemplate>
       );
     }
-
-    const result = this.state.result;
     const items = result?.items;
     return (
       <ViewTemplate title={this.title} back="/admin">
@@ -100,8 +125,7 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State> {
                         <td>{this.startingNumber + i}</td>
                         <td>{item.level}</td>
                         <td>{item.letter}</td>
-                        <td>{item.school.name}</td>
-                        <td>{item.description}</td>
+                        <td>{item.schoolName}</td>
                         <td>{item.semester}</td>
                         <td>{item.year}</td>
                         <td>
@@ -131,35 +155,29 @@ class ClassLevelsPage extends BaseMasterDataPage<ClassLevel, BaseProps, State> {
   }
 }
 
-const toClassLevelRes = (model: ClassLevel): ClassLevelRes => {
-  return {
-    id: model.id,
-    level: model.level,
-    letter: model.letter,
-
-    schoolId: model.school?.id ?? 0,
-    schoolName: model.school?.name ??'',
-
-    memberCount: model.memberCount,
-    
-    semester: model.semester,
-    semesterActive: model.semesterActive,
-    year: model.year,
-  };
-};
-
-export default commonWrapper(ClassLevelsPage);
-
 const FormEdit = (props: {
-  item: ClassLevel,
+  item: Req,
   schools: School[],
   onSubmit: (e: FormEvent) => any,
   handleInputChange: (e: ChangeEvent) => any
 }) => {
-  const { item, onSubmit, handleInputChange } = props;
+  const { item, schools, onSubmit, handleInputChange } = props;
+  const authService = useInjection(AuthService);
   const setSchool = (school: School) => {
-    item.school = school;
+    item.schoolId = school.id;
   }
+  const [profile, setProfile] = useState<ApplicationProfile | undefined>(undefined);
+  
+  useEffect(() => {
+    item.schoolId = schools[0].id;
+    loadProfile();
+    return () => {};
+  }, []);
+
+  const loadProfile = () =>
+    authService.loadOnlyProfile()
+      .then(setProfile)
+      .catch(() => { });
   return (
     <div className="formEditContainer">
       <form className="masterDataForm px-3 py-3 border rounded border-gray" onSubmit={onSubmit}>
@@ -177,14 +195,15 @@ const FormEdit = (props: {
             )
           })}
         </select>
-        <p>Semester</p>
-        <input className="form-control" name="item.semester" id="item.semester" value={item.semester} type="number" required onChange={props.handleInputChange} />
-        <p>Year</p>
-        <input className="form-control" name="item.year" id="item.year" value={item.year} onChange={props.handleInputChange} required />
-
-        <p></p>
+        <p>
+          Semester:
+          {profile && <i>{profile.semester} {profile.year}</i>}
+          {!profile && <i>Please ensure that active period is set</i>}
+        </p>
         <input className="btn btn-primary" value="Save" type="submit" />
       </form>
     </div>
   )
 }
+
+export default commonWrapper(ClassLevelsPageV2);
