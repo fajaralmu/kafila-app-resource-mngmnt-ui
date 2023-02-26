@@ -64,8 +64,8 @@ export class Routing extends Component<BaseProps, any> {
           <Route path="/admin/classlevels" element={
             <RestrictedRouteElement to="/admin/classlevels" element={<ClassLevelsPage />} requiredRole={'ROLE_SUPERADMIN'} />
           } />
-          <Route path="/admin/v2/classlevels" element={
-            <RestrictedRouteElement to="/admin/classlevelsv2" element={<ClassLevelsPageV2 />} requiredRole={'ROLE_SUPERADMIN'} />
+          <Route path="/admin/classlevels/v2" element={
+            <RestrictedRouteElement to="/admin/classlevels/v2" element={<ClassLevelsPageV2 />} requiredRole={'ROLE_SUPERADMIN'} />
           } />
           <Route path="/admin/students" element={
             <RestrictedRouteElement to="/admin/students" element={<StudentsPage />} requiredRole={'ROLE_SUPERADMIN'} />

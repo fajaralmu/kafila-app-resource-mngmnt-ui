@@ -65,7 +65,7 @@ const managementPages = [
         iconClass: 'fas fa-chalkboard-teacher'
     },
     {
-        url: '/admin/v2/classlevels',
+        url: '/admin/classlevels/v2',
         label: 'Classes #2',
         iconClass: 'fas fa-chalkboard-teacher'
     },
