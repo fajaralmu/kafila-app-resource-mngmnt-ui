@@ -11,9 +11,9 @@ export default class SchoolConfigService {
     private rest: RestClient;
 
     getConfig = (schoolId: number) => {
-        return this.rest.getAuthorized<SchoolConfig>(`${API_URL}schools-config/school/${schoolId}`);
+        return this.rest.getAuthorized<SchoolConfig>(`${API_URL}school-config/school/${schoolId}`);
     }
     update = (config: SchoolConfig) => {
-        return this.rest.putAuthorized<SchoolConfig>(`${API_URL}schools-config/${config.id}`, config);
+        return this.rest.putAuthorized<SchoolConfig>(`${API_URL}school-config/${config.id}`, config);
     }
 }
