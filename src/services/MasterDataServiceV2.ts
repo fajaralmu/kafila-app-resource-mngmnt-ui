@@ -18,6 +18,7 @@ export default class MasterDataServiceV2 {
     return this.rest.getAuthorized<Res>(url);
   }
   post = <Req, Res>(name: ModelNames, model: Req) => {
+    delete (model as any)['id'];
     const url = `${API_URL}${name}/${version}`;
     return this.rest.postAuthorized<Res>(url, model);
   }

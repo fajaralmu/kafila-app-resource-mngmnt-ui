@@ -17,6 +17,8 @@ export default class MasterDataService {
     return this.rest.getAuthorized<T>(url);
   }
   post = <T extends BaseModel>(name: ModelNames, model: T) => {
+    delete (model as any)['id'];
+    // model.id = null;
     const url = `${API_URL}${name}`;
     return this.rest.postAuthorized<T>(url, model);
   }
