@@ -4,10 +4,14 @@ import DataInsertService from './../../../services/DataInsertService';
 import DialogService from './../../../services/DialogService';
 import { FormEvent } from 'react';
 import { ViewTemplate } from '../../../layout/ViewTemplate';
+import { BasePage } from '../../BasePage';
 
-export default class BulkInsertView extends React.Component<any, any> {
+export default class BulkInsertView extends BasePage<any, any> {
   @resolve(DataInsertService)
   private service: DataInsertService;
+  constructor(props: any) {
+    super(props, true, 'Data Insert')
+  }
   render() {
     return (
       <ViewTemplate title="Data Insert" back="/admin">
