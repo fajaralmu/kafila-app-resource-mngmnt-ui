@@ -10,3 +10,11 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.calendar-item {
+    height: 150px;
+
+    &-now {
+        background-color: greenyellow;
+    }
+}
