@@ -13,6 +13,7 @@ import SchoolConfigService from './services/SchoolConfigService';
 import ToastService from './services/ToastService';
 import DataInsertService from './services/DataInsertService';
 import MasterDataServiceV2 from './services/MasterDataServiceV2';
+import CalendarEventService from './services/CalendarEventService';
 
 const container = new Container();
 
@@ -26,6 +27,7 @@ container.bind(FileUploadService).toSelf().inSingletonScope();
 container.bind(SchoolConfigService).toSelf().inSingletonScope();
 container.bind(DataInsertService).toSelf().inSingletonScope();
 container.bind(MasterDataServiceV2).toSelf().inSingletonScope();
+container.bind(CalendarEventService).toSelf().inSingletonScope();
 
 // dialogs
 container.bind(DialogService).toSelf().inSingletonScope();

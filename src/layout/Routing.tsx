@@ -15,11 +15,11 @@ import AuthService from './../services/AuthService';
 import RoutingService from './../services/RoutingService';
 import AuthorityType from './../constants/AuthorityType';
 import SemesterPeriodsPage from '../pages/admin/masterData/SemesterPeriodsPage';
-import ClassLevelsPage from '../pages/admin/masterData/ClassLevelsPage';
 import StudentsPage from '../pages/admin/masterData/StudentsPage';
 import ClassMembersPage from '../pages/admin/masterData/ClassMembersPage';
 import BulkInsertView from './../pages/admin/bulkInsert/BulkInsertView';
 import ClassLevelsPageV2 from '../pages/admin/masterData/v2/ClassLevelsPageV2';
+import CalendarEventManagement from '../pages/admin/calendar/CalendarEventManagement';
 
 export class Routing extends Component<BaseProps, any> {
   @resolve(AuthService)
@@ -62,10 +62,7 @@ export class Routing extends Component<BaseProps, any> {
             <RestrictedRouteElement to="/admin/semesterperiods" element={<SemesterPeriodsPage />} requiredRole={'ROLE_SUPERADMIN'} />
           } />
           <Route path="/admin/classlevels" element={
-            <RestrictedRouteElement to="/admin/classlevels" element={<ClassLevelsPage />} requiredRole={'ROLE_SUPERADMIN'} />
-          } />
-          <Route path="/admin/classlevels/v2" element={
-            <RestrictedRouteElement to="/admin/classlevels/v2" element={<ClassLevelsPageV2 />} requiredRole={'ROLE_SUPERADMIN'} />
+            <RestrictedRouteElement to="/admin/classlevels" element={<ClassLevelsPageV2 />} requiredRole={'ROLE_SUPERADMIN'} />
           } />
           <Route path="/admin/students" element={
             <RestrictedRouteElement to="/admin/students" element={<StudentsPage />} requiredRole={'ROLE_SUPERADMIN'} />
@@ -75,6 +72,9 @@ export class Routing extends Component<BaseProps, any> {
           } />
           <Route path="/admin/bulkinsert" element={
             <RestrictedRouteElement to="/admin/bulkinsert" element={<BulkInsertView />} requiredRole={'ROLE_SUPERADMIN'} />
+          } />
+          <Route path="/admin/calendar" element={
+            <RestrictedRouteElement to="/admin/calendar" element={<CalendarEventManagement />} requiredRole={'ROLE_SUPERADMIN'} />
           } />
           <Route path="*" element={<ErrorView message="The requested page is not found." />} />
         </Routes>
