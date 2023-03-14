@@ -172,7 +172,7 @@ export default class CalendarEventManagement extends BasePage<any, State> {
               </div>
             )}
           </div>
-          <div className="col-md-9">
+          <div className="col-md-9 bg-light">
             <FullCalendar
               onLoad={this.setPeriod}
               render={(d, monthFromZero, y, now) =>
@@ -288,7 +288,7 @@ const CalendarItem: React.FC<{
   deleteEvent(eventId: number): any,
 }> = function ({ day, month, year, now, event, addEvent, edit, deleteEvent }) {
   return (
-    <div className="cal-event-item me-1 px-1 border mb-1">
+    <div className="cal-event-item alert alert-secondary me-1 px-1 border mb-1">
       <h2>{day}{now && ' * '}</h2>
       {event && <p>{event.description}</p>}
       <div className="cal-event-item-footer">

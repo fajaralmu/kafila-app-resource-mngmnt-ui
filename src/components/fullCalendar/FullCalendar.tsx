@@ -306,7 +306,7 @@ export default class FullCalendar extends ControlledComponent<Props, State> {
   render() {
     const { selectedYear } = this.state;
     const { month } = timeLineConstant;
-    const calendarTitles = days.map((d) => <div key={`title-${d}`}>{d}</div>);
+    const calendarTitles = days.map((d) => <div className="bg-secondary text-light me-1 mb-2 text-center px-1" key={`title-${d}`}>{d}</div>);
     const dateInfoText = month[this.currentMonth].name + ' ' + this.currentYear;
 
     const calendarComponent = this.calendarData.map((data) => {
