@@ -19,6 +19,7 @@ type Period = { month: number, year: number }
 type State = {
   schools: School[],
   divisions: string[],
+  activityTypes: string[],
   period: Period,
   selectedSchool?: School;
   selectedDivision?: string;
@@ -45,6 +46,7 @@ export default class CalendarEventManagement extends BasePage<any, State> {
       events: [],
       schools: [],
       divisions: [],
+      activityTypes: [],
       selectedSchool: undefined,
       selectedDivision: undefined,
       error: undefined,
@@ -55,6 +57,8 @@ export default class CalendarEventManagement extends BasePage<any, State> {
   }
   componentDidMount() {
     this.loadSchool();
+    this.loadDivisions();
+    this.loadActivityTypes();
   }
   loadDivisions = () => {
     this.calendarService.getDivisions()
@@ -66,11 +70,16 @@ export default class CalendarEventManagement extends BasePage<any, State> {
       .then(this.onSchoolLoaded)
       .catch(this.toast.showDanger);
   }
+  loadActivityTypes = () => {
+    this.calendarService.getActivityTypes()
+      .then((activityTypes) => this.setState({ activityTypes }))
+      .catch(this.toast.showDanger);
+  }
   setPeriod = (month: number, year: number) => {
     this.setState({ period: { month: month + 1, year } }, this.loadData);
   }
   onSchoolLoaded = (resp: MasterDataResult<School>) => {
-    this.setState({ schools: resp.items }, this.loadDivisions);
+    this.setState({ schools: resp.items });
   }
   selectSchool = (selectedSchool: School) => this.setState({ selectedSchool });
   selectDivision = (selectedDivision: string) => this.setState({ selectedDivision });
@@ -127,7 +136,8 @@ export default class CalendarEventManagement extends BasePage<any, State> {
     this.showEventForm('Create Event', event, selectedSchool.name, this.submitNewEvent);
   }
   showEventForm = (title: string, ev: CalendarEventReq, schoolName: string, onSubmit: (ev: CalendarEventReq) => any) => {
-    this.dialog.showContent(title, <CreateEventForm event={ev} schoolName={schoolName} onSubmit={onSubmit} />);
+    const { activityTypes } = this.state;
+    this.dialog.showContent(title, <CreateEventForm event={ev} schoolName={schoolName} activityTypes={activityTypes} onSubmit={onSubmit} />);
   }
   submitNewEvent = (ev: CalendarEventReq) => {
     this.calendarService.insert(ev)
@@ -185,9 +195,8 @@ export default class CalendarEventManagement extends BasePage<any, State> {
   }
 }
 
-const activities = ['ACTIVE', 'NOT_ACTIVE'];
-
-const CreateEventForm: React.FC<{ event: CalendarEventReq, schoolName: string, onSubmit(ev: CalendarEventReq): any }> = function ({ event, schoolName, onSubmit }) {
+const CreateEventForm: React.FC<{ event: CalendarEventReq, schoolName: string, activityTypes: string[], onSubmit(ev: CalendarEventReq): any }>
+= function ({ event, schoolName, activityTypes, onSubmit }) {
   const [activity, setActivity] = useState<string>(event.activity);
   const [description, setDescription] = useState<string>(event.description);
   const onActivityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -223,7 +232,7 @@ const CreateEventForm: React.FC<{ event: CalendarEventReq, schoolName: string, o
       <p>Activity</p>
       <p>
         <select className="form-control form-control-sm" onChange={onActivityChange} value={activity}>
-          {activities.map((a) => <option key={`activity-${a}`} value={a}>{a}</option>)}
+          {activityTypes.map((a) => <option key={`activity-${a}`} value={a}>{a}</option>)}
         </select>
       </p>
       <p>Description</p>
@@ -278,8 +287,8 @@ const CalendarItem: React.FC<{
   deleteEvent(eventId: number): any,
 }> = function ({ day, month, year, now, event, addEvent, edit, deleteEvent }) {
   return (
-    <div className={`cal-event-item me-1 px-1 border mb-1 ${now ? 'cal-event-item-now' : ''}`}>
-      <h2>{day}</h2>
+    <div className="cal-event-item me-1 px-1 border mb-1">
+      <h2>{day}{now && ' * '}</h2>
       {event && <p>{event.description}</p>}
       <div className="cal-event-item-footer">
         {event ?
@@ -292,17 +301,19 @@ const CalendarItem: React.FC<{
               />
               <ActionButton
                 className="btn btn-danger btn-sm"
-                iconClass="fas fa-trash"
+                iconClass="fas fa-times"
                 onClick={() => deleteEvent(event.id)}
               />
             </div>
           ) :
           (
-            <ActionButton
-              className="btn btn-text btn-sm"
-              iconClass="fas fa-plus"
-              onClick={() => addEvent(day, month, year)}
-            />
+            <div className="cal-event-item-action">
+              <ActionButton
+                className="btn btn-text btn-sm"
+                iconClass="fas fa-plus"
+                onClick={() => addEvent(day, month, year)}
+              />
+            </div>
           )
         }
       </div>

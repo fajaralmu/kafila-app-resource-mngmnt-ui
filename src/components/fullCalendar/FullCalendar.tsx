@@ -22,7 +22,6 @@ const timeLineConstant = {
 };
 
 let idSeq = 0;
-const uniqueId = () => new Date().getTime().toString() + (++idSeq);
 
 type Week = { dayOfWeek: number, week: number, dayOfMonth: number, now: boolean }
 type State = { selectedMonth: number, selectedYear: number }

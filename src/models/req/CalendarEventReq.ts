@@ -1,5 +1,5 @@
 export default interface CalendarEventReq {
-  activity: 'ACTIVE' | 'NOT_ACTIVE';
+  activity: string;
   division: string;
   day: number;
   month: number;
