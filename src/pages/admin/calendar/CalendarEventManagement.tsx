@@ -199,6 +199,7 @@ const CreateEventForm: React.FC<{ event: CalendarEventReq, schoolName: string, a
 = function ({ event, schoolName, activityTypes, onSubmit }) {
   const [activity, setActivity] = useState<string>(event.activity);
   const [description, setDescription] = useState<string>(event.description);
+  const date = new Date(`${event.year}-${event.month}-${event.day}`);
   const onActivityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setActivity(e.target.value);
   }
@@ -223,7 +224,7 @@ const CreateEventForm: React.FC<{ event: CalendarEventReq, schoolName: string, a
         </thead>
         <tbody>
           <tr>
-            <td>{event.day}-{event.month}-{event.year}</td>
+            <td>{date.toDateString()}</td>
             <td>{schoolName}</td>
             <td>{event.division}</td>
           </tr>
