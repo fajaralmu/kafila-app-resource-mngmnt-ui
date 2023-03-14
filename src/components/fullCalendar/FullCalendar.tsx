@@ -24,31 +24,29 @@ const timeLineConstant = {
 let idSeq = 0;
 const uniqueId = () => new Date().getTime().toString() + (++idSeq);
 
-type Week = {
-  dayOfWeek: number,
-  week: number,
-  dayOfMonth: number,
-  now: boolean,
-}
-type State = {
-  selectedMonth: number,
-  selectedYear: number,
+type Week = { dayOfWeek: number, week: number, dayOfMonth: number, now: boolean }
+type State = { selectedMonth: number, selectedYear: number }
+type Pointer = { week: number, day: number, dayCount: number, now: boolean }
+type Props = {
+  render(d: number, monthFromZero: number, year: number, now: boolean): any,
+  onLoad(monthFromZero: number, y: number): any,
 }
 
-export default class FullCalendar extends ControlledComponent<any, State> {
+const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+export default class FullCalendar extends ControlledComponent<Props, State> {
   private calendarData: Week[];
-  private days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"];
 
   private currentMonth: number;
   private currentYear: number;
 
-  private begin = { week: 1, day: 3, dayCount: 31, info: '' };
-  private begin_old = { week: 0, day: 0, dayCount: 0, info: '' };
+  private begin: Pointer;
+  private begin_old: Pointer;
 
   private runningMonth: number;
   private runningYear: number;
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
     const now = new Date();
     this.state = {
@@ -58,8 +56,8 @@ export default class FullCalendar extends ControlledComponent<any, State> {
 
     this.calendarData = [];
     this.currentMonth = 7;// 0; 
-    this.begin = { week: 1, day: 3, dayCount: 31, info: "" };
-    this.begin_old = { week: 0, day: 0, dayCount: 0, info: "" };
+    this.begin = { week: 1, day: 3, dayCount: 31, now: false };
+    this.begin_old = { week: 0, day: 0, dayCount: 0, now: false };
     this.currentYear = 1945;
     this.runningMonth = 7;
     this.runningYear = 1945;
@@ -68,7 +66,6 @@ export default class FullCalendar extends ControlledComponent<any, State> {
     this.loadCalendar();
   }
   createTable = () => {
-    //console.log("BUAT this.tabel"); 
     let calendarData: Week[] = [];
     for (let r = 1; r <= 6; r++) {
       for (let i = 1; i <= 7; i++) {
@@ -76,16 +73,6 @@ export default class FullCalendar extends ControlledComponent<any, State> {
       }
     }
     this.calendarData = calendarData;
-  }
-  getEventByDate = (month: number, year: number) => {
-    if (this.props.getEventByDate)
-      this.props.getEventByDate(month, year);
-  }
-  getEventDetail = (day: number): any[] => {
-    if (this.props.getEventDetail) {
-      return this.props.getEventDetail(day);
-    }
-    return [];
   }
   loadCalendar = () => {
     this.createTable();
@@ -161,11 +148,6 @@ export default class FullCalendar extends ControlledComponent<any, State> {
     }
     console.log("--End--")
   }
-  detail = (day: number, month: number, year: number) => {
-    if (this.props.detail) {
-      this.props.detail(day, month, year);
-    }
-  }
   prevMonth = () => this.doPrevMonth(false);
   doPrevMonth = (prev: boolean) => {
     this.currentMonth--;
@@ -186,17 +168,17 @@ export default class FullCalendar extends ControlledComponent<any, State> {
       week: begin_prev.week,
       day: begin_prev.day,
       dayCount: begin_prev.dayCount,
-      info: '',
+      now: false,
     }
-    let switch_ = this.fillDay(this.currentMonth, begin_prev);
+    const switch_ = this.fillDay(this.currentMonth, begin_prev);
     this.begin = {
       week: switch_.week,
       day: switch_.day,
       dayCount: switch_.dayCount,
-      info: '',
+      now: false,
     }
     this.refresh();
-    return switch_.info === 'NOW';
+    return switch_.now;
   }
 
   nextMonth = () => {
@@ -204,10 +186,7 @@ export default class FullCalendar extends ControlledComponent<any, State> {
   }
 
   refresh = () => {
-    if (this.props.refresh) {
-      this.props.refresh(this.currentMonth, this.currentYear);
-    }
-    this.forceUpdate();
+    this.forceUpdate(() => this.props.onLoad(this.currentMonth, this.currentYear));
   }
 
   doNextMonth = (next: boolean) => {
@@ -230,16 +209,16 @@ export default class FullCalendar extends ControlledComponent<any, State> {
       week: this.begin.week,
       day: this.begin.day,
       dayCount: this.begin.dayCount,
-      info: '',
+      now: false,
     }
     this.begin = {
       week: switch_.week,
       day: switch_.day,
       dayCount: switch_.dayCount,
-      info: '',
+      now: false,
     }
     this.refresh();
-    return switch_.info == 'NOW';
+    return switch_.now;
 
   }
 
@@ -250,11 +229,11 @@ export default class FullCalendar extends ControlledComponent<any, State> {
     }
     let day = begin_old_.day;
     let week = 6;
-    let begin_prev_ = {
+    let begin_prev_: Pointer = {
       week: 0,
       day: 0,
       dayCount: timeLineConstant.month[M].day,
-      info: '',
+      now: false,
     }
 
     for (let D = totalday; D >= 0; D--) {
@@ -276,8 +255,6 @@ export default class FullCalendar extends ControlledComponent<any, State> {
 
       if (data.week == week && data.dayOfWeek == dayOfWeek) {
         if (now.getDate() == dayOfMonth && now.getMonth() == this.currentMonth && now.getFullYear() == this.currentYear) {
-
-          console.log('NOW -> ', data);
           this.calendarData[i].now = true;
         } else {
           this.calendarData[i].now = false;
@@ -294,13 +271,13 @@ export default class FullCalendar extends ControlledComponent<any, State> {
     timeLineConstant.month[1].day = 28 + (+this.currentYear % 4 == 0 ? 1 : 0);
   }
 
-  fillDay = (current_month: number, begin: typeof this.begin) => {
+  fillDay = (current_month: number, begin: typeof this.begin): Pointer => {
     this.clear();
-    let begin_new = {
+    const begin_new: Pointer = {
       week: begin.week,
       day: begin.day,
       dayCount: begin.dayCount,
-      info: '',
+      now: false,
     };
     let weekOfMonth = begin_new.week;
     if (begin_new.week > 1 && begin_new.day > 1) {
@@ -322,34 +299,22 @@ export default class FullCalendar extends ControlledComponent<any, State> {
     begin_new.week = weekOfMonth >= 5 ? 2 : 1;
     begin_new.day = dayOfWeek;
     begin_new.dayCount = currentMonthDayCount;
+    begin_new.now = isNow;
 
-    if (isNow) {
-      begin_new.info = 'NOW';
-      this.getEventByDate(this.runningMonth + 1, this.runningYear);
-    } else {
-      begin_new.info = "SOME-DAY";
-    }
     return begin_new;
   }
 
   render() {
     const { selectedYear } = this.state;
     const { month } = timeLineConstant;
-    const calendarTitles = this.days.map((d) => <div key={`title-${d}`}>{d}</div>);
+    const calendarTitles = days.map((d) => <div key={`title-${d}`}>{d}</div>);
     const dateInfoText = month[this.currentMonth].name + ' ' + this.currentYear;
 
     const calendarComponent = this.calendarData.map((data) => {
       if (isNaN(data.dayOfMonth) || data.dayOfMonth < 0) {
         return <area />;
       }
-      return (
-        <div key={uniqueId()} className={`calendar-item mb-2 me-2 px-2 border border-dark ${data.now ? 'calendar-item-now' : ''}`}>
-          <h6>{data.dayOfMonth} {data.now ? '*' : ''}</h6>
-          <button type="button" onClick={() => this.detail(data.dayOfMonth, this.currentMonth, this.currentYear)}>
-            Detail
-          </button>
-        </div>
-      );
+      return this.props.render(data.dayOfMonth, this.currentMonth, this.currentYear, data.now);
     });
     return (
       <div className="calendar-wrapper">
@@ -363,12 +328,20 @@ export default class FullCalendar extends ControlledComponent<any, State> {
             {month.map((m, i) => <option key={m.name} value={i}>{m.name}</option>)}
           </select>
           <input className="form-control" type="number" name="selectedYear" value={selectedYear} onChange={this.handleInputChange} />
-          <button type="button" className="btn btn-dark" onClick={this.setCalendar}>Go</button>
+          <button type="button" className="btn btn-secondary" onClick={this.setCalendar}>Go</button>
         </div>
         <div className="period-selection mb-5">
-          <button type="button" className="btn btn-dark" onClick={(e) => this.doPrevMonth(true)}>Prev</button>
+          <ActionButton
+            iconClass="fas fa-arrow-left"
+            className="btn btn-dark"
+            onClick={() => this.doPrevMonth(true)}
+          />
           <h4 className="text-center">{dateInfoText}</h4>
-          <button type="button" className="btn btn-dark" onClick={(e) => this.doNextMonth(true)}>Next</button>
+          <ActionButton
+            iconClass="fas fa-arrow-right"
+            className="btn btn-dark"
+            onClick={() => this.doNextMonth(true)}
+          />
         </div>
         <GridComponent cols={7} items={[...calendarTitles, ...calendarComponent]} style={{}} />
       </div>

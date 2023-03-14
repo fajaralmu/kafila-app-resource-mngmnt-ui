@@ -3,11 +3,13 @@ import Settings from "../settings";
 import RestClient from './../apiClients/RestClient';
 import CalendarEventRes from './../models/res/CalendarEventRes';
 import CalendarEventReq from './../models/req/CalendarEventReq';
+import { inject, injectable } from "inversify";
 
 const API_URL = Settings.App.hosts.api + '/api/admin/calendar-events/';
 
+@injectable()
 export default class CalendarEventService {
-  @resolve(RestClient)
+  @inject(RestClient)
   private rest: RestClient;
 
   getDivisions = () => {

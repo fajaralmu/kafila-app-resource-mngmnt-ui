@@ -1,0 +1,21 @@
+.cal-event-item {
+    height: 120px;
+    position: relative
+    ;
+    &-now {
+        background-color: greenyellow;;
+    }
+
+    &-footer {
+        position: absolute;
+        bottom: 2px;
+        left: 2px;
+        width: calc(100% - 4px);
+        margin: auto;
+    }
+
+    &-action {
+        display: flex;
+        justify-content: space-between;
+    }
+}
